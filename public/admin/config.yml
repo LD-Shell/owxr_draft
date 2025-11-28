@@ -1,15 +1,14 @@
 backend:
   name: git-gateway
-  branch: main # Change to 'master' if that's your default branch
+  branch: main
 
-media_folder: "images/uploads"
+media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  # 1. NEWS COLLECTION
   - name: "news"
     label: "News & Events"
-    folder: "content/news"
+    folder: "src/content/news"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
@@ -18,10 +17,9 @@ collections:
       - {label: "Cover Image", name: "image", widget: "image"}
       - {label: "Body", name: "body", widget: "markdown"}
 
-  # 2. TEAM COLLECTION
   - name: "team"
     label: "Team Members"
-    folder: "content/team"
+    folder: "src/content/team"
     create: true
     fields:
       - {label: "Name", name: "title", widget: "string"}
@@ -30,15 +28,13 @@ collections:
       - {label: "Research Interests", name: "tags", widget: "list"}
       - {label: "Bio", name: "body", widget: "markdown"}
 
-  # 3. PAGE EDITING (Home, About, etc.)
   - name: "pages"
     label: "Pages"
     files:
       - name: "home"
         label: "Home Page"
-        file: "content/pages/home.json"
+        file: "src/content/pages/home.json"
         fields:
           - {label: "Hero Title", name: "hero_title", widget: "string"}
           - {label: "Hero Subtitle", name: "hero_subtitle", widget: "text"}
           - {label: "Director Message", name: "director_msg", widget: "markdown"}
-          - {label: "Director Image", name: "director_img", widget: "image"}
