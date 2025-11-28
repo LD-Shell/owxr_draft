@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welch Center of Crystallization Research | UH</title>
+    <!-- Fonts: Roboto for body, Oswald for headings (UH Style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Netlify Identity Widget (REQUIRED FOR ADMIN LOGIN) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <style>
+        /* --- 1. CSS VARIABLES (UH BRANDING) --- */
+        :root {
+            --uh-red: #C8102E;       /* Official UH Red */
+            --uh-dark-red: #960C22;  /* Darker shade for hover */
+            --uh-slate: #54585A;     /* Official UH Slate */
+            --uh-black: #000000;
+            --uh-white: #FFFFFF;
+            --uh-light-gray: #F3F3F3;
+            --crystal-blue: #E0F7FA; /* Subtle accent for "Science" feel */
+            --text-main: #333333;
+            
+            --font-body: 'Roboto', sans-serif;
+            --font-head: 'Oswald', sans-serif;
+            
+            --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-hover: 0 10px 20px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* --- 2. GLOBAL RESET & TYPOGRAPHY --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-main);
+            background-color: var(--uh-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 { font-family: var(--font-head); text-transform: uppercase; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+        .text-uh-red { color: var(--uh-red); }
+
+        /* --- 3. TOP UTILITY BAR (Minnesota/UH Hybrid) --- */
+        .top-bar {
+            background-color: var(--uh-slate);
+            color: var(--uh-white);
+            font-size: 0.85rem;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-links a { margin-right: 15px; font-weight: 300; opacity: 0.9; }
+        .top-links a:hover { opacity: 1; text-decoration: underline; }
+        .top-links span { margin-right: 15px; opacity: 0.5; }
+
+        /* --- 4. MAIN HEADER --- */
+        .main-header {
+            background: var(--uh-white);
+            padding: 20px 0;
+            position: relative;
+        }
+        .header-grid { display: flex; align-items: center; justify-content: space-between; }
+        .logo-area { display: flex; align-items: center; gap: 20px; }
+        .logo-img { height: 60px; width: auto; } /* Placeholder for Logo */
+        
+        .center-identity h4 {
+            font-size: 0.9rem;
+            color: var(--uh-slate);
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+        .center-identity h1 {
+            font-size: 1.8rem;
+            color: var(--uh-red);
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        /* --- 5. MODERN NAV BAR --- */
+        .main-nav {
+            background-color: var(--uh-red);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-list { display: flex; justify-content: flex-start; }
+        .nav-item { position: relative; }
+        
+        .nav-link {
+            display: block;
+            color: var(--uh-white);
+            padding: 16px 24px;
+            font-family: var(--font-head);
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-link:hover, .nav-link.active { background-color: var(--uh-dark-red); }
+
+        /* Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--uh-white);
+            min-width: 250px;
+            box-shadow: var(--shadow-hover);
+            border-top: 4px solid var(--uh-slate);
+            z-index: 1001;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        .nav-item:hover .dropdown-menu { display: block; }
+        .dropdown-link {
+            display: block;
+            padding: 12px 20px;
+            color: var(--uh-slate);
+            border-bottom: 1px solid var(--uh-light-gray);
+            font-size: 0.95rem;
+            font-family: var(--font-body);
+            cursor: pointer;
+        }
+        .dropdown-link:hover {
+            background-color: var(--uh-light-gray);
+            color: var(--uh-red);
+            padding-left: 25px;
+        }
+
+        /* --- 6. PAGE VIEWS (SPA LOGIC) --- */
+        .page-view { display: none; animation: fadeIn 0.5s; }
+        .page-view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 7. HERO SLIDER (REFINED) --- */
+        .hero {
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            color: var(--uh-white);
+        }
+        
+        .hero-slider-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        .hero-slide.active { opacity: 1; }
+
+        /* The "Ken Burns" Zoom Effect */
+        .hero-slide img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            animation: zoomEffect 20s infinite alternate; 
+        }
+        
+        @keyframes zoomEffect {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+        .hero h2 { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.25rem; font-weight: 300; margin-bottom: 30px; }
+
+        /* --- Slider Navigation (Updated) --- */
+        /* Arrows separated to sides */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.3); /* Slight background for contrast */
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .slider-arrow:hover { opacity: 1; background: var(--uh-red); }
+        
+        .slider-arrow.prev { left: 30px; }
+        .slider-arrow.next { right: 30px; }
+        
+        /* Dots centered at bottom */
+        .slider-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+        .indicator {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .indicator.active { background: var(--uh-red); transform: scale(1.3); }
+
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--uh-red);
+            color: white;
+            font-family: var(--font-head);
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid var(--uh-red);
+            cursor: pointer;
+        }
+        .btn:hover { background: transparent; border-color: white; color: white; }
+        .btn-outline { background: transparent; border-color: var(--uh-slate); color: var(--uh-slate); }
+        .btn-outline:hover { background: var(--uh-slate); color: white; }
+
+        /* --- 8. HOME SECTIONS --- */
+        .director-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            background: var(--uh-white);
+            box-shadow: var(--shadow-card);
+            padding: 40px;
+            margin-top: -60px; /* Overlap Hero */
+            position: relative;
+            z-index: 10;
+        }
+        .director-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 5px solid var(--uh-red);
+        }
+        .mission-text { font-size: 1.1rem; color: var(--uh-slate); }
+
+        /* --- 9. TEAM LAYOUT (REQUESTED STYLE) --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .profile-card {
+            background: white;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            overflow: hidden;
+            border-top: 3px solid transparent;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-top: 3px solid var(--uh-red);
+        }
+        .profile-img-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .profile-card:hover .profile-img { transform: scale(1.05); }
+        
+        .profile-info { padding: 20px; }
+        .profile-name { color: var(--uh-red); font-size: 1.2rem; margin-bottom: 5px; }
+        .profile-role { font-size: 0.9rem; color: var(--uh-slate); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .profile-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
+        .tag {
+            background: var(--uh-light-gray);
+            color: var(--uh-slate);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* --- 10. RESEARCH SECTION --- */
+        .aim-card {
+            background: var(--uh-white);
+            border-left: 5px solid var(--uh-slate);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-card);
+        }
+        .aim-card:hover { border-left-color: var(--uh-red); }
+        .aim-number { font-family: var(--font-head); font-size: 4rem; color: rgba(0,0,0,0.05); position: absolute; right: 20px; top: 10px; }
+        .aim-card { position: relative; }
+
+        /* --- 11. OUTPUTS / PUBLICATIONS --- */
+        .pub-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--uh-light-gray);
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .pub-year {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            color: var(--uh-red);
+            font-weight: bold;
+            min-width: 60px;
+        }
+        .pub-details h4 { font-family: var(--font-body); font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; }
+        .pub-journal { font-style: italic; color: var(--uh-slate); }
+
+        /* --- 12. FOOTER --- */
+        footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top: 80px; }
+        .footer-top { padding-bottom: 40px; border-bottom: 1px solid #333; }
+        .footer-logo-text { font-family: var(--font-head); font-size: 1.5rem; color: white; margin-bottom: 20px; display: block; }
+        .footer-bottom { padding: 20px 0; font-size: 0.8rem; display: flex; justify-content: space-between; }
+        
+        /* Mobile Menu */
+        .mobile-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; padding: 15px; }
+        
+        @media (max-width: 768px) {
+            .nav-list { display: none; flex-direction: column; width: 100%; background: var(--uh-red); }
+            .nav-list.show { display: flex; }
+            .nav-link { border-bottom: 1px solid rgba(255,255,255,0.1); border-right: none; }
+            .mobile-toggle { display: block; }
+            .director-grid { grid-template-columns: 1fr; margin-top: 0; }
+            .hero h2 { font-size: 2.2rem; }
+            .header-grid { flex-direction: column; text-align: center; }
+            .logo-area { flex-direction: column; gap: 10px; margin-bottom: 15px; }
+            .slider-arrow { width: 35px; height: 35px; font-size: 1rem; } /* Smaller arrows on mobile */
+            .slider-arrow.prev { left: 10px; }
+            .slider-arrow.next { right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-links">
+                <a href="https://www.uh.edu" target="_blank">University of Houston</a>
+                <span>|</span>
+                <a href="#">Cullen College of Engineering</a>
+            </div>
+            <div class="top-links">
+                <a href="#" onclick="switchPage('contact')">Contact Us</a>
+                <a href="#" style="color: #F4D03F;">Give to the Center</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+        <div class="container header-grid">
+            <div class="logo-area">
+                <!-- Using FontAwesome icons as logo placeholders -->
+                <i class="fa-solid fa-gem fa-3x" style="color: var(--uh-red);"></i>
+                <div class="center-identity">
+                    <h4>UNIVERSITY OF HOUSTON</h4>
+                    <h1>Welch Center of Crystallization Research</h1>
+                </div>
+            </div>
+            <div class="uh-logo-placeholder">
+                <!-- Placeholder for Official UH Logo -->
+                <h2 style="font-family: var(--font-head); color: var(--uh-slate); letter-spacing: 2px;">UH</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i> Menu
+            </div>
+            <ul class="nav-list" id="navList">
+                <li class="nav-item"><a class="nav-link active" onclick="switchPage('home')">Home</a></li>
+                <li class="nav-item">
+                    <span class="nav-link">About Us <i class="fas fa-caret-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" onclick="switchPage('about')">Overview</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('advisory')">Advisory Board</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('contact')">Map & Contact</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Research <i class="fas fa-caret-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" onclick="switchPage('research')">Aim 1: Nucleation</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('research')">Aim 2: Crystal Growth</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('research')">Aim 3: Polymorphism</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Team <i class="fas fa-caret-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" onclick="switchPage('team')">Principal Investigators</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('team')">Students & Postdocs</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Outputs <i class="fas fa-caret-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" onclick="switchPage('outputs')">Publications</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('outputs')">Patents</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" onclick="switchPage('news')">News & Events</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="switchPage('outreach')">Outreach</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ================= VIEW: HOME ================= -->
+    <div id="home" class="page-view active">
+        <!-- Hero Section with Ken Burns Video-like Slider -->
+        <section class="hero">
+            <!-- Slides Container -->
+            <div class="hero-slider-container">
+                <!-- Slide 1: Crystals/Microscope -->
+                <div class="hero-slide active">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600" alt="Crystallization Research">
+                </div>
+                <!-- Slide 2: Lab Environment -->
+                <div class="hero-slide">
+                    <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1600" alt="Laboratory Work">
+                </div>
+                <!-- Slide 3: Molecular Model -->
+                <div class="hero-slide">
+                    <img src="https://images.unsplash.com/photo-1629851174958-300f3933c042?auto=format&fit=crop&q=80&w=1600" alt="Molecular Simulation">
+                </div>
+            </div>
+            
+            <!-- Dark Overlay for Readability -->
+            <div class="hero-overlay"></div>
+
+            <!-- Content -->
+            <div class="container hero-content">
+                <h2>Advancing the Frontiers of Crystallization</h2>
+                <p>We are engineering the future of materials through fundamental understanding of nucleation, growth, and polymorphism.</p>
+                <button class="btn" style="background: white; color: var(--uh-red); border-color: white;" onclick="switchPage('research')">Explore Our Research</button>
+            </div>
+
+            <!-- Independent Slider Navigation Controls -->
+            <div class="slider-arrow prev" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></div>
+            <div class="slider-arrow next" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></div>
+            
+            <div class="slider-indicators">
+                <div class="indicator active" onclick="goToSlide(0)"></div>
+                <div class="indicator" onclick="goToSlide(1)"></div>
+                <div class="indicator" onclick="goToSlide(2)"></div>
+            </div>
+        </section>
+
+        <!-- Director & Mission -->
+        <section class="container section-padding" style="padding-top: 0;">
+            <div class="director-grid">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" alt="Center Director" class="director-img">
+                </div>
+                <div>
+                    <h3 class="text-uh-red">Director's Message</h3>
+                    <p class="mission-text" style="margin: 20px 0;">
+                        "Welcome to the Welch Center. Our mission is to bridge the gap between fundamental molecular science and industrial application. By understanding how crystals form at the atomic level, we are designing safer medicines, cleaner energy solutions, and advanced materials for the next generation."
+                    </p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png" alt="Signature" style="height: 50px; opacity: 0.7;">
+                    <p><strong>Dr. Peter Rimer</strong><br>Director, Welch Center</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats / Impact -->
+        <section class="section-padding" style="background: var(--uh-slate); color: white;">
+            <div class="container">
+                <div class="team-grid text-center">
+                    <div>
+                        <h2 style="font-size: 3rem; color: #F4D03F;">150+</h2>
+                        <p>Publications</p>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 3rem; color: #F4D03F;">$10M+</h2>
+                        <p>Research Funding</p>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 3rem; color: #F4D03F;">25</h2>
+                        <p>PhD Students</p>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 3rem; color: #F4D03F;">12</h2>
+                        <p>Patents Filed</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Preview -->
+        <section class="container section-padding">
+            <h3 class="text-uh-red text-center" style="margin-bottom: 40px;">Upcoming Events</h3>
+            <div class="team-grid">
+                <div class="aim-card">
+                    <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">OCT 24</div>
+                    <h4>Annual Crystallization Symposium</h4>
+                    <p>Student Center South, Ballroom B</p>
+                </div>
+                <div class="aim-card">
+                    <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">NOV 05</div>
+                    <h4>Distinguished Lecture: Dr. J. Doe</h4>
+                    <p>Engineering Bldg 2, Room 102</p>
+                </div>
+                <div class="aim-card">
+                    <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">DEC 12</div>
+                    <h4>Center Holiday Meeting</h4>
+                    <p>Welch Center Lobby</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= VIEW: ABOUT ================= -->
+    <div id="about" class="page-view container section-padding">
+        <h2 class="text-uh-red" style="margin-bottom: 30px; border-bottom: 2px solid var(--uh-slate); display: inline-block;">About Us</h2>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div>
+                <h3>Overview of the Center</h3>
+                <p style="margin-bottom: 20px;">The Welch Center of Crystallization Research at the University of Houston is a world-class facility dedicated to the study of crystal formation mechanisms. Founded in 2015, the center brings together experts from Chemical Engineering, Chemistry, and Physics to solve complex problems related to nucleation, growth, and polymorphism.</p>
+                <p>Our research has direct applications in pharmaceutical manufacturing, preventing pathological crystallization (kidney stones, malaria), and optimizing petrochemical processes.</p>
+                <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1000" alt="Lab Overview" style="margin-top: 20px; border-radius: 4px;">
+            </div>
+            <div style="background: var(--uh-light-gray); padding: 30px;">
+                <h4 class="text-uh-red">Quick Links</h4>
+                <ul style="margin-top: 15px;">
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('team')">Leadership Team</a></li>
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('advisory')">Advisory Board</a></li>
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('outputs')">Annual Reports</a></li>
+                </ul>
+                <h4 class="text-uh-red" style="margin-top: 30px;">Center Location</h4>
+                <p style="font-size: 0.9rem;">Engineering Building 1<br>Room S222<br>4226 Martin Luther King Blvd<br>Houston, TX 77204</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: RESEARCH ================= -->
+    <div id="research" class="page-view container section-padding">
+        <div class="text-center" style="max-width: 800px; margin: 0 auto 50px auto;">
+            <h2 class="text-uh-red">Our Research Themes</h2>
+            <p>Our work is organized into three primary aims, tackling the lifecycle of a crystal from its birth to its final form.</p>
+        </div>
+
+        <div class="aim-card">
+            <span class="aim-number">01</span>
+            <h3>Aim 1: Nucleation Mechanisms</h3>
+            <p>We investigate the non-classical pathways of nucleation, using liquid-cell TEM and time-resolved spectroscopy to observe how molecules aggregate before a stable crystal lattice forms.</p>
+            <div style="margin-top: 15px;">
+                <span class="tag">Liquid-Phase TEM</span> <span class="tag">Molecular Dynamics</span>
+            </div>
+        </div>
+
+        <div class="aim-card">
+            <span class="aim-number">02</span>
+            <h3>Aim 2: Crystal Growth Modifiers</h3>
+            <p>Understanding how impurities, proteins, and tailor-made additives bind to specific crystal faces to inhibit or promote growth. This is critical for controlling pathological crystallization like kidney stones.</p>
+            <div style="margin-top: 15px;">
+                <span class="tag">AFM</span> <span class="tag">Peptide Design</span> <span class="tag">Microfluidics</span>
+            </div>
+        </div>
+
+        <div class="aim-card">
+            <span class="aim-number">03</span>
+            <h3>Aim 3: Polymorphism & Stability</h3>
+            <p>Many compounds can crystallize into different lattice structures (polymorphs). We study the thermodynamics and kinetics that determine which polymorph appears, crucial for pharmaceutical efficacy.</p>
+            <div style="margin-top: 15px;">
+                <span class="tag">Raman Spectroscopy</span> <span class="tag">High-Throughput Screening</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: TEAM ================= -->
+    <div id="team" class="page-view container section-padding">
+        <h2 class="text-uh-red text-center" style="margin-bottom: 50px;">Meet The Team</h2>
+        
+        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin-bottom: 30px;">Principal Investigators</h3>
+        <div class="team-grid">
+            <!-- PI 1 -->
+            <div class="profile-card">
+                <div class="profile-img-container">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400" alt="PI Name" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h4 class="profile-name">Dr. Peter Rimer</h4>
+                    <div class="profile-role">Center Director & PI</div>
+                    <p style="font-size: 0.9rem;">Expert in pathological crystallization and modifier design.</p>
+                    <div class="profile-tags">
+                        <span class="tag">Zeolites</span> <span class="tag">Biomineralization</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <a href="#"><i class="fas fa-envelope text-uh-red"></i></a> &nbsp;
+                        <a href="#"><i class="fab fa-google-scholar text-uh-red"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PI 2 -->
+            <div class="profile-card">
+                <div class="profile-img-container">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" alt="PI Name" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h4 class="profile-name">Dr. Sarah Vekilov</h4>
+                    <div class="profile-role">Co-Principal Investigator</div>
+                    <p style="font-size: 0.9rem;">Pioneer in protein nucleation and phase transitions.</p>
+                    <div class="profile-tags">
+                        <span class="tag">Protein Physics</span> <span class="tag">Nucleation</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <a href="#"><i class="fas fa-envelope text-uh-red"></i></a> &nbsp;
+                        <a href="#"><i class="fab fa-google-scholar text-uh-red"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PI 3 -->
+            <div class="profile-card">
+                <div class="profile-img-container">
+                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=400" alt="PI Name" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h4 class="profile-name">Dr. James Palmer</h4>
+                    <div class="profile-role">Co-Principal Investigator</div>
+                    <p style="font-size: 0.9rem;">Specialist in computational modeling and simulation.</p>
+                    <div class="profile-tags">
+                        <span class="tag">Molecular Dynamics</span> <span class="tag">AI/ML</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <a href="#"><i class="fas fa-envelope text-uh-red"></i></a> &nbsp;
+                        <a href="#"><i class="fab fa-google-scholar text-uh-red"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin: 60px 0 30px 0;">Postdocs & PhD Students</h3>
+        <div class="team-grid">
+             <!-- Student 1 -->
+             <div class="profile-card">
+                <div class="profile-info">
+                    <h4 class="profile-name">Jane Doe</h4>
+                    <div class="profile-role">PhD Candidate</div>
+                    <p style="font-size: 0.85rem;">Studying calcium oxalate inhibition.</p>
+                </div>
+            </div>
+            <!-- Student 2 -->
+             <div class="profile-card">
+                <div class="profile-info">
+                    <h4 class="profile-name">John Smith</h4>
+                    <div class="profile-role">Postdoctoral Fellow</div>
+                    <p style="font-size: 0.85rem;">Advanced AFM characterization.</p>
+                </div>
+            </div>
+             <!-- Student 3 -->
+             <div class="profile-card">
+                <div class="profile-info">
+                    <h4 class="profile-name">Emily Chen</h4>
+                    <div class="profile-role">PhD Candidate</div>
+                    <p style="font-size: 0.85rem;">Zeolite synthesis optimization.</p>
+                </div>
+            </div>
+             <!-- Student 4 -->
+             <div class="profile-card">
+                <div class="profile-info">
+                    <h4 class="profile-name">Michael Ross</h4>
+                    <div class="profile-role">PhD Candidate</div>
+                    <p style="font-size: 0.85rem;">Computational screening of solvents.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: OUTPUTS ================= -->
+    <div id="outputs" class="page-view container section-padding">
+        <h2 class="text-uh-red">Research Outputs</h2>
+        <div style="margin-top: 40px;">
+            <h3>Selected Publications</h3>
+            
+            <div class="pub-item">
+                <div class="pub-year">2024</div>
+                <div class="pub-details">
+                    <h4>Mechanisms of Calcium Oxalate Inhibition by Citrate Analogs</h4>
+                    <p class="pub-journal">Nature Communications, 15, 1234. <a href="#" onclick="alert('Downloading PDF...')" class="text-uh-red">PDF</a></p>
+                    <p style="font-size: 0.85rem;">Authors: J. Doe, P. Rimer, et al.</p>
+                </div>
+            </div>
+
+            <div class="pub-item">
+                <div class="pub-year">2023</div>
+                <div class="pub-details">
+                    <h4>Two-Step Nucleation Pathways in Protein Crystallization</h4>
+                    <p class="pub-journal">Science, 360(4), 45-50. <a href="#" onclick="alert('Downloading PDF...')" class="text-uh-red">PDF</a></p>
+                    <p style="font-size: 0.85rem;">Authors: S. Vekilov, J. Smith.</p>
+                </div>
+            </div>
+
+            <div class="pub-item">
+                <div class="pub-year">2023</div>
+                <div class="pub-details">
+                    <h4>AI-Driven Discovery of Zeolite Templates</h4>
+                    <p class="pub-journal">Journal of American Chemical Society, 145, 7890. <a href="#" onclick="alert('Downloading PDF...')" class="text-uh-red">PDF</a></p>
+                    <p style="font-size: 0.85rem;">Authors: M. Ross, J. Palmer.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 50px;">Recent Patents</h3>
+            <ul style="list-style: disc; padding-left: 20px; margin-top: 20px;">
+                <li style="margin-bottom: 10px;"><strong>US Patent 10,123,456</strong>: Method for inhibiting kidney stone formation using hydroxy-citrate.</li>
+                <li style="margin-bottom: 10px;"><strong>US Patent 9,876,543</strong>: Novel zeolite catalyst for petrochemical refining.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: NEWS ================= -->
+    <div id="news" class="page-view container section-padding">
+        <h2 class="text-uh-red">News & Events</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+            <div class="profile-card">
+                <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=600" style="height: 200px; width: 100%; object-fit: cover;">
+                <div class="profile-info">
+                    <p class="text-uh-red" style="font-weight: bold; font-size: 0.8rem;">SEPTEMBER 15, 2024</p>
+                    <h4>Center Receives $2M NIH Grant</h4>
+                    <p>The Welch Center has been awarded a new R01 grant to study malaria crystallization pathways.</p>
+                    <!-- Updated Read More Link -->
+                    <a href="#" onclick="switchPage('news-detail')" style="color: var(--uh-red); font-weight: bold; margin-top: 10px; display: block;">Read More</a>
+                </div>
+            </div>
+            <div class="profile-card">
+                <img src="https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&q=80&w=600" style="height: 200px; width: 100%; object-fit: cover;">
+                <div class="profile-info">
+                    <p class="text-uh-red" style="font-weight: bold; font-size: 0.8rem;">AUGUST 20, 2024</p>
+                    <h4>Student Best Paper Award</h4>
+                    <p>PhD Candidate Jane Doe won the Best Paper Award at the International Conference on Crystal Growth in Boston.</p>
+                    <!-- Updated Read More Link -->
+                    <a href="#" onclick="switchPage('news-detail')" style="color: var(--uh-red); font-weight: bold; margin-top: 10px; display: block;">Read More</a>
+                </div>
+            </div>
+            <div class="profile-card">
+                <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=600" style="height: 200px; width: 100%; object-fit: cover;">
+                <div class="profile-info">
+                    <p class="text-uh-red" style="font-weight: bold; font-size: 0.8rem;">JULY 10, 2024</p>
+                    <h4>Summer Outreach Program</h4>
+                    <p>High school students from Houston ISD visited the center for a week of hands-on crystallization experiments.</p>
+                    <!-- Updated Read More Link -->
+                    <a href="#" onclick="switchPage('news-detail')" style="color: var(--uh-red); font-weight: bold; margin-top: 10px; display: block;">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: NEWS DETAIL (Added) ================= -->
+    <div id="news-detail" class="page-view container section-padding">
+        <a href="#" onclick="switchPage('news')" style="color: var(--uh-slate); margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to News</a>
+        <h1 class="text-uh-red">Center Receives $2M NIH Grant</h1>
+        <p class="text-muted" style="margin-bottom: 20px;">September 15, 2024 | Grants & Funding</p>
+        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=1200" style="width: 100%; height: 400px; object-fit: cover; margin-bottom: 30px; border-radius: 4px;">
+        <div style="max-width: 800px;">
+            <p>The Welch Center of Crystallization Research has been awarded a prestigious R01 grant from the National Institutes of Health (NIH) to investigate novel pathways of hematin crystallization in malaria parasites.</p>
+            <br>
+            <h3>The Challenge</h3>
+            <p>Malaria parasites survive by digesting hemoglobin, releasing toxic heme. They detoxify this heme by crystallizing it into hemozoin. Understanding the exact molecular mechanism of this crystallization is key to developing new antimalarial drugs that can inhibit this process.</p>
+            <br>
+            <h3>Our Approach</h3>
+            <p>Using the center's advanced liquid-cell transmission electron microscopy (TEM), our team will observe this crystallization process in real-time at the nanoscale. "This grant allows us to see what was previously invisible," says Dr. Peter Rimer, Principal Investigator.</p>
+            <br>
+            <p>The project is a collaboration between the College of Engineering and the College of Natural Sciences.</p>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: ADVISORY/CONTACT (Combined for demo) ================= -->
+    <div id="advisory" class="page-view container section-padding">
+        <h2 class="text-uh-red">Advisory Board</h2>
+        <p>Our external advisory board consists of industry leaders from major pharmaceutical and energy companies.</p>
+        <div class="team-grid" style="margin-top: 30px;">
+            <div class="aim-card">
+                <h4>Dr. Alan Grant</h4>
+                <p>Chief Scientist, ExxonMobil</p>
+            </div>
+            <div class="aim-card">
+                <h4>Dr. Ellie Sattler</h4>
+                <p>VP R&D, Pfizer</p>
+            </div>
+            <div class="aim-card">
+                <h4>Prof. Ian Malcolm</h4>
+                <p>Chaos Theory Dept, UT Austin</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="page-view container section-padding">
+        <h2 class="text-uh-red">Contact Us</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+            <div>
+                <h4>Mailing Address</h4>
+                <p>Welch Center of Crystallization Research<br>University of Houston<br>4226 Martin Luther King Blvd<br>Houston, TX 77204-4004</p>
+                <h4 style="margin-top: 20px;">Email</h4>
+                <p>info@welchcenter.uh.edu</p>
+                <h4 style="margin-top: 20px;">Phone</h4>
+                <p>713-743-4300</p>
+            </div>
+            <div style="background: #eee; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden;">
+                <!-- Google Map Embed -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3464.336040605926!2d-95.34442668489246!3d29.72033398199732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640be56291a2729%3A0x673995640245a526!2sUniversity%20of%20Houston!5e0!3m2!1sen!2sus!4v1689200000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <div id="outreach" class="page-view container section-padding">
+        <h2 class="text-uh-red">Community Outreach</h2>
+        <p>We are committed to inspiring the next generation of scientists.</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-top text-center">
+                <span class="footer-logo-text">Welch Center of Crystallization Research</span>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-youtube fa-2x"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2025 University of Houston. All rights reserved.</div>
+                <div>
+                    <a href="#">Privacy Policy</a> | <a href="#">Accessibility</a> | <a href="/admin">Admin Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: SPA ROUTER & INTERACTIONS -->
+    <script>
+        // Check for Identity Login and redirect to Admin
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+
+        // Simple Single Page App (SPA) Router logic
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const selectedPage = document.getElementById(pageId);
+            if(selectedPage) {
+                selectedPage.classList.add('active');
+                window.scrollTo(0, 0); 
+            }
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('navList');
+            nav.classList.toggle('show');
+        }
+
+        // --- SLIDER LOGIC ---
+        let slideIndex = 0;
+        let sliderInterval;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.indicator');
+
+        function showSlide(n) {
+            // Normalize index
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+
+            // Remove active class from all
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Add active to current
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            slideIndex++;
+            showSlide(slideIndex);
+            resetTimer(); // Reset auto-rotation on manual interaction
+        }
+
+        function prevSlide() {
+            slideIndex--;
+            showSlide(slideIndex);
+            resetTimer();
+        }
+
+        function goToSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+            resetTimer();
+        }
+
+        function resetTimer() {
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(() => {
+                slideIndex++;
+                showSlide(slideIndex);
+            }, 6000); // 6 seconds per slide
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            switchPage('home');
+            showSlide(0);
+            resetTimer();
+        });
+    </script>
+</body>
+</html>
