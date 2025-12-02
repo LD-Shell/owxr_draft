@@ -1,0 +1,74 @@
+backend:
+  name: git-gateway
+  branch: main
+  # Recommended for Netlify deployment
+
+# Media settings
+media_folder: "public/images/uploads"   # Where images will be saved in the repo
+public_folder: "/images/uploads"        # The public path for viewing images
+
+collections:
+  # === 1. SINGLETON PAGES (Home Content) ===
+  - name: "pages"
+    label: "Static Pages"
+    files:
+      - name: "home"
+        label: "Home Page Content"
+        file: "content/pages/home.md"
+        fields:
+          - {label: "Hero Title", name: "hero_title", widget: "string", required: true}
+          - {label: "Hero Text", name: "hero_text", widget: "text", required: true}
+          - label: "Hero Slides"
+            name: "slides"
+            widget: "list"
+            fields:
+              - {label: "Image", name: "image", widget: "image", required: true}
+              - {label: "Alt Text", name: "alt", widget: "string"}
+          - {label: "Director's Photo", name: "director_photo", widget: "image"}
+          - {label: "Director's Signature", name: "director_signature", widget: "image"}
+          - {label: "Director's Message", name: "director_message", widget: "markdown"}
+          - {label: "Director's Name", name: "director_name", widget: "string"}
+          - {label: "Director's Role", name: "director_role", widget: "string"}
+
+  # === 2. TEAM MEMBERS (Collection) ===
+  - name: "team"
+    label: "Team Members"
+    folder: "content/team"
+    create: true
+    slug: "{{name | slug}}"
+    fields:
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Role", name: "role", widget: "select", options: ["Center Director & PI", "Co-Principal Investigator", "Postdoctoral Fellow", "PhD Candidate", "Staff"], default: "PhD Candidate"}
+      - {label: "Bio/Focus", name: "bio", widget: "text"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Tags (Comma-separated)", name: "tags", widget: "list", required: false}
+      - {label: "Email", name: "email", widget: "string", required: false}
+      - {label: "Google Scholar URL", name: "scholar", widget: "string", required: false}
+
+  # === 3. PUBLICATIONS (Collection) ===
+  - name: "publications"
+    label: "Publications"
+    folder: "content/publications"
+    create: true
+    slug: "{{year}}-{{title | slug}}"
+    fields:
+      - {label: "Featured", name: "featured", widget: "boolean", default: false}
+      - {label: "Year", name: "year", widget: "number", value_type: "int"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Journal", name: "journal", widget: "string"}
+      - {label: "Authors (Full List)", name: "authors", widget: "text"}
+      - {label: "Link/DOI", name: "doi", widget: "string", required: false}
+      - {label: "PDF Upload (Optional)", name: "pdf_file", widget: "file", required: false}
+
+  # === 4. NEWS & EVENTS (Collection) ===
+  - name: "news"
+    label: "News & Events"
+    folder: "content/news"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{title | slug}}"
+    fields:
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Featured Image", name: "image", widget: "image", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Tags (e.g., Grants, Awards, Outreach)", name: "tags", widget: "list", required: false}
