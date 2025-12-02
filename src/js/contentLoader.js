@@ -9,7 +9,7 @@ converter.setFlavor('github'); // Use GitHub flavor for better markdown support
  */
 async function fetchData(fileName) {
     try {
-        const response = await fetch(`/content/${fileName}.json`); 
+        const response = await fetch(`content/${fileName}.json`); 
         if (!response.ok) {
             console.error(`Error loading content for ${fileName}. Status: ${response.status}`);
             return (fileName === 'globals' || fileName === 'pages') ? {} : []; // Return object for singletons
