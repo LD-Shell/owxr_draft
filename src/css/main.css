@@ -1,0 +1,367 @@
+/* --- 1. CSS VARIABLES (UH BRANDING) --- */
+:root {
+    --uh-red: #C8102E;      /* Official UH Red */
+    --uh-dark-red: #960C22; /* Darker shade for hover */
+    --uh-slate: #54585A;    /* Official UH Slate */
+    --uh-black: #000000;
+    --uh-white: #FFFFFF;
+    --uh-light-gray: #F3F3F3;
+    --crystal-blue: #E0F7FA; /* Subtle accent for "Science" feel */
+    --text-main: #333333;
+    
+    --font-body: 'Roboto', sans-serif;
+    --font-head: 'Oswald', sans-serif;
+    
+    --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-hover: 0 10px 20px rgba(0,0,0,0.15);
+    --transition: all 0.3s ease;
+}
+
+/* --- 2. GLOBAL RESET & TYPOGRAPHY --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-main);
+    background-color: var(--uh-white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 { font-family: var(--font-head); text-transform: uppercase; }
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+.section-padding { padding: 80px 0; }
+.text-center { text-align: center; }
+.text-uh-red { color: var(--uh-red); }
+
+/* --- 3. TOP UTILITY BAR (Minnesota/UH Hybrid) --- */
+.top-bar {
+    background-color: var(--uh-slate);
+    color: var(--uh-white);
+    font-size: 0.85rem;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+.top-links a { margin-right: 15px; font-weight: 300; opacity: 0.9; }
+.top-links a:hover { opacity: 1; text-decoration: underline; }
+.top-links span { margin-right: 15px; opacity: 0.5; }
+
+/* --- 4. MAIN HEADER --- */
+.main-header {
+    background: var(--uh-white);
+    padding: 20px 0;
+    position: relative;
+}
+.header-grid { display: flex; align-items: center; justify-content: space-between; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-img { height: 80px; width: auto; } /* Placeholder for Logo */
+
+.center-identity h4 {
+    font-size: 0.9rem;
+    color: var(--uh-slate);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+.center-identity h1 {
+    font-size: 1.8rem;
+    color: var(--uh-red);
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+/* --- 5. MODERN NAV BAR --- */
+.main-nav {
+    background-color: var(--uh-red);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.nav-list { display: flex; justify-content: flex-start; }
+.nav-item { position: relative; }
+
+.nav-link {
+    display: block;
+    color: var(--uh-white);
+    padding: 16px 24px;
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.nav-link:hover, .nav-link.active { background-color: var(--uh-dark-red); }
+
+/* Dropdown */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--uh-white);
+    min-width: 250px;
+    box-shadow: var(--shadow-hover);
+    border-top: 4px solid var(--uh-slate);
+    z-index: 1001;
+    animation: fadeIn 0.2s ease-in-out;
+}
+.nav-item:hover .dropdown-menu { display: block; }
+.dropdown-link {
+    display: block;
+    padding: 12px 20px;
+    color: var(--uh-slate);
+    border-bottom: 1px solid var(--uh-light-gray);
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+}
+.dropdown-link:hover {
+    background-color: var(--uh-light-gray);
+    color: var(--uh-red);
+    padding-left: 25px;
+}
+
+/* --- 6. PAGE VIEWS (SPA LOGIC) --- */
+.page-view { display: none; animation: fadeIn 0.5s; }
+.page-view.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 7. HERO SLIDER (REFINED) --- */
+.hero {
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: var(--uh-white);
+}
+
+.hero-slider-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+.hero-slide.active { opacity: 1; }
+
+/* The "Ken Burns" Zoom Effect */
+.hero-slide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    animation: zoomEffect 20s infinite alternate; 
+}
+
+@keyframes zoomEffect {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+.hero h2 { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.hero p { font-size: 1.25rem; font-weight: 300; margin-bottom: 30px; }
+
+/* --- Slider Navigation (Updated) --- */
+/* Arrows separated to sides */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    background: rgba(0,0,0,0.3); /* Slight background for contrast */
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    z-index: 10;
+}
+.slider-arrow:hover { opacity: 1; background: var(--uh-red); }
+
+.slider-arrow.prev { left: 30px; }
+.slider-arrow.next { right: 30px; }
+
+/* Dots centered at bottom */
+.slider-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+    background: rgba(0,0,0,0.2);
+    padding: 10px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+}
+.indicator {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.indicator.active { background: var(--uh-red); transform: scale(1.3); }
+
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--uh-red);
+    color: white;
+    font-family: var(--font-head);
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 2px solid var(--uh-red);
+    cursor: pointer;
+}
+.btn:hover { background: transparent; border-color: white; color: white; }
+.btn-outline { background: transparent; border-color: var(--uh-slate); color: var(--uh-slate); }
+.btn-outline:hover { background: var(--uh-slate); color: white; }
+
+/* --- 8. HOME SECTIONS --- */
+.director-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    background: var(--uh-white);
+    box-shadow: var(--shadow-card);
+    padding: 40px;
+    margin-top: -60px; /* Overlap Hero */
+    position: relative;
+    z-index: 10;
+}
+.director-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-bottom: 5px solid var(--uh-red);
+}
+.mission-text { font-size: 1.1rem; color: var(--uh-slate); }
+
+/* --- 9. TEAM LAYOUT (REQUESTED STYLE) --- */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+.profile-card {
+    background: white;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+    overflow: hidden;
+    border-top: 3px solid transparent;
+}
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-top: 3px solid var(--uh-red);
+}
+.profile-img-container {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+.profile-card:hover .profile-img { transform: scale(1.05); }
+
+.profile-info { padding: 20px; }
+.profile-name { color: var(--uh-red); font-size: 1.2rem; margin-bottom: 5px; }
+.profile-role { font-size: 0.9rem; color: var(--uh-slate); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+.profile-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
+.tag {
+    background: var(--uh-light-gray);
+    color: var(--uh-slate);
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* --- 10. RESEARCH SECTION --- */
+.aim-card {
+    background: var(--uh-white);
+    border-left: 5px solid var(--uh-slate);
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-card);
+}
+.aim-card:hover { border-left-color: var(--uh-red); }
+.aim-number { font-family: var(--font-head); font-size: 4rem; color: rgba(0,0,0,0.05); position: absolute; right: 20px; top: 10px; }
+.aim-card { position: relative; }
+
+/* --- 11. OUTPUTS / PUBLICATIONS --- */
+.pub-item {
+    padding: 20px;
+    border-bottom: 1px solid var(--uh-light-gray);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+.pub-year {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    color: var(--uh-red);
+    font-weight: bold;
+    min-width: 60px;
+}
+.pub-details h4 { font-family: var(--font-body); font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; }
+.pub-journal { font-style: italic; color: var(--uh-slate); }
+
+/* --- 12. FOOTER --- */
+footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top: 80px; }
+.footer-top { padding-bottom: 40px; border-bottom: 1px solid #333; }
+.footer-logo-text { font-family: var(--font-head); font-size: 1.5rem; color: white; margin-bottom: 20px; display: block; }
+.footer-bottom { padding: 20px 0; font-size: 0.8rem; display: flex; justify-content: space-between; }
+
+/* Mobile Menu */
+.mobile-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; padding: 15px; }
+
+@media (max-width: 768px) {
+    .nav-list { display: none; flex-direction: column; width: 100%; background: var(--uh-red); }
+    .nav-list.show { display: flex; }
+    .nav-link { border-bottom: 1px solid rgba(255,255,255,0.1); border-right: none; }
+    .mobile-toggle { display: block; }
+    .director-grid { grid-template-columns: 1fr; margin-top: 0; }
+    .hero h2 { font-size: 2.2rem; }
+    .header-grid { flex-direction: column; text-align: center; }
+    .logo-area { flex-direction: column; gap: 10px; margin-bottom: 15px; }
+    .slider-arrow { width: 35px; height: 35px; font-size: 1rem; } /* Smaller arrows on mobile */
+    .slider-arrow.prev { left: 10px; }
+    .slider-arrow.next { right: 10px; }
+}
