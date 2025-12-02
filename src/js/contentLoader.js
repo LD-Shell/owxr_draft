@@ -138,9 +138,35 @@ async function loadTeamContent() {
             ${isPI && member.image ? `<div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>` : ''}
             <div class="profile-info">
                 <h4 class="profile-name">${member.name}</h4>
-                <div class="profile-role">${member.role}</div>
-                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'};">${member.bio}</p>
+                
+                <!-- START PI/Student Title Detail Block -->
+
+                ${isPI && member.title_detail ? 
+                    // PI: Bold role, then detailed title with line breaks. ADDED margin-bottom for better flow.
+                    `<div class="profile-role" style="font-weight: 700;">${member.role}</div>
+                    <p style="font-size: 0.9rem; color: var(--uh-slate); margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">
+                        ${member.title_detail.replace(/\n/g, '<br>')}
+                    </p>` : ''
+                }
+                
+                ${!isPI ? 
+                    // FIX: Student/Postdoc consolidated title block (cleaner look, less vertical spacing)
+                    `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div>
+                    <p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">
+                        ${member.department || ''}<br>
+                        ${member.university || ''}
+                    </p>` : ''
+                }
+                
+                <!-- END PI/Student Title Detail Block -->
+
+
+                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '15px'};">
+                    ${member.bio}
+                </p>
+                
                 ${member.tags && member.tags.length > 0 ? `<div class="profile-tags">${member.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+                
                 ${member.email || member.scholar ? `
                     <div style="margin-top: 15px;">
                         ${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''}  
@@ -185,8 +211,8 @@ async function loadOutputsContent() {
     const patentList = document.getElementById('patents-list');
     if (patentList && globals.patents) {
          patentList.innerHTML = globals.patents.map(patent => {
-            const parts = patent.split(':');
-            return `<li style="margin-bottom: 10px;"><strong>${parts[0]}</strong>: ${parts.slice(1).join(':').trim()}</li>`;
+             const parts = patent.split(':');
+             return `<li style="margin-bottom: 10px;"><strong>${parts[0]}</strong>: ${parts.slice(1).join(':').trim()}</li>`;
          }).join('');
     } else if (patentList) {
          patentList.innerHTML = `<p>No patents currently listed.</p>`;

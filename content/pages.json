@@ -5,22 +5,22 @@
     "slides": [
       {
         "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600",
-        "alt": "Crystallization Research"
-      },
-      {
-        "image": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1600",
         "alt": "Laboratory Work"
       },
       {
-        "image": "https://images.unsplash.com/photo-1629851174958-300f3933c042?auto=format&fit=crop&q=80&w=1600",
-        "alt": "Molecular Simulation"
+        "image": "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=1600",
+        "alt": "Biomolecules"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1562162135-9f64f33e623b?q=80&w=1430&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "alt": "Crystals"
       }
     ],
     "director": {
-      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400",
-      "signature": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png",
+      "photo": "public/images/rimer.jpg",
+      "signature": "",
       "message": "\"Welcome to the Welch Center. Our mission is to bridge the gap between fundamental molecular science and industrial application. By understanding how crystals form at the atomic level, we are designing safer medicines, cleaner energy solutions, and advanced materials for the next generation.\"",
-      "name": "Dr. Peter Rimer",
+      "name": "Dr. Jeffrey Rimer",
       "role": "Director, Welch Center"
     }
   },

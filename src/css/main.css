@@ -266,11 +266,12 @@ img { max-width: 100%; display: block; }
     width: 100%;
     height: 300px;
     object-fit: cover;
+    object-position: center top;
     border-bottom: 5px solid var(--uh-red);
 }
 .mission-text { font-size: 1.1rem; color: var(--uh-slate); }
 
-/* --- 9. TEAM LAYOUT (REQUESTED STYLE) --- */
+/* --- 9. TEAM LAYOUT --- */
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
