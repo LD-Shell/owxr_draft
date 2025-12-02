@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welch Center for Advanced Bioactive Materials Crystallization | UH</title>
+    <!-- Fonts: Roboto for body, Oswald for headings (UH Style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Netlify Identity Widget (REQUIRED FOR ADMIN LOGIN) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <!-- External CSS link -->
+    <link rel="stylesheet" href="src/css/main.css">
+</head>
+<body>
+
+    <!-- TOP BAR (STATIC) -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-links">
+                <a href="https://www.uh.edu" target="_blank">University of Houston</a>
+                <span>|</span>
+                <a href="#">Cullen College of Engineering</a>
+            </div>
+            <div class="top-links">
+                <a href="#" onclick="switchPage('contact')">Contact Us</a>
+                <a href="#" style="color: #F4D03F;">Give to the Center</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER (STATIC) -->
+    <header class="main-header">
+        <div class="container header-grid">
+            <div class="logo-area">
+                <img src="public/images/logo-1.png" alt="Welch Center Logo" class="logo-img">
+                <div class="center-identity">
+                    <h4>UNIVERSITY OF HOUSTON</h4>
+                    <h1>Welch Center for Advanced Bioactive Materials Crystallization</h1>
+                </div>
+            </div>
+            <div class="uh-logo-placeholder">
+                <img src="public/images/logo-2.png" alt="University of Houston Logo" class="logo-img">
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION (STATIC, driven by JS) -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i> Menu
+            </div>
+            <ul class="nav-list" id="navList">
+                <!-- Data-page attribute added for cleaner JS targeting -->
+                <li class="nav-item"><a class="nav-link active" data-page="home" onclick="switchPage('home')">Home</a></li>
+                <li class="nav-item">
+                    <!-- ICON FIX: Switched from fa-caret-down to fa-chevron-down -->
+                    <span class="nav-link">About Us <i class="fas fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" data-page="about" onclick="switchPage('about')">Overview</a></li>
+                        <li><a class="dropdown-link" data-page="advisory" onclick="switchPage('advisory')">Advisory Board</a></li>
+                        <li><a class="dropdown-link" data-page="contact" onclick="switchPage('contact')">Map & Contact</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Research <i class="fas fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" data-page="research" onclick="switchPage('research')">Research Aims</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Team <i class="fas fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" data-page="team" onclick="switchPage('team')">All Team Members</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">Outputs <i class="fas fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-link" data-page="outputs" onclick="switchPage('outputs')">Publications & Patents</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" data-page="news" onclick="switchPage('news')">News & Events</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="outreach" onclick="switchPage('outreach')">Outreach</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ================= VIEW: HOME ================= -->
+    <div id="home" class="page-view active">
+        <section class="hero">
+            <div class="hero-slider-container" id="hero-slider-container"></div>
+            <div class="hero-overlay"></div>
+            <div class="container hero-content" id="hero-content"></div>
+
+            <div class="slider-arrow prev" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></div>
+            <div class="slider-arrow next" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></div>
+            <div class="slider-indicators" id="slider-indicators"></div>
+        </section>
+
+        <!-- Director & Mission -->
+        <section class="container section-padding" style="padding-top: 0;">
+            <div class="director-grid" id="director-message-section">
+                <div style="text-align: center; grid-column: 1 / -1;"><p>Loading Director's Message...</p></div>
+            </div>
+        </section>
+
+        <!-- Stats / Impact (Dynamic content) -->
+        <section class="section-padding" style="background: var(--uh-slate); color: white;">
+            <div class="container">
+                <div class="team-grid text-center" id="impact-stats-grid">
+                    <p style="text-align: center; grid-column: 1 / -1;">Loading impact metrics...</p> 
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Preview -->
+        <section class="container section-padding">
+            <h3 class="text-uh-red text-center" style="margin-bottom: 40px;">Upcoming Events</h3>
+            <div class="team-grid" id="event-preview-grid">
+                <p style="text-align: center; grid-column: 1 / -1;">Loading latest events...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= VIEW: ABOUT (Mostly Static, ready for file replacement) ================= -->
+    <div id="about" class="page-view container section-padding">
+        <h2 class="text-uh-red" style="margin-bottom: 30px; border-bottom: 2px solid var(--uh-slate); display: inline-block;">About Us</h2>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div>
+                <h3>Overview of the Center</h3>
+                <p style="margin-bottom: 20px;">The Welch Center for Advanced Bioactive Materials Crystallization Research at the University of Houston is a world-class facility dedicated to the study of crystal formation mechanisms. Founded in 2015, the center brings together experts from Chemical Engineering, Chemistry, and Physics to solve complex problems related to nucleation, growth, and polymorphism. Our research has direct applications in pharmaceutical manufacturing, preventing pathological crystallization (kidney stones, malaria), and optimizing petrochemical processes.</p>
+                <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1000" alt="Lab Overview" style="margin-top: 20px; border-radius: 4px;" loading="lazy">
+            </div>
+            <div id="about-sidebar" style="background: var(--uh-light-gray); padding: 30px;">
+                <h4 class="text-uh-red">Quick Links</h4>
+                <ul style="margin-top: 15px;">
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('team')">Leadership Team</a></li>
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('advisory')">Advisory Board</a></li>
+                    <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('outputs')">Annual Reports</a></li>
+                </ul>
+                <h4 class="text-uh-red" style="margin-top: 30px;">Center Location</h4>
+                <!-- Contact info injected here -->
+                <div id="about-contact-preview">Loading contact details...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: RESEARCH ================= -->
+    <div id="research" class="page-view container section-padding">
+        <div class="text-center" style="max-width: 800px; margin: 0 auto 50px auto;">
+            <h2 class="text-uh-red">Our Research Themes</h2>
+            <p>Our work is organized into three primary aims, tackling the lifecycle of a crystal from its birth to its final form.</p>
+        </div>
+        <!-- Decoupled Research Aims, populated by JS from 'pages.json' -->
+        <div id="research-aims-container">
+            <p style="text-align: center;">Loading research aims...</p>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: TEAM (Containers remain the same) ================= -->
+    <div id="team" class="page-view container section-padding">
+        <h2 class="text-uh-red text-center" style="margin-bottom: 50px;">Meet The Team</h2>
+        
+        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin-bottom: 30px;">Principal Investigators</h3>
+        <div class="team-grid" id="pi-grid"></div>
+
+        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin: 60px 0 30px 0;">Postdocs & PhD Students</h3>
+        <div class="team-grid" id="student-grid"></div>
+    </div>
+
+    <!-- ================= VIEW: OUTPUTS ================= -->
+    <div id="outputs" class="page-view container section-padding">
+        <h2 class="text-uh-red">Research Outputs</h2>
+        <div style="margin-top: 40px;">
+            <h3>Selected Publications</h3>
+            <!-- Decoupled Publications List, populated by JS from 'publications' collection -->
+            <div id="publications-list"></div>
+
+            <h3 style="margin-top: 50px;">Recent Patents</h3>
+            <!-- Decoupled Patents List, populated by JS from 'globals.json' -->
+            <ul id="patents-list" style="list-style: disc; padding-left: 20px; margin-top: 20px;"></ul>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: NEWS (Containers remain the same) ================= -->
+    <div id="news" class="page-view container section-padding">
+        <h2 class="text-uh-red">News & Events</h2>
+        <div id="news-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;"></div>
+    </div>
+
+    <!-- ================= VIEW: NEWS DETAIL (Static Template) ================= -->
+    <div id="news-detail" class="page-view container section-padding">
+        <a href="#" onclick="switchPage('news')" style="color: var(--uh-slate); margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to News</a>
+        <div id="news-detail-content"></div>
+    </div>
+
+    <!-- ================= VIEW: ADVISORY ================= -->
+    <div id="advisory" class="page-view container section-padding">
+        <h2 class="text-uh-red">Advisory Board</h2>
+        <p>Our external advisory board consists of industry leaders from major pharmaceutical and energy companies.</p>
+        <!-- Decoupled Advisory Board, populated by JS from 'globals.json' -->
+        <div class="team-grid" id="advisory-board-grid" style="margin-top: 30px;">
+            <p style="text-align: center; grid-column: 1 / -1;">Loading advisory board members...</p>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: CONTACT ================= -->
+    <div id="contact" class="page-view container section-padding">
+        <h2 class="text-uh-red">Contact Us</h2>
+        <!-- Decoupled Contact Info & Map, populated by JS from 'globals.json' -->
+        <div id="contact-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+            <p style="text-align: center; grid-column: 1 / -1;">Loading contact information...</p>
+        </div>
+    </div>
+    
+    <!-- ================= VIEW: OUTREACH ================= -->
+    <div id="outreach" class="page-view container section-padding">
+        <h2 class="text-uh-red">Community Outreach</h2>
+        <p style="max-width: 800px; margin: 0 auto 50px auto; text-align: center;">The Welch Center is committed to inspiring the next generation of scientists and engineers through engaging community programs.</p>
+        <!-- Decoupled Outreach content -->
+        <div id="outreach-grid" class="team-grid">
+            <p style="text-align: center; grid-column: 1 / -1;">Loading outreach stories...</p>
+        </div>
+    </div>
+
+    <!-- ================= VIEW: OUTREACH DETAIL ================= -->
+    <div id="outreach-detail" class="page-view container section-padding">
+        <a href="#" onclick="switchPage('outreach')" style="color: var(--uh-slate); margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to Outreach</a>
+        <div id="outreach-detail-content"></div>
+    </div>
+
+    <!-- FOOTER (STATIC) -->
+    <footer>
+        <div class="container">
+            <div class="footer-top text-center">
+                <span class="footer-logo-text">Welch Center for Advanced Bioactive Materials Crystallization</span>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+                    <a href="#"><i class="fab fa-youtube fa-2x"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2025 University of Houston. All rights reserved.</div>
+                <div>
+                    <a href="#">Privacy Policy</a> | <a href="#">Accessibility</a> | <a href="/admin">Admin Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MARKDOWN PARSER CDN (CRITICAL FIX) -->
+    <!-- This MUST be loaded before your custom JS uses it -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+
+    <!-- JAVASCRIPT LINKS -->
+    <script src="src/js/app.js"></script>
+    <script src="src/js/slider.js"></script>
+    <script src="src/js/contentLoader.js"></script>
+</body>
+</html>
