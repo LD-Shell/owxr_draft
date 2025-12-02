@@ -1,0 +1,54 @@
+{
+  "impact_stats": [
+    {
+      "value": "150+",
+      "label": "Publications",
+      "color": "#F4D03F"
+    },
+    {
+      "value": "$10M+",
+      "label": "Research Funding",
+      "color": "#F4D03F"
+    },
+    {
+      "value": "25",
+      "label": "PhD Students",
+      "color": "#F4D03F"
+    },
+    {
+      "value": "12",
+      "label": "Patents Filed",
+      "color": "#F4D03F"
+    }
+  ],
+  "contact": {
+    "email": "info@welchcenter.uh.edu",
+    "phone": "713-743-4300",
+    "address_line1": "Welch Center of Crystallization Research",
+    "address_line2": "University of Houston",
+    "address_line3": "4226 Martin Luther King Blvd",
+    "address_line4": "Houston, TX 77204-4004",
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3464.336040605926!2d-95.34442668489246!3d29.72033398199732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640be56291a2729%3A0x673995640245a526!2sUniversity%20of%20Houston!5e0!3m2!1sen!2sus!4v1689200000000!5m2!1sen!2sus"
+  },
+  "patents": [
+    "US Patent 10,123,456: Method for inhibiting kidney stone formation using hydroxy-citrate.",
+    "US Patent 9,876,543: Novel zeolite catalyst for petrochemical refining."
+  ],
+  "advisory_board": [
+    {
+      "name": "Dr. Alan Grant",
+      "role": "Chief Scientist, ExxonMobil",
+      "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+      "name": "Dr. Ellie Sattler",
+      "role": "VP R&D, Pfizer",
+      "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+      "name": "Prof. Ian Malcolm",
+      "role": "Chaos Theory Dept, UT Austin",
+      "image": "https://images.unsplash.com/photo-1599566150163-29194d6b4a0a?auto=format&fit=crop&q=80&w=400"
+    }
+  ]
+}

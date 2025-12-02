@@ -1,0 +1,31 @@
+[
+  {
+    "id": "nih-grant",
+    "date": "September 15, 2024",
+    "title": "Center Receives $2M NIH Grant",
+    "preview": "The Welch Center has been awarded a new R01 grant to study malaria crystallization pathways.",
+    "image": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=600",
+    "body": {
+      "full_title": "Center Receives $2M NIH Grant",
+      "category": "Grants & Funding",
+      "main_image": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=1200",
+      "text": "The Welch Center of Crystallization Research has been awarded a prestigious R01 grant from the National Institutes of Health (NIH) to investigate novel pathways of hematin crystallization in malaria parasites. Malaria parasites survive by digesting hemoglobin, releasing toxic heme. They detoxify this heme by crystallizing it into hemozoin. Understanding the exact molecular mechanism of this crystallization is key to developing new antimalarial drugs that can inhibit this process. Using the center's advanced liquid-cell transmission electron microscopy (TEM), our team will observe this crystallization process in real-time at the nanoscale. \"This grant allows us to see what was previously invisible,\" says Dr. Peter Rimer, Principal Investigator. The project is a collaboration between the College of Engineering and the College of Natural Sciences."
+    }
+  },
+  {
+    "id": "student-award",
+    "date": "August 20, 2024",
+    "title": "Student Best Paper Award",
+    "preview": "PhD Candidate Jane Doe won the Best Paper Award at the International Conference on Crystal Growth in Boston.",
+    "image": "https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&q=80&w=600",
+    "body": {}
+  },
+  {
+    "id": "outreach-program",
+    "date": "July 10, 2024",
+    "title": "Summer Outreach Program",
+    "preview": "High school students from Houston ISD visited the center for a week of hands-on crystallization experiments.",
+    "image": "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=600",
+    "body": {}
+  }
+]

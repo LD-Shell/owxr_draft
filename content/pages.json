@@ -1,0 +1,47 @@
+{
+  "home": {
+    "hero_title": "Advancing the Frontiers of Crystallization",
+    "hero_text": "We are engineering the future of materials through fundamental understanding of nucleation, growth, and polymorphism.",
+    "slides": [
+      {
+        "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600",
+        "alt": "Crystallization Research"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1600",
+        "alt": "Laboratory Work"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1629851174958-300f3933c042?auto=format&fit=crop&q=80&w=1600",
+        "alt": "Molecular Simulation"
+      }
+    ],
+    "director": {
+      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400",
+      "signature": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png",
+      "message": "\"Welcome to the Welch Center. Our mission is to bridge the gap between fundamental molecular science and industrial application. By understanding how crystals form at the atomic level, we are designing safer medicines, cleaner energy solutions, and advanced materials for the next generation.\"",
+      "name": "Dr. Peter Rimer",
+      "role": "Director, Welch Center"
+    }
+  },
+  "research_aims": [
+    {
+      "number": "01",
+      "title": "Aim 1: Nucleation Mechanisms (The Birth of a Crystal)",
+      "description": "We investigate the non-classical pathways of nucleation, using advanced techniques like liquid-cell TEM and time-resolved spectroscopy to observe how molecules aggregate before a stable crystal lattice forms. Understanding this initial moment is crucial for controlling crystal size and purity.",
+      "tags": ["Liquid-Phase TEM", "Molecular Dynamics", "Non-Classical Theory"]
+    },
+    {
+      "number": "02",
+      "title": "Aim 2: Crystal Growth Modifiers (Controlling the Shape)",
+      "description": "This aim focuses on how impurities, proteins, and tailor-made additives bind to specific crystal faces to inhibit or promote growth. This has direct application in pharmaceutical anti-solvation and controlling pathological crystallization like kidney stones and gallstones.",
+      "tags": ["AFM", "Peptide Design", "Microfluidics", "In-Situ Microscopy"]
+    },
+    {
+      "number": "03",
+      "title": "Aim 3: Polymorphism & Stability (The Right Structure)",
+      "description": "Many compounds can crystallize into different lattice structures (polymorphs). We study the thermodynamics and kinetics that determine which polymorph appears, which is essential for pharmaceutical efficacy (where the wrong polymorph can render a drug useless or even dangerous).",
+      "tags": ["Raman Spectroscopy", "High-Throughput Screening", "Solid-State NMR", "Thermodynamic Modeling"]
+    }
+  ]
+}

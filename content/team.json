@@ -1,0 +1,62 @@
+[
+  {
+    "id": "peter-rimer",
+    "name": "Dr. Peter Rimer",
+    "role": "Center Director & PI",
+    "is_pi": true,
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400",
+    "bio": "Expert in pathological crystallization and modifier design.",
+    "tags": ["Zeolites", "Biomineralization"],
+    "email": "primer@uh.edu",
+    "scholar": "#"
+  },
+  {
+    "id": "sarah-vekilov",
+    "name": "Dr. Sarah Vekilov",
+    "role": "Co-Principal Investigator",
+    "is_pi": true,
+    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400",
+    "bio": "Pioneer in protein nucleation and phase transitions.",
+    "tags": ["Protein Physics", "Nucleation"],
+    "email": "svekilov@uh.edu",
+    "scholar": "#"
+  },
+  {
+    "id": "james-palmer",
+    "name": "Dr. James Palmer",
+    "role": "Co-Principal Investigator",
+    "is_pi": true,
+    "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=400",
+    "bio": "Specialist in computational modeling and simulation.",
+    "tags": ["Molecular Dynamics", "AI/ML"],
+    "email": "jpalmer@uh.edu",
+    "scholar": "#"
+  },
+  {
+    "id": "jane-doe",
+    "name": "Jane Doe",
+    "role": "PhD Candidate",
+    "is_pi": false,
+    "bio": "Studying calcium oxalate inhibition.",
+    "image": "",
+    "tags": []
+  },
+  {
+    "id": "john-smith",
+    "name": "John Smith",
+    "role": "Postdoctoral Fellow",
+    "is_pi": false,
+    "bio": "Advanced AFM characterization.",
+    "image": "",
+    "tags": []
+  },
+  {
+    "id": "emily-chen",
+    "name": "Emily Chen",
+    "role": "PhD Candidate",
+    "is_pi": false,
+    "bio": "Zeolite synthesis optimization.",
+    "image": "",
+    "tags": []
+  }
+]
