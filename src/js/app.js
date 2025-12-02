@@ -11,16 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    // Initialize the SPA to the home page on load
-    switchPage('home');
+
+    // 🔥 FIX: Initialize SPA based on URL hash or default to 'home'
+    // Read the hash (e.g., '#team') and strip the '#'
+    const initialPageId = window.location.hash.substring(1) || 'home'; 
+    switchPage(initialPageId);
+    
+    // Add event listener to handle browser back/forward buttons
+    window.addEventListener('hashchange', () => {
+        const hashPageId = window.location.hash.substring(1);
+        if (hashPageId) {
+            switchPage(hashPageId, false); // Switch without updating history again
+        }
+    });
 });
 
 /**
  * Simple Single Page App (SPA) Router logic
  * Hides all page views and shows the selected one.
  * @param {string} pageId - The ID of the page view to activate.
+ * @param {boolean} updateHistory - Whether to update the URL hash (default true).
  */
-function switchPage(pageId) {
+function switchPage(pageId, updateHistory = true) {
     const pages = document.querySelectorAll('.page-view');
     pages.forEach(page => page.classList.remove('active'));
 
@@ -28,10 +40,18 @@ function switchPage(pageId) {
     if(selectedPage) {
         selectedPage.classList.add('active');
         window.scrollTo(0, 0); 
+    } else {
+        // Handle undefined page (e.g., if user types a wrong hash in URL)
+        pageId = 'home';
+        document.getElementById('home').classList.add('active');
+    }
+
+    // Update URL hash without causing a page reload, so the state persists on refresh
+    if (updateHistory) {
+        window.location.hash = pageId;
     }
     
-    // 🔥 FIX: Global Cleanup of ALL .nav-link elements (A and SPAN tags)
-    // We target all elements with the class 'nav-link' within the main nav.
+    // Global Cleanup of ALL .nav-link elements (A and SPAN tags)
     document.querySelectorAll('.main-nav .nav-link').forEach(link => link.classList.remove('active'));
     
     // 1. Find the currently clicked link (A tag)
@@ -44,7 +64,6 @@ function switchPage(pageId) {
         // 3. Handle dropdowns: If the active link is inside a dropdown, activate the parent span
         const parentSpan = activeLink.closest('.dropdown-menu')?.closest('.nav-item')?.querySelector('.nav-link');
         
-        // The selector should look for the immediate parent nav-link, which is the SPAN toggle
         if (parentSpan) {
             parentSpan.classList.add('active'); // Activate the parent toggle (e.g., 'About Us')
         }
