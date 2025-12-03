@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welch Center for Advanced Bioactive Materials Crystallization | UH</title>
+
+    <!-- PWA & FAVICON LINKS-->
+    <link rel="icon" type="image/png" sizes="32x32" href="public/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="public/images/icon-192.png" />
+    <link rel="apple-touch-icon" href="public/images/icon-192.png" />
+    <link rel="shortcut icon" href="public/images/favicon-32x32.png" type="image/png" />
+
     <!-- Fonts: Roboto for body, Oswald for headings (UH Style) -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
@@ -56,10 +63,9 @@
                 <i class="fas fa-bars"></i> Menu
             </div>
             <ul class="nav-list" id="navList">
-                <!-- Data-page attribute added for cleaner JS targeting -->
+                <!-- Data-page attribute added for clean JS targeting -->
                 <li class="nav-item"><a class="nav-link active" data-page="home" onclick="switchPage('home')">Home</a></li>
                 <li class="nav-item">
-                    <!-- ICON FIX: Switched from fa-caret-down to fa-chevron-down -->
                     <span class="nav-link">About Us <i class="fas fa-chevron-down"></i></span>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-link" data-page="about" onclick="switchPage('about')">Overview</a></li>
@@ -128,7 +134,7 @@
         </section>
     </div>
 
-    <!-- ================= VIEW: ABOUT (Mostly Static, ready for file replacement) ================= -->
+    <!-- ================= VIEW: ABOUT ================= -->
     <div id="about" class="page-view container section-padding">
         <h2 class="text-uh-red about-title">About Us</h2>
         <div class="about-content-grid">
@@ -145,7 +151,7 @@
                     <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('outputs')">Annual Reports</a></li>
                 </ul>
                 <h4 class="text-uh-red" style="margin-top: 30px;">Center Location</h4>
-                <!-- Contact info injected here -->
+                <!-- Contact info-->
                 <div id="about-contact-preview">Loading contact details...</div>
             </div>
         </div>
@@ -163,7 +169,7 @@
         </div>
     </div>
 
-    <!-- ================= VIEW: TEAM (Containers remain the same) ================= -->
+    <!-- ================= VIEW: TEAM================= -->
     <div id="team" class="page-view container section-padding">
         <h2 class="text-uh-red text-center" style="margin-bottom: 50px;">Meet The Team</h2>
         
@@ -188,7 +194,7 @@
         </div>
     </div>
 
-    <!-- ================= VIEW: NEWS (Containers remain the same) ================= -->
+    <!-- ================= VIEW: NEWS ================= -->
     <div id="news" class="page-view container section-padding">
         <h2 class="text-uh-red">News & Events</h2>
         <div id="news-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;"></div>
@@ -256,8 +262,7 @@
         </div>
     </footer>
 
-    <!-- MARKDOWN PARSER CDN (CRITICAL FIX) -->
-    <!-- This MUST be loaded before your custom JS uses it -->
+    <!-- MARKDOWN PARSER CDN-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
 
     <!-- JAVASCRIPT LINKS -->
