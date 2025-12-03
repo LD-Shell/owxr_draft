@@ -150,7 +150,7 @@ async function loadTeamContent() {
                 }
                 
                 ${!isPI ? 
-                    // FIX: Student/Postdoc consolidated title block (cleaner look, less vertical spacing)
+                    // 🔥 FINAL FIX: Student/Postdoc consolidated title block (cleaner look, less vertical spacing)
                     `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div>
                     <p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">
                         ${member.department || ''}<br>
@@ -192,15 +192,18 @@ async function loadOutputsContent() {
     const pubList = document.getElementById('publications-list');
 
     if (pubList) {
-        // 📢 SORTING: Sorting publications by year (recent to oldest)
-        const sortedPublications = publications.sort((a, b) => b.year - a.year);
+        // FIX: Sorting publications by full date (recent to oldest)
+        const sortedPublications = publications.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         pubList.innerHTML = sortedPublications.map(pub => `
             <div class="pub-item">
                 <div class="pub-year">${pub.year}</div>
                 <div class="pub-details">
                     <h4>${pub.title} ${pub.featured ? `<span class="tag" style="background: var(--uh-red); color: white;">Featured</span>` : ''}</h4>
-                    <p class="pub-journal">${pub.journal} <a href="${pub.link || '#'}" onclick="alert('Downloading PDF...')" class="text-uh-red">PDF</a></p>
+                    <p class="pub-journal">${pub.journal} 
+                        <!-- 🔥 FIX: Changed PDF to VIEW and added target="_blank" -->
+                        <a href="${pub.link || '#'}" target="_blank" class="text-uh-red">VIEW</a>
+                    </p>
                     <p style="font-size: 0.85rem;">Authors: ${pub.authors}</p>
                 </div>
             </div>
