@@ -98,6 +98,24 @@ img { max-width: 100%; display: block; }
 }
 .nav-link:hover, .nav-link.active { background-color: var(--uh-dark-red); }
 
+/* About Page*/
+.about-title {
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--uh-slate);
+    display: inline-block;
+}
+
+.about-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+#about-sidebar {
+    background: var(--uh-light-gray);
+    padding: 30px;
+}
+
 /* Dropdown */
 .dropdown-menu {
     display: none;
@@ -349,79 +367,355 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
 /* ========================================================
    13. MOBILE MEDIA QUERIES (max-width: 768px)
    ======================================================== */
-@media (max-width: 768px) {
-    /* 📢 FIX: Increase Container Padding on Mobile for Better Text Spacing */
-    .container {
-        padding: 0 25px; /* Increased horizontal padding for cleaner margins */
+   @media (max-width: 768px) {
+    /* ================= MOBILE BODY & CONTAINER FIXES ================= */
+    /* Fix for content touching screen edges */
+    html, body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        overflow-x: hidden;
+        position: relative;
     }
-    .section-padding {
-        padding: 40px 0; /* Reduced vertical padding for shorter pages */
-    }
-
-    /* NAVIGATION */
-    .nav-list { display: none; flex-direction: column; width: 100%; background: var(--uh-red); }
-    .nav-list.show { display: flex; }
-    .nav-link { border-bottom: 1px solid rgba(255,255,255,0.1); border-right: none; }
-    .mobile-toggle { display: block; }
     
-    /* HEADER FIXES */
+    .container {
+        padding: 0 25px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .section-padding {
+        padding: 40px 0;
+    }
+    
+    /* ================= ABOUT PAGE SPECIFIC FIXES ================= */
+    /* Force About page to have proper spacing */
+    #about.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    /* Override the inline grid */
+    #about > div {
+        display: block !important;
+    }
+    
+    /* Add padding to all text elements in About page */
+    #about h2,
+    #about h3,
+    #about p,
+    #about li {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Fix About page sidebar */
+    #about-sidebar {
+        padding: 25px 20px !important;
+        margin: 25px 0 !important;
+    }
+    
+    /* Fix About page image */
+    #about img {
+        width: 100% !important;
+        margin: 20px 0 !important;
+    }
+    
+    /* ================= NAVIGATION ================= */
+    .nav-list { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        background: var(--uh-red);
+        margin: 0;
+        padding: 0;
+    }
+    
+    .nav-list.show { display: flex; }
+    
+    .nav-link { 
+        border-bottom: 1px solid rgba(255,255,255,0.1); 
+        border-right: none; 
+        padding: 15px 25px;
+    }
+    
+    .mobile-toggle { 
+        display: block; 
+        padding: 15px 0;
+    }
+    
+    /* ================= HEADER FIXES ================= */
     .header-grid { 
         flex-direction: column; 
-        text-align: center; 
+        text-align: center;
+        padding: 15px 0;
     }
+    
     .logo-area { 
         flex-direction: column; 
         gap: 10px; 
-        margin-bottom: 15px; 
+        margin-bottom: 15px;
+        padding: 0 10px;
     }
+    
+    .logo-img {
+        height: 50px; /* Smaller on mobile */
+    }
+    
     .center-identity h1 {
-        font-size: 1.4rem; /* Reduced main title size */
+        font-size: 1.4rem;
         line-height: 1.2;
+        padding: 0 10px;
     }
-
-    /* TOP BAR FIXES */
+    
+    .center-identity h4 {
+        font-size: 0.8rem;
+        padding: 0 10px;
+    }
+    
+    /* ================= TOP BAR FIXES ================= */
+    .top-bar {
+        padding: 5px 0;
+    }
+    
     .top-bar .container {
         flex-direction: column; 
         align-items: center;    
-        gap: 5px;               
-        padding: 5px 20px;
+        gap: 5px;
+        padding: 5px 25px;
     }
+    
     .top-links {
         display: flex;
         flex-wrap: wrap; 
         justify-content: center;
-    }
-    .top-links a, .top-links span {
-        margin: 5px 8px;
+        gap: 10px;
     }
     
-    /* DIRECTOR GRID FIXES */
+    .top-links a, .top-links span {
+        margin: 0;
+        font-size: 0.75rem;
+    }
+    
+    /* ================= DIRECTOR GRID FIXES ================= */
     .director-grid { 
         grid-template-columns: 1fr; 
-        margin-top: 0; /* Remove negative margin on mobile */
-        padding: 20px;
+        margin: 30px auto 0 auto !important;
+        padding: 25px 20px !important;
+        width: calc(100% - 40px);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    /* HERO FIXES */
-    .hero h2 { font-size: 2.2rem; }
-    .slider-arrow { width: 35px; height: 35px; font-size: 1rem; }
-    .slider-arrow.prev { left: 10px; }
-    .slider-arrow.next { right: 10px; }
-
-    /* ABOUT PAGE GRID FIXES (Stacking the content and sidebar) */
-    #about > div { 
-        grid-template-columns: 1fr !important; /* Force single column on mobile */
+    .director-img {
+        width: 100%;
+        height: 250px;
+        margin-bottom: 15px;
+    }
+    
+    /* ================= HERO FIXES ================= */
+    .hero {
+        height: 450px;
+    }
+    
+    .hero h2 { 
+        font-size: 2.2rem; 
+        padding: 0 10px;
+        margin-bottom: 15px;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+    
+    .hero-content {
+        padding: 0 25px;
+    }
+    
+    .slider-arrow { 
+        width: 40px; 
+        height: 40px; 
+        font-size: 1rem; 
+    }
+    
+    .slider-arrow.prev { 
+        left: 15px; 
+    }
+    
+    .slider-arrow.next { 
+        right: 15px; 
+    }
+    
+    .slider-indicators {
+        bottom: 20px;
+        padding: 8px 15px;
+    }
+    
+    /* ================= RESEARCH PAGE FIXES ================= */
+    #research.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    #research h2,
+    #research p {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    .aim-card {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .aim-number {
+        font-size: 3rem;
+        right: 15px;
+    }
+    
+    /* ================= TEAM PAGE FIXES ================= */
+    #team.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 0 10px;
+    }
+    
+    .profile-card {
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    .profile-img-container {
+        height: 200px;
+    }
+    
+    /* ================= OUTPUTS PAGE FIXES ================= */
+    #outputs.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    .pub-item {
+        padding: 15px 0;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .pub-year {
+        min-width: auto;
+        text-align: left;
+    }
+    
+    /* ================= NEWS PAGE FIXES ================= */
+    #news.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    /* ================= ADVISORY PAGE FIXES ================= */
+    #advisory.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    /* ================= CONTACT PAGE FIXES ================= */
+    #contact.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    #contact-info-grid {
+        grid-template-columns: 1fr !important;
         gap: 30px;
     }
     
-    /* FOOTER FIXES */
+    /* ================= OUTREACH PAGE FIXES ================= */
+    #outreach.container {
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+    }
+    
+    /* ================= FORM & BUTTON FIXES ================= */
+    .btn {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        margin: 10px 0;
+    }
+    
+    /* ================= FOOTER FIXES ================= */
+    footer {
+        margin-top: 40px;
+        padding-top: 40px;
+    }
+    
+    .footer-top {
+        padding: 0 25px 30px 25px;
+    }
+    
+    .footer-logo-text {
+        font-size: 1.2rem;
+        padding: 0 10px;
+    }
+    
     .footer-bottom {
         flex-direction: column; 
         align-items: center;    
         text-align: center;
-        gap: 10px;              
+        gap: 10px;
+        padding: 20px 25px;
     }
+    
     .footer-bottom div:last-child {
         display: block;
+        margin-top: 10px;
+    }
+    
+    /* ================= STATS GRID FIXES ================= */
+    .team-grid.text-center {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .team-grid.text-center div h2 {
+        font-size: 2rem;
+    }
+    
+    /* ================= DROPDOWN MENU FIXES ================= */
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border-top: none;
+    }
+    
+    .dropdown-link {
+        padding: 12px 30px;
+        background: var(--uh-light-gray);
+    }
+    
+    /* ================= UTILITY CLASS FIXES ================= */
+    .text-center {
+        padding: 0 10px;
+    }
+    
+    /* ================= SAFE AREA INSETS FOR MODERN PHONES ================= */
+    @supports (padding: max(0px)) {
+        body {
+            padding-left: min(0px, env(safe-area-inset-left));
+            padding-right: min(0px, env(safe-area-inset-right));
+        }
+        
+        .container {
+            padding-left: max(25px, env(safe-area-inset-left)) !important;
+            padding-right: max(25px, env(safe-area-inset-right)) !important;
+        }
     }
 }
