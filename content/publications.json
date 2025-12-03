@@ -1,0 +1,57 @@
+[
+  {
+    "id": "calcium-oxalate-inhibition",
+    "year": 2024,
+    "date": "2024-03-15",
+    "title": "Mechanisms of Calcium Oxalate Inhibition by Citrate Analogs",
+    "journal": "Nature Communications, 15, 1234.",
+    "authors": "J. Doe, P. Rimer, et al.",
+    "link": "#",
+    "featured": true,
+    "pdf_file": null
+  },
+  {
+    "id": "two-step-nucleation",
+    "year": 2023,
+    "date": "2023-10-01",
+    "title": "Two-Step Nucleation Pathways in Protein Crystallization",
+    "journal": "Science, 360(4), 45-50.",
+    "authors": "S. Vekilov, J. Smith.",
+    "link": "#",
+    "featured": true,
+    "pdf_file": null
+  },
+  {
+    "id": "ai-zeolite-discovery",
+    "year": 2023,
+    "date": "2023-01-20",
+    "title": "AI-Driven Discovery of Zeolite Templates",
+    "journal": "Journal of American Chemical Society, 145, 7890.",
+    "authors": "M. Ross, J. Palmer.",
+    "link": "#",
+    "featured": false,
+    "pdf_file": null
+  },
+  {
+    "id": "kidney-stone-therapy-2022",
+    "year": 2022,
+    "date": "2022-09-05",
+    "title": "Novel Peptide Design for Kidney Stone Therapy via Crystal Face Modification",
+    "journal": "Advanced Materials, 34(10), 2200500.",
+    "authors": "A. Chen, J. Doe, et al.",
+    "link": "#",
+    "featured": false,
+    "pdf_file": null
+  },
+  {
+    "id": "high-throughput-polymorph-screening",
+    "year": 2022,
+    "date": "2022-04-28",
+    "title": "High-Throughput Screening of Polymorphs under Extreme Pressure",
+    "journal": "CrystEngComm, 24(12), 2200-2210.",
+    "authors": "M. Ross, J. Palmer.",
+    "link": "#",
+    "featured": false,
+    "pdf_file": null
+  }
+]
