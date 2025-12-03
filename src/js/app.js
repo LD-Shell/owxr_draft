@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('hashchange', () => {
         const hashPageId = window.location.hash.substring(1);
         if (hashPageId) {
-            switchPage(hashPageId, false); // Switch without updating history again
+            // Do not close the menu if navigating via browser history buttons
+            switchPage(hashPageId, false); 
         }
     });
 });
@@ -46,6 +47,12 @@ function switchPage(pageId, updateHistory = true) {
         document.getElementById('home').classList.add('active');
     }
 
+    // 🔥 FIX: Explicitly close the mobile menu after navigation
+    const nav = document.getElementById('navList');
+    if (nav.classList.contains('show')) {
+        nav.classList.remove('show');
+    }
+    
     // Update URL hash without causing a page reload, so the state persists on refresh
     if (updateHistory) {
         window.location.hash = pageId;
