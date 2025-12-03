@@ -58,9 +58,10 @@ img { max-width: 100%; display: block; }
     position: relative;
 }
 .header-grid { display: flex; align-items: center; justify-content: space-between; }
-.logo-area { display: flex; align-items: center; gap: 10px; }
-.logo-img { height: 80px; width: auto; } /* Placeholder for Logo */
-
+.logo-area { display: flex; align-items: center; gap: 20px; }
+.logo-img { height: 60px; width: auto; } 
+/* Note: The final working height of 80px is currently an INLINE style in index.html */
+ 
 .center-identity h4 {
     font-size: 0.9rem;
     color: var(--uh-slate);
@@ -266,12 +267,11 @@ img { max-width: 100%; display: block; }
     width: 100%;
     height: 300px;
     object-fit: cover;
-    object-position: center top;
     border-bottom: 5px solid var(--uh-red);
 }
 .mission-text { font-size: 1.1rem; color: var(--uh-slate); }
 
-/* --- 9. TEAM LAYOUT --- */
+/* --- 9. TEAM LAYOUT (REQUESTED STYLE) --- */
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -353,16 +353,58 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
 /* Mobile Menu */
 .mobile-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; padding: 15px; }
 
+/* === MOBILE BREAKPOINT STYLES === */
 @media (max-width: 768px) {
+    /* --- Nav Fixes --- */
     .nav-list { display: none; flex-direction: column; width: 100%; background: var(--uh-red); }
     .nav-list.show { display: flex; }
     .nav-link { border-bottom: 1px solid rgba(255,255,255,0.1); border-right: none; }
     .mobile-toggle { display: block; }
+
+    /* --- Top Bar Fixes (CRITICAL) --- */
+    .top-bar .container {
+        flex-direction: column; 
+        align-items: center;    
+        gap: 5px;              
+        padding: 5px 20px;
+    }
+    .top-links {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center;
+    }
+    .top-links a, .top-links span {
+        margin: 5px 8px; 
+    }
+
+    /* --- Header Fixes --- */
     .director-grid { grid-template-columns: 1fr; margin-top: 0; }
+    .header-grid { 
+        flex-direction: column; 
+        text-align: center; 
+    }
+    .logo-area { 
+        flex-direction: column; 
+        gap: 10px; 
+        margin-bottom: 15px; 
+    }
+    .center-identity h1 {
+        font-size: 1.4rem; /* Reduce the main title size further for mobile */
+        line-height: 1.2;
+    }
     .hero h2 { font-size: 2.2rem; }
-    .header-grid { flex-direction: column; text-align: center; }
-    .logo-area { flex-direction: column; gap: 10px; margin-bottom: 15px; }
     .slider-arrow { width: 35px; height: 35px; font-size: 1rem; } /* Smaller arrows on mobile */
     .slider-arrow.prev { left: 10px; }
     .slider-arrow.next { right: 10px; }
+
+    /* --- Footer Fixes (CRITICAL) --- */
+    .footer-bottom {
+        flex-direction: column; /* Stack the copyright and policy links */
+        align-items: center;    /* Center the stacked content */
+        text-align: center;
+        gap: 10px;              /* Space between stacked lines */
+    }
+    .footer-bottom div:last-child {
+        display: block;
+    }
 }
