@@ -6,7 +6,7 @@
     "title_detail": "Abraham E. Dukler professor\nDepartment of Chemical and Biomolecular Engineering",
     "is_pi": true,
     "image": "public/images/rimer.jpg",
-    "bio": "Expert in pathological crystallization and modifier design.",
+    "bio": [],
     "tags": ["Zeolites", "Biomineralization"],
     "email": "primer@uh.edu",
     "scholar": "#"
@@ -18,7 +18,7 @@
     "title_detail": "Frank Worley Professor\nDepartment of Chemical and Biomolecular Engineering",
     "is_pi": true,
     "image": "public/images/vekilov.jpg",
-    "bio": "Pioneer in protein nucleation and phase transitions.",
+    "bio": [],
     "tags": ["Protein Physics", "Nucleation"],
     "email": "svekilov@uh.edu",
     "scholar": "#"
@@ -30,7 +30,7 @@
     "title_detail": "Dow Chair and Welch Foundation Professor\nDirector, International Polymer & Soft Matter Center (IPSMC)\nDepartment of Chemical and Biomolecular Engineering",
     "is_pi": true,
     "image": "public/images/karim.jpg",
-    "bio": "Specialist in computational modeling and simulation.",
+    "bio": [],
     "tags": ["Molecular Dynamics", "AI/ML"],
     "email": "jpalmer@uh.edu",
     "scholar": "#"
@@ -39,10 +39,10 @@
     "id": "lee",
     "name": "Dr. T. Randall Lee",
     "role": "Co-Principal Investigator",
-    "title_detail": "Cullen Distinguished Professor and Associate\nDepartment Chair, Department of Chemistry",
+    "title_detail": "Cullen Distinguished Professor and Associate\nChair, Department of Chemistry",
     "is_pi": true,
     "image": "public/images/lee.jpg",
-    "bio": "Specialist in computational modeling and simulation.",
+    "bio": [],
     "tags": ["Molecular Dynamics", "AI/ML"],
     "email": "jpalmer@uh.edu",
     "scholar": "#"
@@ -54,7 +54,7 @@
     "title_detail": "Ernest J and Barbara M Henley Professor\nDepartment of Chemical and Biomolecular Engineering",
     "is_pi": true,
     "image": "public/images/palmer.jpg",
-    "bio": "Specialist in computational modeling and simulation.",
+    "bio": [],
     "tags": ["Molecular Dynamics", "AI/ML"],
     "email": "jpalmer@uh.edu",
     "scholar": "#"
@@ -66,7 +66,7 @@
     "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar\nDepartment of Chemical and Biomolecular Engineering",
     "is_pi": true,
     "image": "public/images/zerze.jpg",
-    "bio": "Specialist in computational modeling and simulation.",
+    "bio": [],
     "tags": ["Molecular Dynamics", "AI/ML"],
     "email": "jpalmer@uh.edu",
     "scholar": "#"
@@ -78,7 +78,7 @@
     "title_detail": "Professor\nMechanical Engineering Technology",
     "is_pi": true,
     "image": "public/images/robles.jpg",
-    "bio": "Specialist in computational modeling and simulation.",
+    "bio": [],
     "tags": ["Molecular Dynamics", "AI/ML"],
     "email": "jpalmer@uh.edu",
     "scholar": "#"
