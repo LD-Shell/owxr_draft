@@ -400,14 +400,26 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
     }
 
     .center-identity h1 { 
-        font-size: 1rem !important; 
+        font-size: 0.8rem !important; 
         margin: 0 !important; 
         line-height: 1.1 !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     
     .center-identity h4 { 
-        font-size: 0.75rem !important; 
+        font-size: 0.65rem !important; 
         opacity: 0.8 !important; 
+        margin-bottom: 2px !important;
+        white-space: nowrap;
+    }
+
+    .center-identity {
+        flex: 1; 
+        min-width: 0; 
     }
     
     /* ================= COMPACT HEADER (SCROLL STATE) ================= */
