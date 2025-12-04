@@ -33,7 +33,7 @@
             </div>
             <div class="top-links">
                 <a href="#" onclick="switchPage('contact')">Contact Us</a>
-                <a href="#" style="color: #F4D03F;">Give to the Center</a>
+                <a href="#" class="text-gold">Give to the Center</a>
             </div>
         </div>
     </div>
@@ -48,6 +48,11 @@
                     <h1>Welch Center for Advanced Bioactive Materials Crystallization</h1>
                 </div>
             </div>
+            
+            <div class="mobile-toggle" onclick="toggleMobileMenu()" style="color: var(--uh-slate); font-size: 1.5rem;">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <div class="uh-logo-placeholder">
                 <a href="https://welch1.org/" target="_blank" rel="noopener noreferrer">
                     <img src="public/images/logo-2.png" alt="Welch Foundation Logo" class="logo-img">
@@ -59,9 +64,6 @@
     <!-- NAVIGATION (STATIC, driven by JS) -->
     <nav class="main-nav">
         <div class="container">
-            <div class="mobile-toggle" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i> Menu
-            </div>
             <ul class="nav-list" id="navList">
                 <!-- Data-page attribute added for clean JS targeting -->
                 <li class="nav-item"><a class="nav-link active" data-page="home" onclick="switchPage('home')">Home</a></li>
@@ -79,20 +81,46 @@
                         <li><a class="dropdown-link" data-page="research" onclick="switchPage('research')">Research Aims</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <span class="nav-link">Team <i class="fas fa-chevron-down"></i></span>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-link" data-page="team" onclick="switchPage('team')">All Team Members</a></li>
-                    </ul>
-                </li>
+            <li class="nav-item">
+    <span class="nav-link">Team <i class="fas fa-chevron-down"></i></span>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-link" onclick="switchPage('team', true, 'team-pis')">
+                Principal Investigators
+            </a>
+        </li>
+        
+        <li>
+            <a class="dropdown-link" onclick="switchPage('team', true, 'team-group')">
+                Postdocs & Students
+            </a>
+        </li>
+    </ul>
+</li>
                 <li class="nav-item">
                     <span class="nav-link">Outputs <i class="fas fa-chevron-down"></i></span>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-link" data-page="outputs" onclick="switchPage('outputs')">Publications & Patents</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'publications-heading')">Publications</a></li>
+                        <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'patents-heading')">Patents</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" data-page="news" onclick="switchPage('news')">News & Events</a></li>
                 <li class="nav-item"><a class="nav-link" data-page="outreach" onclick="switchPage('outreach')">Outreach</a></li>
+                <li class="mobile-only-extras">
+                <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+                    <a href="#" onclick="switchPage('contact')" style="display: block; margin-bottom: 15px; color: white;">
+                        <i class="fas fa-envelope" style="margin-right: 10px;"></i> Contact Us
+                    </a>
+                    <a href="#" style="display: block; margin-bottom: 25px; color: #F4D03F; font-weight: bold;">
+                        <i class="fas fa-heart" style="margin-right: 10px;"></i> Give to the Center
+                    </a>
+
+                    <div style="text-align: center; opacity: 0.9;">
+                        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-bottom: 10px;">PROUDLY SUPPORTED BY</p>
+                        <img src="public/images/logo-2.png" alt="Welch Foundation" style="height: 60px; margin: 0 auto; filter: brightness(0) invert(1);">
+                    </div>
+                </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -127,7 +155,7 @@
 
         <!-- Upcoming Events Preview -->
         <section class="container section-padding">
-            <h3 class="text-uh-red text-center" style="margin-bottom: 40px;">Upcoming Events</h3>
+            <h3 class="text-uh-red" style="margin-bottom: 40px;">Upcoming Events</h3>
             <div class="team-grid" id="event-preview-grid">
                 <p style="text-align: center; grid-column: 1 / -1;">Loading latest events...</p>
             </div>
@@ -136,21 +164,21 @@
 
     <!-- ================= VIEW: ABOUT ================= -->
     <div id="about" class="page-view container section-padding">
-        <h2 class="text-uh-red about-title">About Us</h2>
+        <h2 class="text-uh-red">About Us</h2>
         <div class="about-content-grid">
             <div>
                 <h3>Overview of the Center</h3>
                 <p style="margin-bottom: 20px;">The Welch Center for Advanced Bioactive Materials Crystallization Research at the University of Houston is a world-class facility dedicated to the study of crystal formation mechanisms. Founded in 2015, the center brings together experts from Chemical Engineering, Chemistry, and Physics to solve complex problems related to nucleation, growth, and polymorphism. Our research has direct applications in pharmaceutical manufacturing, preventing pathological crystallization (kidney stones, malaria), and optimizing petrochemical processes.</p>
                 <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1000" alt="Lab Overview" style="margin-top: 20px; border-radius: 4px;" loading="lazy">
             </div>
-            <div id="about-sidebar" style="background: var(--uh-light-gray); padding: 30px;">
+            <div id="about-sidebar">
                 <h4 class="text-uh-red">Quick Links</h4>
                 <ul style="margin-top: 15px;">
                     <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('team')">Leadership Team</a></li>
                     <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('advisory')">Advisory Board</a></li>
                     <li style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="fas fa-chevron-right text-uh-red"></i> <a href="#" onclick="switchPage('outputs')">Annual Reports</a></li>
                 </ul>
-                <h4 class="text-uh-red" style="margin-top: 30px;">Center Location</h4>
+                <h4 class="text-uh-red">Center Location</h4>
                 <!-- Contact info-->
                 <div id="about-contact-preview">Loading contact details...</div>
             </div>
@@ -159,10 +187,7 @@
 
     <!-- ================= VIEW: RESEARCH ================= -->
     <div id="research" class="page-view container section-padding">
-        <div class="text-center" style="max-width: 800px; margin: 0 auto 50px auto;">
-            <h2 class="text-uh-red">Our Research Themes</h2>
-            <p>Our work is organized into three primary aims, tackling the lifecycle of a crystal from its birth to its final form.</p>
-        </div>
+        <h2 class="text-uh-red">Our Research Themes</h2>
         <!-- Decoupled Research Aims, populated by JS from 'pages.json' -->
         <div id="research-aims-container">
             <p style="text-align: center;">Loading research aims...</p>
@@ -171,25 +196,27 @@
 
     <!-- ================= VIEW: TEAM================= -->
     <div id="team" class="page-view container section-padding">
-        <h2 class="text-uh-red text-center" style="margin-bottom: 50px;">Meet The Team</h2>
-        
-        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin-bottom: 30px;">Principal Investigators</h3>
-        <div class="team-grid" id="pi-grid"></div>
-
-        <h3 style="border-bottom: 2px solid var(--uh-slate); display: inline-block; margin: 60px 0 30px 0;">Postdocs & PhD Students</h3>
-        <div class="team-grid" id="student-grid"></div>
+    <h2 class="text-uh-red">Our Team</h2>
+    
+    <div class="team-category">
+        <h3 class="category-title">Principal Investigators</h3>
+        <div id="team-pis" class="team-grid"></div>
     </div>
 
+    <div class="team-category">
+        <h3 class="category-title">Postdocs & Students</h3>
+        <div id="team-group" class="team-grid"></div>
+    </div>
+</div>
     <!-- ================= VIEW: OUTPUTS ================= -->
     <div id="outputs" class="page-view container section-padding">
         <h2 class="text-uh-red">Research Outputs</h2>
         <div style="margin-top: 40px;">
-            <h3>Selected Publications</h3>
-            <!-- Decoupled Publications List, populated by JS from 'publications' collection -->
+            
+            <h3 id="publications-heading">Selected Publications</h3>
             <div id="publications-list"></div>
 
-            <h3 style="margin-top: 50px;">Recent Patents</h3>
-            <!-- Decoupled Patents List, populated by JS from 'globals.json' -->
+            <h3 id="patents-heading" style="margin-top: 50px;">Recent Patents</h3>
             <ul id="patents-list" style="list-style: disc; padding-left: 20px; margin-top: 20px;"></ul>
         </div>
     </div>
