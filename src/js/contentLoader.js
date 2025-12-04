@@ -177,15 +177,17 @@ async function loadTeamContent() {
 /**
  * Renders Publications and Patents.
  */
+/**
+ * Renders Publications, Patents, AND Presentations.
+ */
 async function loadOutputsContent() {
+    // 1. Load Publications
     const publications = await fetchData('publications');
     const globals = await fetchData('globals'); 
+
     const pubList = document.getElementById('publications-list');
-
     if (pubList) {
-        // Sort publications by date
         const sortedPublications = publications.sort((a, b) => new Date(b.date) - new Date(a.date));
-
         pubList.innerHTML = sortedPublications.map(pub => `
             <div class="pub-item">
                 <div class="pub-year">${pub.year}</div>
@@ -200,15 +202,40 @@ async function loadOutputsContent() {
         `).join('');
     }
     
-    // Render Patents
+    // 2. Load Patents
     const patentList = document.getElementById('patents-list');
     if (patentList && globals.patents) {
          patentList.innerHTML = globals.patents.map(patent => {
              const parts = patent.split(':');
              return `<li style="margin-bottom: 10px;"><strong>${parts[0]}</strong>: ${parts.slice(1).join(':').trim()}</li>`;
          }).join('');
-    } else if (patentList) {
-         patentList.innerHTML = `<p>No patents currently listed.</p>`;
+    }
+
+    // 3. Load Conference Presentations
+    const presentations = await fetchData('presentations'); 
+    const presList = document.getElementById('presentations-list');
+
+    if (presList) {
+        if (presentations.length > 0) {
+            // Sort by date
+            const sortedPres = presentations.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Reusing 'pub-item' class for consistent styling
+            presList.innerHTML = sortedPres.map(item => `
+                <div class="pub-item">
+                    <div class="pub-year">${new Date(item.date).getFullYear()}</div>
+                    <div class="pub-details">
+                        <h4>${item.title}</h4>
+                        <p class="pub-journal" style="color: var(--uh-slate);">
+                            <strong>${item.conference}</strong> | ${item.location}
+                        </p>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">Presenter: ${item.presenter || 'Group Member'}</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            presList.innerHTML = `<p>No presentations currently listed.</p>`;
+        }
     }
 }
 
