@@ -1,20 +1,19 @@
 // src/js/contentLoader.js
 
-// Initialize the Markdown converter once globally
+// Initialize the Markdown converter
 const converter = new showdown.Converter();
-converter.setFlavor('github'); // Use GitHub flavor for better markdown support
+converter.setFlavor('github');
 
 /**
- * Utility to safely fetch JSON data from our content files.
+ * Utility to safely fetch JSON data.
  */
 async function fetchData(fileName) {
     try {
         const response = await fetch(`content/${fileName}.json`); 
         if (!response.ok) {
             console.error(`Error loading content for ${fileName}. Status: ${response.status}`);
-            return (fileName === 'globals' || fileName === 'pages') ? {} : []; // Return object for singletons
+            return (fileName === 'globals' || fileName === 'pages') ? {} : [];
         }
-        // For non-singletons (collections), ensure we return an array structure for safety
         const data = await response.json();
         return Array.isArray(data) ? data : (fileName === 'globals' || fileName === 'pages') ? data : [];
     } catch (error) {
@@ -28,13 +27,13 @@ async function fetchData(fileName) {
 // =======================================================
 
 /**
- * Renders the Home page dynamic sections (Hero, Director, Event Preview, Stats).
+ * Renders the Home page sections.
  */
 async function loadHomePageContent() {
     const pageData = await fetchData('pages');
     const home = pageData.home || {};
     
-    // --- Hero Content ---
+    // Hero Content
     const heroContent = document.getElementById('hero-content');
     if (heroContent && home.hero_title) {
         heroContent.innerHTML = `
@@ -44,7 +43,7 @@ async function loadHomePageContent() {
         `;
     }
 
-    // --- Hero Slides (and re-initialize slider) ---
+    // Hero Slides
     const sliderContainer = document.getElementById('hero-slider-container');
     const indicatorContainer = document.getElementById('slider-indicators');
     if (sliderContainer && indicatorContainer && home.slides) {
@@ -58,14 +57,12 @@ async function loadHomePageContent() {
             <div class="indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
         `).join('');
         
-        // Ensure slider re-initialization only runs if the slider logic is present
         if (typeof initializeSlider === 'function') {
             initializeSlider();
         }
     }
 
-
-    // --- Director's Message ---
+    // Director's Message
     const directorSection = document.getElementById('director-message-section');
     if (directorSection && home.director) {
         directorSection.innerHTML = `
@@ -81,10 +78,8 @@ async function loadHomePageContent() {
         `;
     }
 
-    // --- Upcoming Events Preview (Shows first 3 news items) ---
+    // Upcoming Events Preview
     const newsData = await fetchData('news');
-    
-    // 📢 SORTING: Sorting news by date (recent to oldest)
     const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
     const eventPreview = document.getElementById('event-preview-grid');
     if (eventPreview) {
@@ -101,7 +96,7 @@ async function loadHomePageContent() {
 }
 
 /**
- * Renders the Impact Stats section using data from globals.json.
+ * Renders Impact Stats.
  */
 async function loadImpactStats() {
     const globals = await fetchData('globals'); 
@@ -125,24 +120,22 @@ async function loadImpactStats() {
 
 
 /**
- * Renders the Team Grid content into the appropriate containers. 
+ * Renders Team Grid into PIs and Postdocs/Students buckets.
  */
 async function loadTeamContent() {
     const teamData = await fetchData('team');
     
+    // Filter into two groups: PIs vs Everyone Else
     const pis = teamData.filter(m => m.is_pi);
-    const students = teamData.filter(m => !m.is_pi);
+    const groupMembers = teamData.filter(m => !m.is_pi);
 
     const renderMembers = (members, isPI) => members.map(member => `
         <div class="profile-card">
-            ${isPI && member.image ? `<div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>` : ''}
+            ${member.image ? `<div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>` : ''}
             <div class="profile-info">
                 <h4 class="profile-name">${member.name}</h4>
                 
-                <!-- START PI/Student Title Detail Block -->
-
                 ${isPI && member.title_detail ? 
-                    // PI: Bold role, then detailed title with line breaks. ADDED margin-bottom for better flow.
                     `<div class="profile-role" style="font-weight: 700;">${member.role}</div>
                     <p style="font-size: 0.9rem; color: var(--uh-slate); margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">
                         ${member.title_detail.replace(/\n/g, '<br>')}
@@ -150,16 +143,12 @@ async function loadTeamContent() {
                 }
                 
                 ${!isPI ? 
-                    // 🔥 FINAL FIX: Student/Postdoc consolidated title block (cleaner look, less vertical spacing)
                     `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div>
                     <p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">
                         ${member.department || ''}<br>
                         ${member.university || ''}
                     </p>` : ''
                 }
-                
-                <!-- END PI/Student Title Detail Block -->
-
 
                 <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '15px'};">
                     ${member.bio}
@@ -169,22 +158,24 @@ async function loadTeamContent() {
                 
                 ${member.email || member.scholar ? `
                     <div style="margin-top: 15px;">
-                        ${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''}  
+                        ${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''}  
                         ${member.scholar ? `<a href="${member.scholar}" target="_blank" style="margin-left: 10px;"><i class="fab fa-google-scholar text-uh-red"></i></a>` : ''}
                     </div>` : ''}
             </div>
         </div>
     `).join('');
 
-    const piGrid = document.getElementById('pi-grid');
+    // Render PIs
+    const piGrid = document.getElementById('team-pis');
     if (piGrid) { piGrid.innerHTML = renderMembers(pis, true); }
 
-    const studentGrid = document.getElementById('student-grid');
-    if (studentGrid) { studentGrid.innerHTML = renderMembers(students, false); }
+    // Render Postdocs & Students
+    const groupGrid = document.getElementById('team-group');
+    if (groupGrid) { groupGrid.innerHTML = renderMembers(groupMembers, false); }
 }
 
 /**
- * Renders the Publications and Patents.
+ * Renders Publications and Patents.
  */
 async function loadOutputsContent() {
     const publications = await fetchData('publications');
@@ -192,7 +183,7 @@ async function loadOutputsContent() {
     const pubList = document.getElementById('publications-list');
 
     if (pubList) {
-        // FIX: Sorting publications by full date (recent to oldest)
+        // Sort publications by date
         const sortedPublications = publications.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         pubList.innerHTML = sortedPublications.map(pub => `
@@ -201,7 +192,6 @@ async function loadOutputsContent() {
                 <div class="pub-details">
                     <h4>${pub.title} ${pub.featured ? `<span class="tag" style="background: var(--uh-red); color: white;">Featured</span>` : ''}</h4>
                     <p class="pub-journal">${pub.journal} 
-                        <!-- 🔥 FIX: Changed PDF to VIEW and added target="_blank" -->
                         <a href="${pub.link || '#'}" target="_blank" class="text-uh-red">VIEW</a>
                     </p>
                     <p style="font-size: 0.85rem;">Authors: ${pub.authors}</p>
@@ -210,7 +200,7 @@ async function loadOutputsContent() {
         `).join('');
     }
     
-    // Patent Rendering
+    // Render Patents
     const patentList = document.getElementById('patents-list');
     if (patentList && globals.patents) {
          patentList.innerHTML = globals.patents.map(patent => {
@@ -223,7 +213,7 @@ async function loadOutputsContent() {
 }
 
 /**
- * Renders the Advisory Board (from globals.json).
+ * Renders Advisory Board.
  */
 async function loadAdvisoryContent() {
     const globals = await fetchData('globals'); 
@@ -252,7 +242,7 @@ async function loadAdvisoryContent() {
 
 
 /**
- * Renders the Contact page (from globals.json).
+ * Renders Contact Page.
  */
 async function loadContactContent() {
     const globals = await fetchData('globals'); 
@@ -284,7 +274,7 @@ async function loadContactContent() {
 }
 
 /**
- * Renders Research Aims (from pages.json).
+ * Renders Research Aims.
  */
 async function loadResearchContent() {
      const pageData = await fetchData('pages');
@@ -310,13 +300,13 @@ async function loadResearchContent() {
 }
 
 /**
- * Renders the News Grid.
+ * Renders News Grid.
  */
 async function loadNewsContent() {
     const newsData = await fetchData('news');
     const newsGrid = document.getElementById('news-grid');
     
-    // 📢 SORTING: Sorting news by date (recent to oldest)
+    // Sort news by date
     const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (newsGrid) {
@@ -335,10 +325,9 @@ async function loadNewsContent() {
 }
 
 /**
- * Loads the content for a specific news item and shows the detail view.
+ * Shows News Detail View.
  */
 async function showNewsDetail(e, itemId) {
-    // 🔥 FIX: Prevent default link behavior to stop the page from jumping
     if (e) e.preventDefault();
     
     const newsData = await fetchData('news');
@@ -357,16 +346,16 @@ async function showNewsDetail(e, itemId) {
         switchPage('news-detail');
     }
 }
-window.showNewsDetail = showNewsDetail; // Expose globally for onclick
+window.showNewsDetail = showNewsDetail; 
 
 /**
- * Renders the Outreach Grid.
+ * Renders Outreach Grid.
  */
 async function loadOutreachContent() {
     const outreachData = await fetchData('outreach'); 
     const outreachGrid = document.getElementById('outreach-grid');
     
-    // 📢 SORTING: Sorting outreach stories by date (recent to oldest)
+    // Sort outreach by date
     const sortedOutreach = outreachData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (outreachGrid) {
@@ -385,10 +374,9 @@ async function loadOutreachContent() {
 }
 
 /**
- * Loads the content for a specific outreach story and shows the detail view.
+ * Shows Outreach Detail View.
  */
 async function showOutreachDetail(e, itemId) {
-    // 🔥 FIX: Prevent default link behavior to stop the page from jumping
     if (e) e.preventDefault();
 
     const outreachData = await fetchData('outreach');
@@ -407,10 +395,9 @@ async function showOutreachDetail(e, itemId) {
         switchPage('outreach-detail');
     } else {
         console.error("Outreach item or body content not found for ID:", itemId);
-        // Optionally display an error message to the user
     }
 }
-window.showOutreachDetail = showOutreachDetail; // Expose globally for onclick
+window.showOutreachDetail = showOutreachDetail; 
 
 
 // =======================================================
@@ -418,10 +405,10 @@ window.showOutreachDetail = showOutreachDetail; // Expose globally for onclick
 // =======================================================
 
 /**
- * Main content loading switch, triggered by the SPA router in app.js.
+ * Main content loading switch.
  */
 function loadContent(pageId) {
-    // Always load global dependencies first
+    // Load global dependencies
     loadImpactStats();
     loadContactContent(); 
 
@@ -440,6 +427,5 @@ function loadContent(pageId) {
     } else if (pageId === 'outreach') {
         loadOutreachContent();
     }
-    // 'news-detail' and 'outreach-detail' are handled by their respective showDetail functions
 }
-window.loadContent = loadContent; // Expose globally for app.js router to call
+window.loadContent = loadContent;
