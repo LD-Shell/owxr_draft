@@ -76,6 +76,7 @@ img { max-width: 100%; display: block; }
 .header-grid { display: flex; align-items: center; justify-content: space-between; }
 .logo-area { display: flex; align-items: center; gap: 20px; }
 .logo-img { height: 100px; width: auto; }
+.logo-img-2 {height: 80px; width: auto;}
 
 .center-identity h4 {
     font-size: 0.9rem;
@@ -388,7 +389,16 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
         height: 90px !important; 
         width: auto !important; 
     }
-    
+
+    .logo-img-2 {
+    height: 45px !important;
+    width: auto !important;
+    }
+
+    .main-header.compact .logo-img-2 {
+        height: 40px !important;
+    }
+
     .center-identity h1 { 
         font-size: 1rem !important; 
         margin: 0 !important; 
