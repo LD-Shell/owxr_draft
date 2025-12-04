@@ -1,0 +1,175 @@
+[
+  {
+    "id": "seminar-dr-smith",
+    "date": "2025-10-15",
+    "time": "2:00 PM - 3:30 PM",
+    "location": "Engineering Building 2, Room W122",
+    "title": "Guest Seminar: Nucleation in Porous Media",
+    "preview": "Dr. Smith from MIT joins us to discuss novel approaches to controlling nucleation rates in confined spaces.",
+    "tags": ["Seminar", "Guest Speaker"],
+    "body": {
+      "full_title": "Guest Seminar: Dr. John Smith (MIT)",
+      "category": "Seminar",
+      "main_image": "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "Join us for a special seminar featuring Dr. John Smith, a leading expert in nanoconfined crystallization.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "Dr. Smith will present his latest findings on how pore size distribution affects polymorphic selection in organic crystals. This talk is highly relevant for students working on zeolite synthesis."
+        },
+        {
+          "type": "highlight_box",
+          "title": "Event Details",
+          "items": [
+            "<strong>Date:</strong> October 15, 2025",
+            "<strong>Time:</strong> 2:00 PM",
+            "<strong>Location:</strong> EB2 Room W122",
+            "<strong>Coffee:</strong> Served at 1:45 PM"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "workshop-md-sim",
+    "date": "2025-11-22",
+    "time": "9:00 AM - 5:00 PM",
+    "location": "Computational Lab (S204)",
+    "title": "Workshop: Intro to Molecular Dynamics",
+    "preview": "A full-day hands-on workshop covering the basics of GROMACS and LAMMPS for crystallization studies.",
+    "tags": ["Workshop", "Training"],
+    "body": {
+      "full_title": "Hands-on Workshop: Molecular Dynamics for Beginners",
+      "category": "Training",
+      "main_image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "Learn how to set up, run, and analyze MD simulations using the center's high-performance computing cluster.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "This workshop is mandatory for all new graduate students but open to undergraduates interested in computational chemistry."
+        }
+      ]
+    }
+  },
+  {
+    "id": "defense-sarah-jones",
+    "date": "2025-12-10",
+    "time": "10:00 AM - 12:00 PM",
+    "location": "Cullen Hall Auditorium",
+    "title": "PhD Defense: Sarah Jones",
+    "preview": "Sarah Jones will defend her dissertation titled 'Chiral Resolution of Amino Acids via Viedma Ripening'.",
+    "tags": ["Thesis Defense", "Academic"],
+    "body": {
+      "full_title": "PhD Dissertation Defense: Sarah Jones",
+      "category": "Academic",
+      "main_image": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "The Faculty of the Welch Center invites you to the doctoral defense of Sarah Jones.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "Sarah's research focuses on the mechanics of attrition-enhanced deracemization. She has successfully demonstrated the rapid conversion of racemic glycine mixtures into single enantiomers using glass beads."
+        },
+        {
+          "type": "quote",
+          "content": "Sarah's work provides a scalable pathway for producing pure chiral pharmaceuticals.",
+          "author": "Dr. Peter Rimer, Advisor"
+        }
+      ]
+    }
+  },
+  {
+    "id": "holiday-mixer-2025",
+    "date": "2025-12-18",
+    "time": "5:00 PM - 8:00 PM",
+    "location": "Student Center South, Ballroom B",
+    "title": "Annual Center Holiday Mixer",
+    "preview": "Celebrate a successful year of research with faculty, students, and our industry partners. Food and drinks provided.",
+    "tags": ["Social", "Networking"],
+    "body": {
+      "full_title": "Welch Center Annual Holiday Mixer",
+      "category": "Social",
+      "main_image": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "It's time to unwind! Join us for an evening of networking, awards, and celebration as we close out the Fall 2025 semester.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "We will be presenting the 'Student of the Year' and 'Publication of the Year' awards at 6:30 PM. Industry representatives from ExxonMobil and Dow Chemical will also be in attendance."
+        },
+        {
+          "type": "highlight_box",
+          "title": "Agenda",
+          "items": [
+            "<strong>5:00 PM:</strong> Doors Open & Appetizers",
+            "<strong>6:30 PM:</strong> Awards Ceremony",
+            "<strong>7:00 PM:</strong> Networking",
+            "<strong>8:00 PM:</strong> Closing Remarks"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "symposium-gulf-coast-2026",
+    "date": "2026-01-22",
+    "time": "8:00 AM - 6:00 PM",
+    "location": "University of Houston Hilton Hotel",
+    "title": "Gulf Coast Crystallization Symposium 2026",
+    "preview": "A premier regional conference bringing together crystallographers from Texas, Louisiana, and Mexico.",
+    "tags": ["Conference", "Symposium"],
+    "body": {
+      "full_title": "2026 Gulf Coast Crystallization Symposium",
+      "category": "Conference",
+      "main_image": "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "Registration is now open for the largest gathering of materials scientists in the Gulf Coast region.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "This year's theme is 'Sustainable Separation Processes.' We are accepting abstracts for oral and poster presentations until December 31st, 2025."
+        },
+        {
+          "type": "highlight_box",
+          "title": "Keynote Speakers",
+          "items": [
+            "<strong>Prof. Allan Myerson (MIT):</strong> Continuous Manufacturing",
+            "<strong>Dr. Sarah Tolbert (UCLA):</strong> Nanoporous Materials",
+            "<strong>Dr. Gerard Coquerel (Rouen):</strong> Chiral Resolution"
+          ]
+        },
+        {
+          "type": "text",
+          "content": "Students are encouraged to apply for travel grants. Visit the main symposium website to register."
+        }
+      ]
+    }
+  },
+  {
+    "id": "workshop-xrd-analysis",
+    "date": "2026-02-14",
+    "time": "1:00 PM - 4:00 PM",
+    "location": "Materials Characterization Facility (MCF)",
+    "title": "Advanced XRD Analysis Workshop",
+    "preview": "Master the art of Rietveld refinement and phase identification using HighScore Plus software.",
+    "tags": ["Workshop", "Technical"],
+    "body": {
+      "full_title": "Technical Workshop: Advanced Powder X-Ray Diffraction",
+      "category": "Training",
+      "main_image": "https://images.unsplash.com/photo-1581093588401-fbb073d02e26?auto=format&fit=crop&q=80&w=1200",
+      "lead_text": "Go beyond basic peak matching. This workshop covers quantitative phase analysis and crystal structure refinement.",
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "Participants should bring their own laptops with the demo software pre-installed. Sample data sets will be provided."
+        },
+        {
+          "type": "highlight_box",
+          "title": "What You Will Learn",
+          "items": [
+            "Sample preparation techniques to minimize preferred orientation.",
+            "Using the ICDD database effectively.",
+            "Introduction to Rietveld Refinement for quantitative analysis."
+          ]
+        }
+      ]
+    }
+  }
+]
