@@ -8,7 +8,9 @@ media_folder: "public/images/uploads"   # Where images will be saved in the repo
 public_folder: "/images/uploads"        # The public path for viewing images
 
 collections:
-  # === 1. SINGLETON PAGES (Home Content) ===
+  # =========================================
+  # 1. SINGLETON PAGES (Home & Static Data)
+  # =========================================
   - name: "pages"
     label: "Static Pages"
     files:
@@ -43,7 +45,9 @@ collections:
               - {label: "Description", name: "description", widget: "markdown"}
               - {label: "Tags", name: "tags", widget: "list"}
 
-  # === 2. TEAM MEMBERS (Collection) ===
+  # =========================================
+  # 2. TEAM MEMBERS
+  # =========================================
   - name: "team"
     label: "Team Members"
     folder: "content/team"
@@ -63,7 +67,9 @@ collections:
       - {label: "Email", name: "email", widget: "string", required: false}
       - {label: "Google Scholar URL", name: "scholar", widget: "string", required: false}
 
-  # === 3. PUBLICATIONS (Collection) ===
+  # =========================================
+  # 3. PUBLICATIONS
+  # =========================================
   - name: "publications"
     label: "Publications"
     folder: "content/publications"
@@ -79,23 +85,25 @@ collections:
       - {label: "Link/DOI", name: "doi", widget: "string", required: false}
       - {label: "PDF Upload (Optional)", name: "pdf_file", widget: "file", required: false}
 
-  # === 4. NEWS & EVENTS (Block-Based) ===
+  # =========================================
+  # 4. NEWS & UPDATES (Articles)
+  # =========================================
   - name: "news"
-    label: "News & Events"
+    label: "News & Updates"
     folder: "content/news"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{title | slug}}"
-    format: "json" # Saves as .json file
+    format: "json"
     fields:
       - {label: "ID", name: "id", widget: "string", hint: "Unique ID (e.g. nih-grant-2025)"}
       - {label: "Publish Date", name: "date", widget: "datetime"}
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["Grants", "Awards", "Research", "Community"], default: "Research"}
+      - {label: "Category", name: "category", widget: "select", options: ["Grants", "Awards", "Research", "Press"], default: "Research"}
       - {label: "Preview Text (List View)", name: "preview", widget: "text"}
       - {label: "Thumbnail Image", name: "image", widget: "image"}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       
-      # STRUCTURED BODY (The "Magic" Part)
+      # --- Block Builder Body ---
       - label: "Article Body"
         name: "body"
         widget: "object"
@@ -108,14 +116,12 @@ collections:
             name: "content_blocks"
             widget: "list"
             types:
-              # BLOCK 1: Standard Text
               - label: "Rich Text Paragraph"
                 name: "text"
                 widget: "object"
                 fields:
                   - {label: "Content", name: "content", widget: "markdown"}
               
-              # BLOCK 2: Fancy Quote
               - label: "Pull Quote"
                 name: "quote"
                 widget: "object"
@@ -123,15 +129,61 @@ collections:
                   - {label: "Quote", name: "content", widget: "text"}
                   - {label: "Author", name: "author", widget: "string"}
 
-              # BLOCK 3: Highlight Box (Key Takeaways)
               - label: "Highlight Box"
                 name: "highlight_box"
                 widget: "object"
                 fields:
-                  - {label: "Box Title", name: "title", widget: "string", default: "Key Takeaways"}
+                  - {label: "Box Title", name: "title", widget: "string", default: "Highlights"}
                   - {label: "List Items", name: "items", widget: "list"}
 
-  # === 5. OUTREACH (Block-Based) ===
+  # =========================================
+  # 5. EVENTS CALENDAR (New!)
+  # =========================================
+  - name: "events"
+    label: "Events Calendar"
+    folder: "content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{title | slug}}"
+    format: "json"
+    fields:
+      - {label: "ID", name: "id", widget: "string"}
+      - {label: "Event Date", name: "date", widget: "datetime"}
+      - {label: "Time (e.g. 2:00 PM - 4:00 PM)", name: "time", widget: "string"}
+      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", options: ["Seminar", "Workshop", "Conference", "Social", "Training"], default: "Seminar"}
+      - {label: "Preview Text", name: "preview", widget: "text"}
+      - {label: "Thumbnail Image", name: "image", widget: "image"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      
+      # --- Block Builder Body ---
+      - label: "Event Details Body"
+        name: "body"
+        widget: "object"
+        fields:
+          - {label: "Full Headline", name: "full_title", widget: "string", required: false}
+          - {label: "Intro Text", name: "lead_text", widget: "text", required: false}
+          - {label: "Hero Image", name: "main_image", widget: "image", required: false}
+          
+          - label: "Content Blocks"
+            name: "content_blocks"
+            widget: "list"
+            types:
+              - label: "Rich Text"
+                name: "text"
+                widget: "object"
+                fields:
+                  - {label: "Content", name: "content", widget: "markdown"}
+              - label: "Info/Schedule Box"
+                name: "highlight_box"
+                widget: "object"
+                fields:
+                  - {label: "Title", name: "title", widget: "string", default: "Event Details"}
+                  - {label: "Items", name: "items", widget: "list"}
+
+  # =========================================
+  # 6. OUTREACH PROGRAMS
+  # =========================================
   - name: "outreach"
     label: "Outreach Programs"
     folder: "content/outreach"
@@ -139,7 +191,7 @@ collections:
     slug: "{{year}}-{{title | slug}}"
     format: "json"
     fields:
-      - {label: "ID", name: "id", widget: "string", hint: "Unique ID (e.g. crystal-challenge)"}
+      - {label: "ID", name: "id", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Category", name: "category", widget: "select", options: ["K-12 Education", "Community", "Workshops", "Recruitment"], default: "Community"}
@@ -147,7 +199,7 @@ collections:
       - {label: "Thumbnail Image", name: "image", widget: "image"}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       
-      # REUSING STRUCTURED BODY FOR CONSISTENCY
+      # --- Block Builder Body ---
       - label: "Article Body"
         name: "body"
         widget: "object"
@@ -175,5 +227,5 @@ collections:
                 name: "highlight_box"
                 widget: "object"
                 fields:
-                  - {label: "Box Title", name: "title", widget: "string"}
+                  - {label: "Box Title", name: "title", widget: "string", default: "Impact"}
                   - {label: "List Items", name: "items", widget: "list"}
