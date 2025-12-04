@@ -91,7 +91,9 @@
                     </ul>
                 </li>
 
-                <li class="nav-item"><a class="nav-link" data-page="news" onclick="switchPage('news')">News & Events</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="news" onclick="switchPage('news')">News</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="events" onclick="switchPage('events')">Events</a></li>
+                
                 <li class="nav-item"><a class="nav-link" data-page="outreach" onclick="switchPage('outreach')">Outreach</a></li>
                 
                 <li class="mobile-only-extras">
@@ -152,8 +154,7 @@
         <div class="about-content-grid">
             <div>
                 <h3>Overview of the Center</h3>
-                <p style="margin-bottom: 20px;">The Welch Center for Advanced Bioactive Materials Crystallization Research at the University of Houston is a world-class facility dedicated to the study of crystal formation mechanisms. Founded in 2015, the center brings together experts from Chemical Engineering, Chemistry, and Physics to solve complex problems related to nucleation, growth, and polymorphism.</p>
-                <p style="margin-bottom: 20px;">Our research has direct applications in pharmaceutical manufacturing, preventing pathological crystallization (kidney stones, malaria), and optimizing petrochemical processes.</p>
+                <p style="margin-bottom: 20px;">The Welch Center for Advanced Bioactive Materials Crystallization Research at the University of Houston is a world-class facility dedicated to the study of crystal formation mechanisms.</p>
                 <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1000" alt="Lab Overview" style="margin-top: 20px; border-radius: 4px;" loading="lazy">
             </div>
             <div id="about-sidebar">
@@ -203,13 +204,25 @@
     </div>
 
     <div id="news" class="page-view container section-padding">
-        <h2 class="text-uh-red">News & Events</h2>
+        <h2 class="text-uh-red">News</h2>
         <div id="news-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;"></div>
     </div>
 
     <div id="news-detail" class="page-view container section-padding">
         <a href="#" onclick="switchPage('news')" style="color: var(--uh-slate); margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to News</a>
         <div id="news-detail-content"></div>
+    </div>
+
+    <div id="events" class="page-view container section-padding">
+        <h2 class="text-uh-red">Upcoming Events</h2>
+        <div id="events-calendar-container" class="calendar-wrapper"></div>
+        
+        <div id="events-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;"></div>
+    </div>
+
+    <div id="events-detail" class="page-view container section-padding">
+        <a href="#" onclick="switchPage('events')" style="color: var(--uh-slate); margin-bottom: 20px; display: inline-block;"><i class="fas fa-arrow-left"></i> Back to Events</a>
+        <div id="events-detail-content"></div>
     </div>
 
     <div id="advisory" class="page-view container section-padding">
