@@ -16,14 +16,121 @@ async function fetchData(fileName) {
 }
 
 // =======================================================
-// RENDERERS: NEWS & OUTREACH (The New Logic)
+// RENDERER: EVENTS (With Interactive Calendar)
+// =======================================================
+async function loadEventsContent() {
+    const eventsData = await fetchData('events');
+    window.eventsStore = eventsData; // Cache for detail view
+
+    // 1. Render Calendar Widget
+    renderCalendar(eventsData);
+
+    // 2. Render List View (Sorted by Date: Upcoming first)
+    const eventsGrid = document.getElementById('events-grid');
+    
+    // Sort: Earliest date first
+    const sortedEvents = eventsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (eventsGrid) {
+        if (sortedEvents.length === 0) {
+            eventsGrid.innerHTML = `<p class="text-center" style="grid-column: 1/-1; color: #777;">No upcoming events scheduled.</p>`;
+        } else {
+            eventsGrid.innerHTML = sortedEvents.map(item => createCardHtml(item, 'events')).join('');
+        }
+    }
+}
+
+/**
+ * Generates a CSS Grid Calendar for the current month
+ */
+function renderCalendar(events) {
+    const container = document.getElementById('events-calendar-container');
+    if (!container) return;
+
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 = Sun
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    let html = `
+        <div class="calendar-header">
+            <h3><i class="far fa-calendar-alt" style="color:var(--uh-red); margin-right:10px;"></i> ${monthNames[currentMonth]} ${currentYear}</h3>
+        </div>
+        <div class="calendar-grid">
+            <div class="calendar-day-name">Sun</div>
+            <div class="calendar-day-name">Mon</div>
+            <div class="calendar-day-name">Tue</div>
+            <div class="calendar-day-name">Wed</div>
+            <div class="calendar-day-name">Thu</div>
+            <div class="calendar-day-name">Fri</div>
+            <div class="calendar-day-name">Sat</div>
+    `;
+
+    // Empty slots for days before the 1st
+    for (let i = 0; i < firstDay; i++) {
+        html += `<div class="calendar-day empty"></div>`;
+    }
+
+    // Days 1 to 31
+    for (let day = 1; day <= daysInMonth; day++) {
+        // Construct date string matching JSON (YYYY-MM-DD usually, or ISO)
+        // Note: Simple string matching is safest if formats vary, but let's assume standard Date parsing
+        const checkDate = new Date(currentYear, currentMonth, day);
+        
+        // Find events on this specific day
+        // We compare using local date strings to avoid timezone shifts hiding events
+        const dayEvents = events.filter(e => {
+            const eDate = new Date(e.date);
+            return eDate.getDate() === day && 
+                   eDate.getMonth() === currentMonth && 
+                   eDate.getFullYear() === currentYear;
+        });
+
+        const hasEvent = dayEvents.length > 0;
+        let tooltip = '';
+
+        if (hasEvent) {
+            // Build Tooltip
+            const eventItem = dayEvents[0]; // Show first event if multiple
+            tooltip = `
+                <div class="event-tooltip">
+                    <h5>${eventItem.title}</h5>
+                    <span class="tooltip-meta"><i class="far fa-clock"></i> ${eventItem.time || 'All Day'}</span>
+                    <span class="tooltip-meta"><i class="fas fa-map-marker-alt"></i> ${eventItem.location || 'TBA'}</span>
+                    <div style="margin-top:5px; font-size:0.7rem; color:#aaa;">Click for details</div>
+                </div>
+            `;
+        }
+
+        html += `
+            <div class="calendar-day ${hasEvent ? 'has-event' : ''}" 
+                 ${hasEvent ? `onclick="openDetailView(event, '${dayEvents[0].id}', 'events')"` : ''}>
+                <span style="position:relative; z-index:2;">${day}</span>
+                ${tooltip}
+            </div>
+        `;
+    }
+
+    html += `</div>`; // Close grid
+    container.innerHTML = html;
+}
+
+// =======================================================
+// RENDERERS: NEWS & OUTREACH
 // =======================================================
 
 async function loadNewsContent() {
     const newsData = await fetchData('news');
-    window.newsStore = newsData; // Cache for detail view
+    window.newsStore = newsData;
 
     const newsGrid = document.getElementById('news-grid');
+    // Sort Descending (Newest first)
     const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (newsGrid) {
@@ -33,9 +140,10 @@ async function loadNewsContent() {
 
 async function loadOutreachContent() {
     const outreachData = await fetchData('outreach');
-    window.outreachStore = outreachData; // Cache for detail view
+    window.outreachStore = outreachData;
 
     const outreachGrid = document.getElementById('outreach-grid');
+    // Sort Descending
     const sortedOutreach = outreachData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (outreachGrid) {
@@ -43,22 +151,44 @@ async function loadOutreachContent() {
     }
 }
 
-// Helper to keep card HTML consistent
+/**
+ * Unified Card HTML Generator
+ * Handles conditional icons/meta based on type
+ */
 function createCardHtml(item, type) {
+    let metaIcon = 'calendar-alt';
+    let btnText = 'Read Story';
+    let metaText = new Date(item.date).toLocaleDateString();
+
+    if (type === 'outreach') {
+        metaIcon = 'heart';
+        btnText = 'View Report';
+        if(item.tags && item.tags.length > 0) metaText = item.tags[0]; // Use tag instead of date for outreach if pref
+    } else if (type === 'events') {
+        metaIcon = 'clock';
+        btnText = 'Event Details';
+        // Add time to meta if available
+        if (item.time) metaText += ` | ${item.time}`;
+    }
+
+    // Determine Category Label
+    let categoryLabel = item.category || 'Update';
+    if (item.tags && item.tags.length > 0 && !item.category) categoryLabel = item.tags[0];
+
     return `
         <div class="news-card">
             <div class="news-img-wrapper">
-                <img src="${item.image}" alt="${item.title}">
+                <img src="${item.image || 'public/images/default-placeholder.jpg'}" alt="${item.title}" loading="lazy">
             </div>
             <div class="news-content">
                 <div class="news-meta">
-                    <i class="far fa-calendar-alt"></i> ${new Date(item.date).toLocaleDateString()}
-                    ${item.tags ? `<span style="margin:0 5px;">|</span> ${item.tags[0]}` : ''}
+                    <i class="far fa-${metaIcon}"></i> ${metaText}
+                    <span style="margin:0 5px; opacity:0.5;">|</span> ${categoryLabel}
                 </div>
                 <h3 class="news-title">${item.title}</h3>
                 <p class="news-excerpt">${item.preview}</p>
                 <a href="#" class="news-link" onclick="openDetailView(event, '${item.id}', '${type}')">
-                    ${type === 'news' ? 'Read Story' : 'View Report'} <i class="fas fa-arrow-right"></i>
+                    ${btnText} <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -66,37 +196,49 @@ function createCardHtml(item, type) {
 }
 
 // =======================================================
-// SHARED DETAIL VIEWER (The "Smart" Article Logic)
+// SHARED DETAIL VIEWER (Smart Layout)
 // =======================================================
 function openDetailView(e, itemId, type) {
     if (e) e.preventDefault();
 
-    const dataStore = (type === 'news') ? window.newsStore : window.outreachStore;
+    // 1. Select Store
+    let dataStore;
+    if (type === 'news') dataStore = window.newsStore;
+    else if (type === 'outreach') dataStore = window.outreachStore;
+    else if (type === 'events') dataStore = window.eventsStore;
+
+    // 2. Find Item
     const item = dataStore ? dataStore.find(n => n.id === itemId || n.id == itemId) : null;
+    if (!item) {
+        console.warn(`Item ${itemId} not found in ${type} store.`);
+        return;
+    }
 
-    if (!item) return;
-
-    const containerId = (type === 'news') ? 'news-detail-content' : 'outreach-detail-content';
+    // 3. Select Container
+    const containerId = `${type}-detail-content`;
     const detailContainer = document.getElementById(containerId);
+    if (!detailContainer) return;
 
-    // 1. Prepare Content Variables
+    // 4. Content Parsing
     let contentHtml = '';
     let heroImage = item.image;
     let fullTitle = item.title;
-    let category = (item.tags && item.tags.length > 0) ? item.tags[0] : (type === 'news' ? 'News' : 'Outreach');
+    
+    // Default fallback category
+    let category = type.charAt(0).toUpperCase() + type.slice(1); 
+    if (item.category) category = item.category;
 
-    // 2. Check if body is Structured Object or Old Markdown
+    // -- Handle Decap CMS Object Structure --
     if (typeof item.body === 'object' && item.body !== null) {
-        // --- STRUCTURED DATA MODE ---
         const b = item.body;
         fullTitle = b.full_title || item.title;
         heroImage = b.main_image || item.image;
-        category = b.category || category;
+        if(b.category) category = b.category;
 
         // Lead Text
         if (b.lead_text) contentHtml += `<p class="article-lead">${b.lead_text}</p>`;
 
-        // Content Blocks
+        // Content Blocks Loop
         if (b.content_blocks && Array.isArray(b.content_blocks)) {
             contentHtml += b.content_blocks.map(block => {
                 if (block.type === 'quote') {
@@ -108,22 +250,34 @@ function openDetailView(e, itemId, type) {
                 } else if (block.type === 'highlight_box') {
                     return `
                         <div class="highlight-box">
-                            <h3><i class="fas fa-check-circle"></i> ${block.title}</h3>
+                            <h3><i class="fas fa-info-circle"></i> ${block.title || 'Key Details'}</h3>
                             <ul>
                                 ${block.items.map(li => `<li>${li}</li>`).join('')}
                             </ul>
                         </div>`;
-                } else {
+                } else if (block.type === 'text') {
                     return `<div class="article-text">${converter.makeHtml(block.content || '')}</div>`;
                 }
+                return '';
             }).join('');
         }
     } else {
-        // --- FALLBACK MARKDOWN MODE ---
+        // -- Handle Legacy/Raw Markdown --
         contentHtml = converter.makeHtml(item.body || '');
     }
 
-    // 3. Render
+    // 5. Special Header for EVENTS (Time & Location)
+    let extraMetaHtml = '';
+    if (type === 'events') {
+        extraMetaHtml = `
+            <div style="background: var(--uh-light-gray); padding: 15px; border-radius: 4px; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 20px; border-left: 4px solid var(--uh-red);">
+                <div><strong><i class="far fa-clock text-uh-red"></i> Time:</strong> ${item.time || 'TBA'}</div>
+                <div><strong><i class="fas fa-map-marker-alt text-uh-red"></i> Location:</strong> ${item.location || 'TBA'}</div>
+            </div>
+        `;
+    }
+
+    // 6. Inject HTML
     detailContainer.innerHTML = `
         <article class="article-container">
             <div class="article-hero">
@@ -133,9 +287,10 @@ function openDetailView(e, itemId, type) {
 
             <header class="article-header">
                 <div class="article-meta-row">
-                    <span><i class="far fa-calendar-alt"></i> ${new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span><i class="far fa-calendar-alt"></i> ${new Date(item.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
                 <h1 class="article-title text-uh-red">${fullTitle}</h1>
+                ${extraMetaHtml}
             </header>
             
             <div class="article-body">
@@ -143,18 +298,19 @@ function openDetailView(e, itemId, type) {
             </div>
 
             <div class="article-footer">
-                 <a href="#" onclick="switchPage('${type}')" class="btn">Back to ${type === 'news' ? 'News' : 'Outreach'}</a>
+                 <a href="#" onclick="switchPage('${type}')" class="btn">Back to ${type.charAt(0).toUpperCase() + type.slice(1)}</a>
             </div>
         </article>
     `;
 
+    // 7. Transition
     switchPage(type + '-detail');
     window.scrollTo(0,0);
 }
 window.openDetailView = openDetailView;
 
 // =======================================================
-// STANDARD PAGE LOADERS (Preserved from your code)
+// STANDARD PAGE LOADERS
 // =======================================================
 
 async function loadHomePageContent() {
@@ -171,7 +327,7 @@ async function loadHomePageContent() {
         `;
     }
 
-    // Slider
+    // Slides
     const sliderContainer = document.getElementById('hero-slider-container');
     const indicatorContainer = document.getElementById('slider-indicators');
     if (sliderContainer && indicatorContainer && home.slides) {
@@ -202,19 +358,38 @@ async function loadHomePageContent() {
         `;
     }
 
-    // Events Preview
-    const newsData = await fetchData('news');
-    const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // --- UPCOMING EVENTS ON HOME PAGE (UPDATED) ---
+    // Now pulls from EVENTS.json instead of news
+    const eventsData = await fetchData('events');
     const eventPreview = document.getElementById('event-preview-grid');
+    
     if (eventPreview) {
-        eventPreview.innerHTML = sortedNews.slice(0, 3).map(item => `
-            <div class="aim-card">
-                <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">${new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric'}).toUpperCase()}</div>
-                <h4>${item.title}</h4>
-                <p>${item.preview}</p>
-                <a href="#" onclick="switchPage('news')">View All</a>
-            </div>
-        `).join('');
+        // Filter: Future dates only
+        const today = new Date();
+        today.setHours(0,0,0,0); // reset time to start of day
+
+        const futureEvents = eventsData
+            .filter(e => new Date(e.date) >= today)
+            .sort((a, b) => new Date(a.date) - new Date(b.date)) // Ascending (soonest first)
+            .slice(0, 3); // Top 3
+
+        if (futureEvents.length === 0) {
+             eventPreview.innerHTML = `<p class="text-center" style="grid-column: 1/-1; opacity: 0.7;">No upcoming events scheduled at this time.</p>`;
+        } else {
+            eventPreview.innerHTML = futureEvents.map(item => `
+                <div class="aim-card">
+                    <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">
+                        ${new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric'}).toUpperCase()}
+                    </div>
+                    <h4>${item.title}</h4>
+                    <p>${item.preview}</p>
+                    <div style="font-size:0.85rem; color:var(--uh-slate); margin-bottom:10px;">
+                        <i class="far fa-clock"></i> ${item.time || 'TBA'}
+                    </div>
+                    <a href="#" onclick="switchPage('events')" class="text-uh-red" style="font-weight:700; font-size:0.9rem;">View Calendar &rarr;</a>
+                </div>
+            `).join('');
+        }
     }
 }
 
@@ -368,8 +543,8 @@ async function loadContactContent() {
 
 // MAIN ROUTER
 function loadContent(pageId) {
-    loadImpactStats();
-    loadContactContent(); 
+    if (typeof loadImpactStats === 'function') loadImpactStats();
+    if (typeof loadContactContent === 'function') loadContactContent(); 
 
     if (pageId === 'home') loadHomePageContent();
     else if (pageId === 'team') loadTeamContent();
@@ -378,5 +553,6 @@ function loadContent(pageId) {
     else if (pageId === 'advisory') loadAdvisoryContent();
     else if (pageId === 'news') loadNewsContent();
     else if (pageId === 'outreach') loadOutreachContent();
+    else if (pageId === 'events') loadEventsContent(); // Added Events
 }
 window.loadContent = loadContent;
