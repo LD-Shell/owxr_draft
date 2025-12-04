@@ -400,7 +400,7 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
     }
 
     .center-identity h1 { 
-        font-size: 0.8rem !important; 
+        font-size: 0.6rem !important; 
         margin: 0 !important; 
         line-height: 1.1 !important;
         display: -webkit-box;
