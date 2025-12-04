@@ -1,7 +1,127 @@
 // src/js/app.js
 
-// Netlify Identity Login Check and Redirect
+// ==================== MOBILE MENU & DROPDOWN INITIALIZATION ====================
+function initMobileMenu() {
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navList = document.querySelector('.nav-list');
+    const header = document.querySelector('.main-header');
+    
+    // Define logic for switching states (Desktop <-> Mobile)
+    function updateMenuState() {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        
+        if (!isMobile) {
+            // Desktop State
+            if (navList) {
+                navList.style.display = ''; 
+                navList.classList.remove('show');
+            }
+            if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = ''; 
+            const icon = mobileToggle?.querySelector('i');
+            if (icon) icon.className = 'fas fa-bars';
+        }
+    }
+
+    // One-time setup: Add event listeners
+    if (mobileToggle && navList) {
+        mobileToggle.setAttribute('aria-label', 'Toggle navigation menu');
+        mobileToggle.setAttribute('role', 'button');
+        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        
+        mobileToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+            navList.classList.toggle('show');
+            mobileToggle.setAttribute('aria-expanded', !isExpanded);
+            document.body.style.overflow = !isExpanded ? 'hidden' : '';
+            
+            const icon = mobileToggle.querySelector('i');
+            if (icon) {
+                icon.className = isExpanded ? 'fas fa-bars' : 'fas fa-times';
+            }
+        });
+    }
+
+    // --- CLICK-TO-OPEN DROPDOWN LOGIC ---
+    // Select all nav-links that have a dropdown sibling
+    const dropdownToggles = document.querySelectorAll('.nav-item > .nav-link');
+
+    dropdownToggles.forEach(toggle => {
+        const parentItem = toggle.closest('.nav-item');
+        const dropdown = parentItem.querySelector('.dropdown-menu');
+
+        if (dropdown) {
+            // If this link controls a dropdown, override default click
+            toggle.addEventListener('click', function(e) {
+                // Determine if we are on desktop or mobile to adjust behavior if needed
+                // For now, we apply click-behavior to both as requested.
+                
+                // Only prevent default if it's strictly a toggle (not a link to a page)
+                // Assuming 'span' tags are toggles and 'a' tags are links.
+                if (toggle.tagName === 'SPAN' || toggle.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                const isOpen = dropdown.classList.contains('show');
+
+                // 1. Close all other open dropdowns first
+                document.querySelectorAll('.dropdown-menu.show').forEach(openDropdown => {
+                    if (openDropdown !== dropdown) {
+                        openDropdown.classList.remove('show');
+                        openDropdown.closest('.nav-item').classList.remove('dropdown-active');
+                    }
+                });
+
+                // 2. Toggle current dropdown
+                if (isOpen) {
+                    dropdown.classList.remove('show');
+                    parentItem.classList.remove('dropdown-active');
+                } else {
+                    dropdown.classList.add('show');
+                    parentItem.classList.add('dropdown-active');
+                }
+            });
+        }
+    });
+
+    // Close dropdowns when clicking anywhere else on the page
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-item')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                menu.closest('.nav-item').classList.remove('dropdown-active');
+            });
+        }
+    });
+
+    // Listen for screen resize
+    window.addEventListener('resize', updateMenuState);
+    updateMenuState();
+    
+    // Optional: Compact header on scroll
+    if (header) {
+        window.addEventListener('scroll', function() {
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            if (!isMobile) return; 
+            
+            if (window.scrollY > 100) {
+                header.classList.add('compact');
+                document.body.classList.add('header-compact');
+            } else {
+                header.classList.remove('compact');
+                document.body.classList.remove('header-compact');
+            }
+        }, { passive: true });
+    }
+}
+
+// ==================== NETLIFY IDENTITY & SPA ROUTER ====================
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Netlify Identity
     if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
             if (!user) {
@@ -12,79 +132,84 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 🔥 FIX: Initialize SPA based on URL hash or default to 'home'
-    // Read the hash (e.g., '#team') and strip the '#'
+    // Initialize Menu
+    initMobileMenu();
+
+    // Initialize SPA Router
     const initialPageId = window.location.hash.substring(1) || 'home'; 
     switchPage(initialPageId);
     
-    // Add event listener to handle browser back/forward buttons
+    // Handle browser back/forward buttons
     window.addEventListener('hashchange', () => {
         const hashPageId = window.location.hash.substring(1);
         if (hashPageId) {
-            // Do not close the menu if navigating via browser history buttons
             switchPage(hashPageId, false); 
         }
     });
 });
 
 /**
- * Simple Single Page App (SPA) Router logic
- * Hides all page views and shows the selected one.
- * @param {string} pageId - The ID of the page view to activate.
- * @param {boolean} updateHistory - Whether to update the URL hash (default true).
+ * Enhanced Router: Switches pages and handles scrolling.
  */
-function switchPage(pageId, updateHistory = true) {
+function switchPage(pageId, updateHistory = true, scrollToId = null) {
     const pages = document.querySelectorAll('.page-view');
     pages.forEach(page => page.classList.remove('active'));
 
     const selectedPage = document.getElementById(pageId);
     if(selectedPage) {
         selectedPage.classList.add('active');
-        window.scrollTo(0, 0); 
+        
+        if (scrollToId) {
+            setTimeout(() => {
+                const targetEl = document.getElementById(scrollToId);
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 50); 
+        } else {
+            window.scrollTo(0, 0); 
+        }
     } else {
-        // Handle undefined page (e.g., if user types a wrong hash in URL)
         pageId = 'home';
         document.getElementById('home').classList.add('active');
+        window.scrollTo(0, 0);
     }
 
-    // 🔥 FIX: Explicitly close the mobile menu after navigation
-    const nav = document.getElementById('navList');
-    if (nav.classList.contains('show')) {
-        nav.classList.remove('show');
+    // Close mobile menu
+    const navList = document.querySelector('.nav-list');
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    
+    if (navList && navList.classList.contains('show')) {
+        navList.classList.remove('show');
+        document.body.style.overflow = '';
+        if (mobileToggle) {
+            mobileToggle.setAttribute('aria-expanded', 'false');
+            const icon = mobileToggle.querySelector('i');
+            if (icon) icon.className = 'fas fa-bars';
+        }
     }
     
-    // Update URL hash without causing a page reload, so the state persists on refresh
+    // Close any open desktop dropdowns
+    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        menu.closest('.nav-item').classList.remove('dropdown-active');
+    });
+
     if (updateHistory) {
         window.location.hash = pageId;
     }
     
-    // Global Cleanup of ALL .nav-link elements (A and SPAN tags)
+    // Update active link state
     document.querySelectorAll('.main-nav .nav-link').forEach(link => link.classList.remove('active'));
     
-    // 1. Find the currently clicked link (A tag)
-    const activeLink = document.querySelector(`.nav-list a[data-page="${pageId}"]`);
+    const activeLink = document.querySelector(`.nav-list a[data-page="${pageId}"]`) || 
+                       document.querySelector(`.nav-list a[onclick*="'${pageId}'"]`);
     
     if(activeLink) {
-        // 2. Activate the link itself (e.g., 'Overview')
         activeLink.classList.add('active');
-        
-        // 3. Handle dropdowns: If the active link is inside a dropdown, activate the parent span
         const parentSpan = activeLink.closest('.dropdown-menu')?.closest('.nav-item')?.querySelector('.nav-link');
-        
-        if (parentSpan) {
-            parentSpan.classList.add('active'); // Activate the parent toggle (e.g., 'About Us')
-        }
+        if (parentSpan) parentSpan.classList.add('active');
     }
 
-
-    // Attempt to load dynamic content for the page
     loadContent(pageId);
-}
-
-/**
- * Toggles the mobile menu visibility.
- */
-function toggleMobileMenu() {
-    const nav = document.getElementById('navList');
-    nav.classList.toggle('show');
 }
