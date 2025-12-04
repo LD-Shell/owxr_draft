@@ -382,11 +382,11 @@ footer { background: var(--uh-black); color: #aaa; padding-top: 60px; margin-top
         align-items: center !important; 
         max-width: 85%; 
         padding: 0 !important; 
-        gap: 15px !important;
+        gap: 8px !important;
     }
 
     .logo-img { 
-        height: 90px !important; 
+        height: 65px !important; 
         width: auto !important; 
     }
 
