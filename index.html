@@ -55,7 +55,7 @@
 
             <div class="uh-logo-placeholder">
                 <a href="https://welch1.org/" target="_blank" rel="noopener noreferrer">
-                    <img src="public/images/logo-2.png" alt="Welch Foundation Logo" class="logo-img">
+                    <img src="public/images/logo-2.png" alt="Welch Foundation Logo" class="logo-img-2">
                 </a>
             </div>
         </div>
@@ -98,12 +98,13 @@
     </ul>
 </li>
                 <li class="nav-item">
-                    <span class="nav-link">Outputs <i class="fas fa-chevron-down"></i></span>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'publications-heading')">Publications</a></li>
-                        <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'patents-heading')">Patents</a></li>
-                    </ul>
-                </li>
+                        <span class="nav-link">Outputs <i class="fas fa-chevron-down"></i></span>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'publications-heading')">Publications</a></li>
+                            <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'patents-heading')">Patents</a></li>
+                            <li><a class="dropdown-link" onclick="switchPage('outputs', true, 'presentations-heading')">Conference Presentations</a></li>
+                        </ul>
+                    </li>
                 <li class="nav-item"><a class="nav-link" data-page="news" onclick="switchPage('news')">News & Events</a></li>
                 <li class="nav-item"><a class="nav-link" data-page="outreach" onclick="switchPage('outreach')">Outreach</a></li>
                 <li class="mobile-only-extras">
@@ -116,8 +117,10 @@
                     </a>
 
                     <div style="text-align: center; opacity: 0.9;">
-                        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-bottom: 10px;">PROUDLY SUPPORTED BY</p>
-                        <img src="public/images/logo-2.png" alt="Welch Foundation" style="height: 60px; margin: 0 auto; filter: brightness(0) invert(1);">
+                        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-bottom: 10px;">PROUDLY SPONSORED BY</p>
+                        <a href="https://welch1.org/" target="_blank" rel="noopener noreferrer">
+                            <img src="public/images/logo-2.png" alt="Welch Foundation" style="height: 60px; margin: 0 auto; filter: brightness(0) invert(1);">
+                        </a>
                     </div>
                 </div>
                 </li>
@@ -209,17 +212,20 @@
     </div>
 </div>
     <!-- ================= VIEW: OUTPUTS ================= -->
-    <div id="outputs" class="page-view container section-padding">
-        <h2 class="text-uh-red">Research Outputs</h2>
-        <div style="margin-top: 40px;">
-            
-            <h3 id="publications-heading">Selected Publications</h3>
-            <div id="publications-list"></div>
+  <div id="outputs" class="page-view container section-padding">
+    <h2 class="text-uh-red">Research Outputs</h2>
+    
+    <div style="margin-top: 40px;">
+        <h3 id="publications-heading">Selected Publications</h3>
+        <div id="publications-list"></div>
 
-            <h3 id="patents-heading" style="margin-top: 50px;">Recent Patents</h3>
-            <ul id="patents-list" style="list-style: disc; padding-left: 20px; margin-top: 20px;"></ul>
-        </div>
+        <h3 id="patents-heading" style="margin-top: 50px;">Recent Patents</h3>
+        <ul id="patents-list" style="list-style: disc; padding-left: 20px; margin-top: 20px;"></ul>
+
+        <h3 id="presentations-heading" style="margin-top: 50px;">Conference Presentations</h3>
+        <div id="presentations-list"></div>
     </div>
+</div>
 
     <!-- ================= VIEW: NEWS ================= -->
     <div id="news" class="page-view container section-padding">
