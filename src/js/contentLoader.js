@@ -1,39 +1,167 @@
-// src/js/contentLoader.js
+/* src/js/contentLoader.js */
 
-// Initialize the Markdown converter
 const converter = new showdown.Converter();
 converter.setFlavor('github');
 
-/**
- * Utility to safely fetch JSON data.
- */
+// --- UTILITY ---
 async function fetchData(fileName) {
     try {
         const response = await fetch(`content/${fileName}.json`); 
-        if (!response.ok) {
-            console.error(`Error loading content for ${fileName}. Status: ${response.status}`);
-            return (fileName === 'globals' || fileName === 'pages') ? {} : [];
-        }
-        const data = await response.json();
-        return Array.isArray(data) ? data : (fileName === 'globals' || fileName === 'pages') ? data : [];
+        if (!response.ok) return (fileName === 'globals' || fileName === 'pages') ? {} : [];
+        return await response.json();
     } catch (error) {
-        console.error(`Failed to fetch ${fileName} data:`, error);
+        console.error(`Failed to fetch ${fileName}:`, error);
         return (fileName === 'globals' || fileName === 'pages') ? {} : [];
     }
 }
 
 // =======================================================
-// RENDERERS
+// RENDERERS: NEWS & OUTREACH (The New Logic)
 // =======================================================
 
-/**
- * Renders the Home page sections.
- */
+async function loadNewsContent() {
+    const newsData = await fetchData('news');
+    window.newsStore = newsData; // Cache for detail view
+
+    const newsGrid = document.getElementById('news-grid');
+    const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (newsGrid) {
+        newsGrid.innerHTML = sortedNews.map(item => createCardHtml(item, 'news')).join('');
+    }
+}
+
+async function loadOutreachContent() {
+    const outreachData = await fetchData('outreach');
+    window.outreachStore = outreachData; // Cache for detail view
+
+    const outreachGrid = document.getElementById('outreach-grid');
+    const sortedOutreach = outreachData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (outreachGrid) {
+        outreachGrid.innerHTML = sortedOutreach.map(item => createCardHtml(item, 'outreach')).join('');
+    }
+}
+
+// Helper to keep card HTML consistent
+function createCardHtml(item, type) {
+    return `
+        <div class="news-card">
+            <div class="news-img-wrapper">
+                <img src="${item.image}" alt="${item.title}">
+            </div>
+            <div class="news-content">
+                <div class="news-meta">
+                    <i class="far fa-calendar-alt"></i> ${new Date(item.date).toLocaleDateString()}
+                    ${item.tags ? `<span style="margin:0 5px;">|</span> ${item.tags[0]}` : ''}
+                </div>
+                <h3 class="news-title">${item.title}</h3>
+                <p class="news-excerpt">${item.preview}</p>
+                <a href="#" class="news-link" onclick="openDetailView(event, '${item.id}', '${type}')">
+                    ${type === 'news' ? 'Read Story' : 'View Report'} <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+// =======================================================
+// SHARED DETAIL VIEWER (The "Smart" Article Logic)
+// =======================================================
+function openDetailView(e, itemId, type) {
+    if (e) e.preventDefault();
+
+    const dataStore = (type === 'news') ? window.newsStore : window.outreachStore;
+    const item = dataStore ? dataStore.find(n => n.id === itemId || n.id == itemId) : null;
+
+    if (!item) return;
+
+    const containerId = (type === 'news') ? 'news-detail-content' : 'outreach-detail-content';
+    const detailContainer = document.getElementById(containerId);
+
+    // 1. Prepare Content Variables
+    let contentHtml = '';
+    let heroImage = item.image;
+    let fullTitle = item.title;
+    let category = (item.tags && item.tags.length > 0) ? item.tags[0] : (type === 'news' ? 'News' : 'Outreach');
+
+    // 2. Check if body is Structured Object or Old Markdown
+    if (typeof item.body === 'object' && item.body !== null) {
+        // --- STRUCTURED DATA MODE ---
+        const b = item.body;
+        fullTitle = b.full_title || item.title;
+        heroImage = b.main_image || item.image;
+        category = b.category || category;
+
+        // Lead Text
+        if (b.lead_text) contentHtml += `<p class="article-lead">${b.lead_text}</p>`;
+
+        // Content Blocks
+        if (b.content_blocks && Array.isArray(b.content_blocks)) {
+            contentHtml += b.content_blocks.map(block => {
+                if (block.type === 'quote') {
+                    return `
+                        <div class="article-quote">
+                            <p>"${block.content}"</p>
+                            ${block.author ? `<span>— ${block.author}</span>` : ''}
+                        </div>`;
+                } else if (block.type === 'highlight_box') {
+                    return `
+                        <div class="highlight-box">
+                            <h3><i class="fas fa-check-circle"></i> ${block.title}</h3>
+                            <ul>
+                                ${block.items.map(li => `<li>${li}</li>`).join('')}
+                            </ul>
+                        </div>`;
+                } else {
+                    return `<div class="article-text">${converter.makeHtml(block.content || '')}</div>`;
+                }
+            }).join('');
+        }
+    } else {
+        // --- FALLBACK MARKDOWN MODE ---
+        contentHtml = converter.makeHtml(item.body || '');
+    }
+
+    // 3. Render
+    detailContainer.innerHTML = `
+        <article class="article-container">
+            <div class="article-hero">
+                 <img src="${heroImage}" alt="${fullTitle}">
+                 <span class="article-category-badge">${category}</span>
+            </div>
+
+            <header class="article-header">
+                <div class="article-meta-row">
+                    <span><i class="far fa-calendar-alt"></i> ${new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                </div>
+                <h1 class="article-title text-uh-red">${fullTitle}</h1>
+            </header>
+            
+            <div class="article-body">
+                ${contentHtml}
+            </div>
+
+            <div class="article-footer">
+                 <a href="#" onclick="switchPage('${type}')" class="btn">Back to ${type === 'news' ? 'News' : 'Outreach'}</a>
+            </div>
+        </article>
+    `;
+
+    switchPage(type + '-detail');
+    window.scrollTo(0,0);
+}
+window.openDetailView = openDetailView;
+
+// =======================================================
+// STANDARD PAGE LOADERS (Preserved from your code)
+// =======================================================
+
 async function loadHomePageContent() {
     const pageData = await fetchData('pages');
     const home = pageData.home || {};
     
-    // Hero Content
+    // Hero
     const heroContent = document.getElementById('hero-content');
     if (heroContent && home.hero_title) {
         heroContent.innerHTML = `
@@ -43,7 +171,7 @@ async function loadHomePageContent() {
         `;
     }
 
-    // Hero Slides
+    // Slider
     const sliderContainer = document.getElementById('hero-slider-container');
     const indicatorContainer = document.getElementById('slider-indicators');
     if (sliderContainer && indicatorContainer && home.slides) {
@@ -57,18 +185,14 @@ async function loadHomePageContent() {
             <div class="indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
         `).join('');
         
-        if (typeof initializeSlider === 'function') {
-            initializeSlider();
-        }
+        if (typeof initializeSlider === 'function') initializeSlider();
     }
 
-    // Director's Message
+    // Director
     const directorSection = document.getElementById('director-message-section');
     if (directorSection && home.director) {
         directorSection.innerHTML = `
-            <div>
-                <img src="${home.director.photo}" alt="${home.director.name}" class="director-img" loading="lazy">
-            </div>
+            <div><img src="${home.director.photo}" alt="${home.director.name}" class="director-img" loading="lazy"></div>
             <div>
                 <h3 class="text-uh-red">Director's Message</h3>
                 <p class="mission-text" style="margin: 20px 0;">${home.director.message}</p>
@@ -78,13 +202,12 @@ async function loadHomePageContent() {
         `;
     }
 
-    // Upcoming Events Preview
+    // Events Preview
     const newsData = await fetchData('news');
     const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
     const eventPreview = document.getElementById('event-preview-grid');
     if (eventPreview) {
-        const previewItems = sortedNews.slice(0, 3);
-        eventPreview.innerHTML = previewItems.map(item => `
+        eventPreview.innerHTML = sortedNews.slice(0, 3).map(item => `
             <div class="aim-card">
                 <div style="background: var(--uh-red); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; margin-bottom: 10px;">${new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric'}).toUpperCase()}</div>
                 <h4>${item.title}</h4>
@@ -95,20 +218,11 @@ async function loadHomePageContent() {
     }
 }
 
-/**
- * Renders Impact Stats.
- */
 async function loadImpactStats() {
     const globals = await fetchData('globals'); 
     const stats = globals.impact_stats || [];
     const container = document.getElementById('impact-stats-grid');
-    
     if (container) {
-        if (stats.length === 0) {
-            container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">Error: Could not load impact metrics from globals.json.</p>`;
-            return;
-        }
-
         container.innerHTML = stats.map(stat => `
             <div>
                 <h2 style="font-size: 3rem; color: ${stat.color || '#F4D03F'};">${stat.value}</h2>
@@ -118,14 +232,8 @@ async function loadImpactStats() {
     }
 }
 
-
-/**
- * Renders Team Grid into PIs and Postdocs/Students buckets.
- */
 async function loadTeamContent() {
     const teamData = await fetchData('team');
-    
-    // Filter into two groups: PIs vs Everyone Else
     const pis = teamData.filter(m => m.is_pi);
     const groupMembers = teamData.filter(m => !m.is_pi);
 
@@ -134,75 +242,42 @@ async function loadTeamContent() {
             ${member.image ? `<div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>` : ''}
             <div class="profile-info">
                 <h4 class="profile-name">${member.name}</h4>
-                
-                ${isPI && member.title_detail ? 
-                    `<div class="profile-role" style="font-weight: 700;">${member.role}</div>
-                    <p style="font-size: 0.9rem; color: var(--uh-slate); margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">
-                        ${member.title_detail.replace(/\n/g, '<br>')}
-                    </p>` : ''
-                }
-                
-                ${!isPI ? 
-                    `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div>
-                    <p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">
-                        ${member.department || ''}<br>
-                        ${member.university || ''}
-                    </p>` : ''
-                }
-
-                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '15px'};">
-                    ${member.bio}
-                </p>
-                
+                ${isPI && member.title_detail ? `<div class="profile-role" style="font-weight: 700;">${member.role}</div><p style="font-size: 0.9rem; color: var(--uh-slate); margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">${member.title_detail.replace(/\n/g, '<br>')}</p>` : ''}
+                ${!isPI ? `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div><p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">${member.department || ''}<br>${member.university || ''}</p>` : ''}
+                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '15px'};">${member.bio}</p>
                 ${member.tags && member.tags.length > 0 ? `<div class="profile-tags">${member.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
-                
-                ${member.email || member.scholar ? `
-                    <div style="margin-top: 15px;">
-                        ${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''}  
-                        ${member.scholar ? `<a href="${member.scholar}" target="_blank" style="margin-left: 10px;"><i class="fab fa-google-scholar text-uh-red"></i></a>` : ''}
-                    </div>` : ''}
+                ${member.email || member.scholar ? `<div style="margin-top: 15px;">${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''} ${member.scholar ? `<a href="${member.scholar}" target="_blank" style="margin-left: 10px;"><i class="fab fa-google-scholar text-uh-red"></i></a>` : ''}</div>` : ''}
             </div>
         </div>
     `).join('');
 
-    // Render PIs
     const piGrid = document.getElementById('team-pis');
-    if (piGrid) { piGrid.innerHTML = renderMembers(pis, true); }
+    if (piGrid) piGrid.innerHTML = renderMembers(pis, true);
 
-    // Render Postdocs & Students
     const groupGrid = document.getElementById('team-group');
-    if (groupGrid) { groupGrid.innerHTML = renderMembers(groupMembers, false); }
+    if (groupGrid) groupGrid.innerHTML = renderMembers(groupMembers, false);
 }
 
-/**
- * Renders Publications and Patents.
- */
-/**
- * Renders Publications, Patents, AND Presentations.
- */
 async function loadOutputsContent() {
-    // 1. Load Publications
     const publications = await fetchData('publications');
     const globals = await fetchData('globals'); 
-
+    
+    // Publications
     const pubList = document.getElementById('publications-list');
     if (pubList) {
-        const sortedPublications = publications.sort((a, b) => new Date(b.date) - new Date(a.date));
-        pubList.innerHTML = sortedPublications.map(pub => `
+        pubList.innerHTML = publications.sort((a, b) => new Date(b.date) - new Date(a.date)).map(pub => `
             <div class="pub-item">
                 <div class="pub-year">${pub.year}</div>
                 <div class="pub-details">
                     <h4>${pub.title} ${pub.featured ? `<span class="tag" style="background: var(--uh-red); color: white;">Featured</span>` : ''}</h4>
-                    <p class="pub-journal">${pub.journal} 
-                        <a href="${pub.link || '#'}" target="_blank" class="text-uh-red">VIEW</a>
-                    </p>
+                    <p class="pub-journal">${pub.journal} <a href="${pub.link || '#'}" target="_blank" class="text-uh-red">VIEW</a></p>
                     <p style="font-size: 0.85rem;">Authors: ${pub.authors}</p>
                 </div>
             </div>
         `).join('');
     }
     
-    // 2. Load Patents
+    // Patents
     const patentList = document.getElementById('patents-list');
     if (patentList && globals.patents) {
          patentList.innerHTML = globals.patents.map(patent => {
@@ -211,24 +286,17 @@ async function loadOutputsContent() {
          }).join('');
     }
 
-    // 3. Load Conference Presentations
+    // Presentations
     const presentations = await fetchData('presentations'); 
     const presList = document.getElementById('presentations-list');
-
     if (presList) {
         if (presentations.length > 0) {
-            // Sort by date
-            const sortedPres = presentations.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Reusing 'pub-item' class for consistent styling
-            presList.innerHTML = sortedPres.map(item => `
+            presList.innerHTML = presentations.sort((a, b) => new Date(b.date) - new Date(a.date)).map(item => `
                 <div class="pub-item">
                     <div class="pub-year">${new Date(item.date).getFullYear()}</div>
                     <div class="pub-details">
                         <h4>${item.title}</h4>
-                        <p class="pub-journal" style="color: var(--uh-slate);">
-                            <strong>${item.conference}</strong> | ${item.location}
-                        </p>
+                        <p class="pub-journal" style="color: var(--uh-slate);"><strong>${item.conference}</strong> | ${item.location}</p>
                         <p style="font-size: 0.85rem; margin-top: 4px;">Presenter: ${item.presenter || 'Group Member'}</p>
                     </div>
                 </div>
@@ -239,25 +307,30 @@ async function loadOutputsContent() {
     }
 }
 
-/**
- * Renders Advisory Board.
- */
+async function loadResearchContent() {
+    const pageData = await fetchData('pages');
+    const aims = pageData.research_aims || [];
+    const container = document.getElementById('research-aims-container');
+    if (container) {
+        container.innerHTML = aims.map(aim => `
+            <div class="aim-card">
+                <span class="aim-number">${aim.number}</span>
+                <h3>${aim.title}</h3>
+                <p>${converter.makeHtml(aim.description)}</p>
+                <div style="margin-top: 15px;">${aim.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</div>
+            </div>
+        `).join('');
+    }
+}
+
 async function loadAdvisoryContent() {
     const globals = await fetchData('globals'); 
     const board = globals.advisory_board || [];
     const container = document.getElementById('advisory-board-grid');
-
     if (container) {
-        if (board.length === 0) {
-            container.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">Advisory board list is currently empty.</p>`;
-            return;
-        }
-        
         container.innerHTML = board.map(member => `
             <div class="profile-card text-center">
-                <div class="profile-img-container">
-                    <img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy">
-                </div>
+                <div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>
                 <div class="profile-info">
                     <h4 class="profile-name">${member.name}</h4>
                     <p class="profile-role" style="font-weight: 400; font-size: 0.95rem;">${member.role}</p>
@@ -267,10 +340,6 @@ async function loadAdvisoryContent() {
     }
 }
 
-
-/**
- * Renders Contact Page.
- */
 async function loadContactContent() {
     const globals = await fetchData('globals'); 
     const contact = globals.contact || {};
@@ -292,167 +361,22 @@ async function loadContactContent() {
             </div>
         `;
     }
-
     if (aboutContactPreview) {
-         aboutContactPreview.innerHTML = `
-             <p style="font-size: 0.9rem;">${contact.address_line1}<br>${contact.address_line2}<br>${contact.address_line3}<br>${contact.address_line4}</p>
-         `;
+         aboutContactPreview.innerHTML = `<p style="font-size: 0.9rem;">${contact.address_line1}<br>${contact.address_line2}<br>${contact.address_line3}<br>${contact.address_line4}</p>`;
     }
 }
 
-/**
- * Renders Research Aims.
- */
-async function loadResearchContent() {
-     const pageData = await fetchData('pages');
-     const aims = pageData.research_aims || [];
-     const container = document.getElementById('research-aims-container');
-
-     if (container) {
-         if (aims.length === 0) {
-            container.innerHTML = `<p style="text-align: center;">No research aims defined yet. Please add content in the CMS.</p>`;
-            return;
-         }
-         container.innerHTML = aims.map(aim => `
-            <div class="aim-card">
-                <span class="aim-number">${aim.number}</span>
-                <h3>${aim.title}</h3>
-                <p>${converter.makeHtml(aim.description)}</p>
-                <div style="margin-top: 15px;">
-                    ${aim.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                </div>
-            </div>
-         `).join('');
-     }
-}
-
-/**
- * Renders News Grid.
- */
-async function loadNewsContent() {
-    const newsData = await fetchData('news');
-    const newsGrid = document.getElementById('news-grid');
-    
-    // Sort news by date
-    const sortedNews = newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    if (newsGrid) {
-        newsGrid.innerHTML = sortedNews.map(item => `
-            <div class="profile-card">
-                <img src="${item.image}" style="height: 200px; width: 100%; object-fit: cover;" loading="lazy">
-                <div class="profile-info">
-                    <p class="text-uh-red" style="font-weight: bold; font-size: 0.8rem;">${new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric'}).toUpperCase()}</p>
-                    <h4>${item.title}</h4>
-                    <p>${item.preview}</p>
-                    <a href="#" onclick="showNewsDetail(event, '${item.id}')" style="color: var(--uh-red); font-weight: bold; margin-top: 10px; display: block;">Read More</a>
-                </div>
-            </div>
-        `).join('');
-    }
-}
-
-/**
- * Shows News Detail View.
- */
-async function showNewsDetail(e, itemId) {
-    if (e) e.preventDefault();
-    
-    const newsData = await fetchData('news');
-    const item = newsData.find(n => n.id === itemId);
-    
-    if (item && item.body) {
-        const detailContainer = document.getElementById('news-detail-content');
-        detailContainer.innerHTML = `
-            <h1 class="text-uh-red">${item.title}</h1>
-            <p class="text-muted" style="margin-bottom: 20px;">${new Date(item.date).toLocaleDateString()} | ${item.tags ? item.tags.join(', ') : 'News'}</p>
-            <img src="${item.image}" style="width: 100%; height: 400px; object-fit: cover; margin-bottom: 30px; border-radius: 4px;" loading="lazy">
-            <div style="max-width: 800px;">
-                ${converter.makeHtml(item.body)}
-            </div>
-        `;
-        switchPage('news-detail');
-    }
-}
-window.showNewsDetail = showNewsDetail; 
-
-/**
- * Renders Outreach Grid.
- */
-async function loadOutreachContent() {
-    const outreachData = await fetchData('outreach'); 
-    const outreachGrid = document.getElementById('outreach-grid');
-    
-    // Sort outreach by date
-    const sortedOutreach = outreachData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    if (outreachGrid) {
-        outreachGrid.innerHTML = sortedOutreach.map(item => `
-            <div class="profile-card">
-                <img src="${item.image}" style="height: 200px; width: 100%; object-fit: cover;" loading="lazy">
-                <div class="profile-info">
-                    <p class="text-uh-red" style="font-weight: bold; font-size: 0.8rem;">${new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric'}).toUpperCase()}</p>
-                    <h4>${item.title}</h4>
-                    <p>${item.preview}</p>
-                    <a href="#" onclick="showOutreachDetail(event, '${item.id}')" style="color: var(--uh-red); font-weight: bold; margin-top: 10px; display: block;">Read Story</a>
-                </div>
-            </div>
-        `).join('');
-    }
-}
-
-/**
- * Shows Outreach Detail View.
- */
-async function showOutreachDetail(e, itemId) {
-    if (e) e.preventDefault();
-
-    const outreachData = await fetchData('outreach');
-    const item = outreachData.find(n => n.id === itemId);
-    
-    if (item && item.body) {
-        const detailContainer = document.getElementById('outreach-detail-content');
-        detailContainer.innerHTML = `
-            <h1 class="text-uh-red">${item.title}</h1>
-            <p class="text-muted" style="margin-bottom: 20px;">${new Date(item.date).toLocaleDateString()} | ${item.tags ? item.tags.join(', ') : 'Outreach Program'}</p>
-            <img src="${item.image}" style="width: 100%; height: 400px; object-fit: cover; margin-bottom: 30px; border-radius: 4px;" loading="lazy">
-            <div style="max-width: 800px;">
-                ${converter.makeHtml(item.body)}
-            </div>
-        `;
-        switchPage('outreach-detail');
-    } else {
-        console.error("Outreach item or body content not found for ID:", itemId);
-    }
-}
-window.showOutreachDetail = showOutreachDetail; 
-
-
-// =======================================================
-// MAIN LOADER SWITCH
-// =======================================================
-
-/**
- * Main content loading switch.
- */
+// MAIN ROUTER
 function loadContent(pageId) {
-    // Load global dependencies
     loadImpactStats();
     loadContactContent(); 
 
-    if (pageId === 'home') {
-        loadHomePageContent();
-    } else if (pageId === 'team') {
-        loadTeamContent();
-    } else if (pageId === 'outputs') {
-        loadOutputsContent(); 
-    } else if (pageId === 'news') {
-        loadNewsContent();
-    } else if (pageId === 'research') {
-        loadResearchContent();
-    } else if (pageId === 'advisory') {
-        loadAdvisoryContent();
-    } else if (pageId === 'outreach') {
-        loadOutreachContent();
-    }
+    if (pageId === 'home') loadHomePageContent();
+    else if (pageId === 'team') loadTeamContent();
+    else if (pageId === 'outputs') loadOutputsContent(); 
+    else if (pageId === 'research') loadResearchContent();
+    else if (pageId === 'advisory') loadAdvisoryContent();
+    else if (pageId === 'news') loadNewsContent();
+    else if (pageId === 'outreach') loadOutreachContent();
 }
 window.loadContent = loadContent;
