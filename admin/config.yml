@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: LD-Shell/owxr_draft
   branch: main
   # Recommended for Netlify deployment
 
