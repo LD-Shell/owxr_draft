@@ -1,37 +1,39 @@
-[
-  {
-    "title": "Mechanisms of Glycine Polymorph Selection in Nanoconfined Environments",
-    "conference": "American Chemical Society (ACS) Fall Meeting",
-    "location": "San Francisco, CA",
-    "date": "2024-08-14",
-    "presenter": "Dexter Trojan"
-  },
-  {
-    "title": "Molecular Dynamics Simulations of Polymer Chain Scaling in Aprotic Solvents",
-    "conference": "AIChE Annual Meeting",
-    "location": "Orlando, FL",
-    "date": "2024-11-05",
-    "presenter": "Dr. Sarah Chen"
-  },
-  {
-    "title": "Novel Approaches to Zeolite Synthesis for Enhanced Catalytic Activity",
-    "conference": "Gordon Research Conference on Crystal Engineering",
-    "location": "Newry, ME",
-    "date": "2024-06-20",
-    "presenter": "Prof. Michael Riekhorst"
-  },
-  {
-    "title": "Controlling Nucleation Rates of Bioactive Ceramics for Bone Tissue Engineering",
-    "conference": "Materials Research Society (MRS) Spring Meeting",
-    "location": "Seattle, WA",
-    "date": "2025-04-12",
-    "presenter": "Jessica Alverez"
-  },
-  {
-    "title": "Hybrid OpenMP/CUDA Workflows for Large-Scale Molecular Crystal Simulations",
-    "conference": "Foundations of Molecular Modeling and Simulation (FOMMS)",
-    "location": "Delavan, WI",
-    "date": "2025-07-28",
-    "presenter": "David Kim"
-  }
-]
+{
+  "talks": [
+    {
+      "title": "Mechanisms of Glycine Polymorph Selection in Nanoconfined Environments",
+      "conference": "American Chemical Society (ACS) Fall Meeting",
+      "location": "San Francisco, CA",
+      "date": "2024-08-14",
+      "presenter": "Dexter Trojan"
+    },
+    {
+      "title": "Molecular Dynamics Simulations of Polymer Chain Scaling in Aprotic Solvents",
+      "conference": "AIChE Annual Meeting",
+      "location": "Orlando, FL",
+      "date": "2024-11-05",
+      "presenter": "Dr. Sarah Chen"
+    },
+    {
+      "title": "Novel Approaches to Zeolite Synthesis for Enhanced Catalytic Activity",
+      "conference": "Gordon Research Conference on Crystal Engineering",
+      "location": "Newry, ME",
+      "date": "2024-06-20",
+      "presenter": "Prof. Michael Riekhorst"
+    },
+    {
+      "title": "Controlling Nucleation Rates of Bioactive Ceramics for Bone Tissue Engineering",
+      "conference": "Materials Research Society (MRS) Spring Meeting",
+      "location": "Seattle, WA",
+      "date": "2025-04-12",
+      "presenter": "Jessica Alverez"
+    },
+    {
+      "title": "Hybrid OpenMP/CUDA Workflows for Large-Scale Molecular Crystal Simulations",
+      "conference": "Foundations of Molecular Modeling and Simulation (FOMMS)",
+      "location": "Delavan, WI",
+      "date": "2025-07-28",
+      "presenter": "David Kim"
+    }
+  ]
+}
