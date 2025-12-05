@@ -6,11 +6,8 @@
       "name": "Dr. Jeffrey Rimer",
       "is_pi": true,
       "role": "Center Director & PI",
-      "title_detail": "Abraham E. Dukler professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": [
-        "Zeolites",
-        "Biomineralization"
-      ],
+      "title_detail": "Abraham E. Dukler Professor\nDepartment of Chemical and Biomolecular Engineering",
+      "tags": ["Zeolites", "Biomineralization"],
       "id": "rimer",
       "image": "public/images/rimer.jpg",
       "email": "jrimer@central.uh.edu"
@@ -22,10 +19,7 @@
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Frank Worley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": [
-        "Protein Physics",
-        "Nucleation"
-      ],
+      "tags": ["Protein Physics", "Nucleation"],
       "id": "vekilov",
       "image": "public/images/vekilov.jpg",
       "email": "vekilov@uh.edu"
@@ -36,11 +30,8 @@
       "name": "Dr. Alamgir Karim",
       "is_pi": true,
       "role": "Co-Principal Investigator",
-      "title_detail": "Dow Chair and Welch Foundation Professor\nDirector, International Polymer & Soft Matter Center (IPSMC)\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": [
-        "Molecular Dynamics",
-        "AI/ML"
-      ],
+      "title_detail": "Dow Chair and Welch Foundation Professor\nDirector, International Polymer & Soft Matter Center (IPSMC)",
+      "tags": ["Molecular Dynamics", "AI/ML"],
       "id": "karim",
       "image": "public/images/karim.jpg",
       "email": "akarim3@central.uh.edu"
@@ -52,10 +43,7 @@
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Cullen Distinguished Professor and Associate\nChair, Department of Chemistry",
-      "tags": [
-        "Molecular Dynamics",
-        "AI/ML"
-      ],
+      "tags": ["Nanoparticles", "Surface Science"],
       "id": "lee",
       "image": "public/images/lee.jpg",
       "email": "trlee@uh.edu"
@@ -67,13 +55,10 @@
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Ernest J and Barbara M Henley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": [
-        "Molecular Dynamics",
-        "AI/ML"
-      ],
+      "tags": ["Molecular Dynamics", "AI/ML"],
       "id": "palmer",
       "image": "public/images/palmer.jpg",
-      "email": " jcpalmer@uh.edu"
+      "email": "jcpalmer@uh.edu"
     },
     {
       "scholar": "#",
@@ -81,11 +66,8 @@
       "name": "Dr. Gul Zerze",
       "is_pi": true,
       "role": "Co-Principal Investigator",
-      "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": [
-        "Molecular Dynamics",
-        "AI/ML"
-      ],
+      "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar",
+      "tags": ["Biomolecular Simulation"],
       "id": "zerze",
       "image": "public/images/zerze.jpg",
       "email": "gzerze@central.uh.edu"
@@ -97,35 +79,47 @@
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Professor\nMechanical Engineering Technology",
-      "tags": [
-        "Molecular Dynamics",
-        "AI/ML"
-      ],
+      "tags": ["Electron Microscopy"],
       "id": "robles",
       "image": "public/images/robles.jpg",
       "email": "fcrobles@Central.UH.EDU"
     },
-    {
-      "bio": "Studying calcium oxalate inhibition.",
-      "name": "Jane Doe",
-      "is_pi": false,
-      "university": [],
-      "department": "Chemical Engineering",
-      "role": "PhD Candidate",
-      "tags": [],
-      "id": "jane-doe",
-      "image": ""
-    },
-    {
-      "bio": "Advanced AFM characterization.",
-      "name": "John Smith",
-      "is_pi": false,
-      "university": [],
-      "department": "Chemistry",
-      "role": "Postdoctoral Fellow",
-      "tags": [],
-      "id": "john-smith",
-      "image": ""
-    }
+    
+    { "name": "Vraj Chauhan", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Calcium oxalate (kidney stone). Collaborator: Dr. Peter Vekilov." },
+    { "name": "David Ajala", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Polymorphism (modifiers). Co-advisor: Dr. Jeremy Palmer." },
+    { "name": "Arshia Nosrati", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Crystallization with metal(oxide). Collaborator: Dr. Randy Lee." },
+    { "name": "Dipayan Chakraborty", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Cholesterol (heart plaque). Collaborator: Dr. Peter Vekilov." },
+    { "name": "Muhammad Osman Khalid", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Calcium phosphates (kidney stone)." },
+    { "name": "Menghui Yao", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Polymorphism (modifiers)." },
+    { "name": "Si Li", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Tautomers (pharmaceuticals)." },
+    { "name": "Emeka Ojukwu", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Rimer Group Member." },
+
+    { "name": "Rohith Pulluri", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Peter Vekilov", "bio": "Vekilov Group Member." },
+    { "name": "Manasa Yerragunta", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Peter Vekilov", "bio": "Research: Polymorphism. Co-advisor: Dr. Jeffrey Rimer." },
+
+    { "name": "Abrar Zadeed Ahmed", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Alamgir Karim", "bio": "Research: Crystallization with coacervates. Co-advisor: Dr. Jeffrey Rimer." },
+    { "name": "Saniya Zafar", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Alamgir Karim", "bio": "Research: Crystallization with coacervates/metal." },
+    { "name": "Anusha Vonteddu", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Alamgir Karim", "bio": "Research: Dynamics of Coacervate Vesicles." },
+    { "name": "Julia Bonesso Sabadini", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. Alamgir Karim", "bio": "Karim Group Member." },
+    { "name": "Amir Kashkooli", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Alamgir Karim", "bio": "Research: Complex coacervates." },
+
+    { "name": "Hariharan Annadura", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeremy Palmer", "bio": "Palmer Group Member. Co-advisor: Dr. Peter Vekilov." },
+    { "name": "Shivraj Kotkar", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. Jeremy Palmer", "bio": "Palmer Group Member." },
+
+    { "name": "Nehil Shreyash", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Gul Zerze", "bio": "Research: Complex coacervates (pharmaceuticals). Co-advisor: Dr. Alamgir Karim." },
+    { "name": "Veliz Alejandro", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Gul Zerze", "bio": "Research: Crystal polymorphism. Co-advisor: Dr. Peter Vekilov." },
+    { "name": "Gupta Ayush", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Gul Zerze", "bio": "Research: Cholesterol clusters." },
+
+    { "name": "Amir Abu-Talib", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. T. Randall Lee", "bio": "Research: Zeolite catalysts. Co-advisor: Dr. Jeffrey Rimer." },
+    { "name": "Supawitch Hoijang", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. T. Randall Lee", "bio": "Research: Iron oxide nanoparticles." },
+    { "name": "Ramtin Yarinia", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. T. Randall Lee", "bio": "Research: Glycine crystallization." },
+    { "name": "Buu Dang Tran", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. T. Randall Lee", "bio": "Research: Glycine crystallization." },
+    { "name": "Suman Pal", "is_pi": false, "role": "Postdoctoral Fellow", "advisor": "Dr. T. Randall Lee", "bio": "Research: Chiral arginine crystallization." },
+    { "name": "Melissa Gonzalez", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. T. Randall Lee", "bio": "Research: Magnetic photocatalytic nanoparticles." },
+
+    { "name": "Aniqa Lim", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Francisco Robles", "bio": "Research: Electron Microscopy." },
+    { "name": "Denise Torres", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Francisco Robles", "bio": "Research: Electron Microscopy." },
+    { "name": "Isaac Oppong", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Francisco Robles", "bio": "Research: Electron Microscopy." },
+    { "name": "Alba Valero", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Francisco Robles", "bio": "Research: Electron Microscopy." }
   ]
 }
