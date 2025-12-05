@@ -9,17 +9,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <script>
+    // Define the URL strictly
+    var netlifyUrl = "https://welchuhadmin.netlify.app/.netlify/identity";
+
+    // Function to force initialization
+    function forceInit() {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.init({
+          APIUrl: netlifyUrl
+        });
+        console.log("✅ Custom Identity Init: Success -> " + netlifyUrl);
+      } else {
+        console.warn("⚠️ Identity widget not found yet.");
+      }
+    }
+
+    // Try immediately
+    forceInit();
+
+    // Also try on window load (just in case)
+    window.addEventListener('load', forceInit);
+  </script>
 </head>
 <body>
-  <script>
-    // This forces the widget to look at your Netlify URL, not GitHub Pages
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.init({
-        APIUrl: "https://welchuhadmin.netlify.app/.netlify/identity"
-      });
-    }
-  </script>
-
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
