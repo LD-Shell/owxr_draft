@@ -7,7 +7,6 @@
   
   <!-- PREVENT CMS FROM AUTO-INITIALIZING -->
   <script>
-    // Prevent Decap CMS from auto-initializing
     window.CMS_MANUAL_INIT = true;
   </script>
   
@@ -15,90 +14,336 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
-  <!-- The mount point MUST exist before CMS tries to use it -->
   <div id="nc-root"></div>
   
   <script>
-    // Wait for everything to be completely ready
     window.addEventListener('load', function() {
       console.log('DOM fully loaded, initializing CMS...');
       
-      // Double-check the mount point exists
       const mountPoint = document.getElementById('nc-root');
-      if (!mountPoint) {
-        console.error('Mount point #nc-root not found!');
-        document.body.innerHTML = '<div style="color:red;padding:20px;">Error: CMS mount point missing</div>';
-        return;
-      }
+      if (!mountPoint) return;
       
-      // Function to safely initialize CMS
       function initializeCMS() {
         console.log('Initializing CMS...');
         
-        // Check if CMS is available
         if (typeof CMS === 'undefined') {
           console.error('CMS not loaded');
           return;
         }
         
-        // Register preview styles
+        // --- REGISTER PREVIEW STYLES ---
         try {
+          // IMPORTANT: Use the EXACT same paths as your website
           CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
           CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+          
+          // This is the path from your website's HTML
           CMS.registerPreviewStyle("/src/css/main.css");
+          
           console.log('Preview styles registered');
         } catch (err) {
           console.warn('Could not register preview styles:', err);
         }
         
-        // Create preview components if createClass is available
+        // --- TEAM PREVIEW COMPONENT (Matches your team-grid) ---
         if (typeof createClass !== 'undefined') {
           try {
-            // Team preview component
             const TeamPreview = createClass({
               render: function() {
                 const entry = this.props.entry;
-                const name = entry.getIn(['data', 'name']) || 'No name';
-                const role = entry.getIn(['data', 'role']) || 'No role';
+                const image = entry.getIn(['data', 'image']);
+                const bgImage = image ? this.props.getAsset(image) : null;
+                const name = entry.getIn(['data', 'name']) || '';
+                const role = entry.getIn(['data', 'role']) || '';
+                const title_detail = entry.getIn(['data', 'title_detail']) || '';
+                const bio = entry.getIn(['data', 'bio']) || '';
                 
-                return h('div', {style: {
-                  padding: '20px',
-                  margin: '10px',
-                  border: '1px solid #ccc',
-                  borderRadius: '5px',
-                  backgroundColor: '#f9f9f9',
-                  maxWidth: '400px'
-                }},
-                  h('h3', {style: {margin: '0 0 10px 0', color: '#333'}}, name),
-                  h('p', {style: {margin: '0 0 10px 0', color: '#C8102E', fontWeight: 'bold'}}, role)
+                // This matches your website's team-grid structure
+                return h('div', {className: 'profile-card'}, // Your site uses profile-card class
+                  h('div', {style: {
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }},
+                    // Image container
+                    bgImage ? h('div', {style: {height: '200px', overflow: 'hidden'}},
+                      h('img', {
+                        src: bgImage.toString(),
+                        alt: name,
+                        style: {
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }
+                      })
+                    ) : h('div', {
+                      style: {
+                        height: '200px',
+                        backgroundColor: '#e9ecef',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#6c757d'
+                      }
+                    }, h('i', {className: 'fas fa-user fa-3x'})),
+                    
+                    // Info container
+                    h('div', {style: {padding: '20px'}},
+                      // Name - matches your h4 styling
+                      h('h4', {
+                        style: {
+                          margin: '0 0 8px 0',
+                          fontFamily: "'Oswald', sans-serif",
+                          fontWeight: '500',
+                          fontSize: '1.25rem',
+                          color: '#333'
+                        }
+                      }, name),
+                      
+                      // Role with UH Red
+                      h('div', {
+                        style: {
+                          color: '#C8102E', // UH Red from your site
+                          fontWeight: '700',
+                          fontSize: '0.95rem',
+                          marginBottom: '10px'
+                        }
+                      }, role),
+                      
+                      // Title detail
+                      title_detail ? h('p', {
+                        style: {
+                          fontSize: '0.9rem',
+                          color: '#555',
+                          margin: '0 0 10px 0',
+                          lineHeight: '1.4'
+                        }
+                      }, title_detail) : null,
+                      
+                      // Bio
+                      bio ? h('p', {
+                        style: {
+                          fontSize: '0.85rem',
+                          color: '#666',
+                          margin: '10px 0 0 0',
+                          lineHeight: '1.5',
+                          borderTop: '1px solid #eee',
+                          paddingTop: '10px'
+                        }
+                      }, bio) : null
+                    )
+                  )
                 );
               }
             });
             
-            // Register preview template
+            // --- NEWS PREVIEW COMPONENT ---
+            const NewsPreview = createClass({
+              render: function() {
+                const entry = this.props.entry;
+                const title = entry.getIn(['data', 'title']) || '';
+                const date = entry.getIn(['data', 'date']);
+                const excerpt = entry.getIn(['data', 'excerpt']) || '';
+                const image = entry.getIn(['data', 'featured_image']);
+                const bgImage = image ? this.props.getAsset(image) : null;
+                
+                return h('article', {
+                  style: {
+                    backgroundColor: '#fff',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    marginBottom: '20px'
+                  }
+                },
+                  // Featured image
+                  bgImage ? h('div', {style: {height: '200px', overflow: 'hidden'}},
+                    h('img', {
+                      src: bgImage.toString(),
+                      alt: title,
+                      style: {
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }
+                    })
+                  ) : null,
+                  
+                  // Content
+                  h('div', {style: {padding: '25px'}},
+                    // Title with UH Red
+                    h('h3', {
+                      style: {
+                        margin: '0 0 10px 0',
+                        fontFamily: "'Oswald', sans-serif",
+                        color: '#C8102E',
+                        fontSize: '1.5rem'
+                      }
+                    }, title),
+                    
+                    // Date
+                    date ? h('div', {
+                      style: {
+                        color: '#6c757d',
+                        fontSize: '0.85rem',
+                        marginBottom: '15px'
+                      }
+                    }, new Date(date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })) : null,
+                    
+                    // Excerpt
+                    excerpt ? h('p', {
+                      style: {
+                        color: '#555',
+                        lineHeight: '1.6',
+                        marginBottom: '15px'
+                      }
+                    }, excerpt) : null,
+                    
+                    // Body content (if editing body)
+                    this.props.widgetFor('body') ? h('div', {
+                      style: {
+                        borderTop: '1px solid #eee',
+                        paddingTop: '15px',
+                        marginTop: '15px'
+                      }
+                    }, this.props.widgetFor('body')) : null
+                  )
+                );
+              }
+            });
+            
+            // --- EVENTS PREVIEW COMPONENT ---
+            const EventsPreview = createClass({
+              render: function() {
+                const entry = this.props.entry;
+                const title = entry.getIn(['data', 'title']) || '';
+                const date = entry.getIn(['data', 'date']);
+                const time = entry.getIn(['data', 'time']) || '';
+                const location = entry.getIn(['data', 'location']) || '';
+                
+                return h('div', {
+                  style: {
+                    backgroundColor: '#fff',
+                    borderRadius: '8px',
+                    padding: '20px',
+                    borderLeft: '4px solid #C8102E', // UH Red accent
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    marginBottom: '20px'
+                  }
+                },
+                  h('h3', {
+                    style: {
+                      margin: '0 0 15px 0',
+                      fontFamily: "'Oswald', sans-serif",
+                      color: '#333',
+                      fontSize: '1.3rem'
+                    }
+                  }, title),
+                  
+                  // Event details
+                  h('div', {style: {marginBottom: '15px'}},
+                    date ? h('div', {style: {display: 'flex', alignItems: 'center', marginBottom: '5px'}},
+                      h('i', {
+                        className: 'fas fa-calendar',
+                        style: {color: '#C8102E', marginRight: '10px', width: '20px'}
+                      }),
+                      h('span', {}, new Date(date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      }))
+                    ) : null,
+                    
+                    time ? h('div', {style: {display: 'flex', alignItems: 'center', marginBottom: '5px'}},
+                      h('i', {
+                        className: 'fas fa-clock',
+                        style: {color: '#C8102E', marginRight: '10px', width: '20px'}
+                      }),
+                      h('span', {}, time)
+                    ) : null,
+                    
+                    location ? h('div', {style: {display: 'flex', alignItems: 'center', marginBottom: '5px'}},
+                      h('i', {
+                        className: 'fas fa-map-marker-alt',
+                        style: {color: '#C8102E', marginRight: '10px', width: '20px'}
+                      }),
+                      h('span', {}, location)
+                    ) : null
+                  ),
+                  
+                  // Description
+                  this.props.widgetFor('body') ? h('div', {
+                    style: {
+                      borderTop: '1px solid #eee',
+                      paddingTop: '15px',
+                      marginTop: '15px'
+                    }
+                  }, this.props.widgetFor('body')) : null
+                );
+              }
+            });
+            
+            // --- REGISTER PREVIEW TEMPLATES ---
+            // Register for each collection in your config.yml
             CMS.registerPreviewTemplate('team', TeamPreview);
-            console.log('Preview template registered');
+            CMS.registerPreviewTemplate('members', TeamPreview);
+            CMS.registerPreviewTemplate('news', NewsPreview);
+            CMS.registerPreviewTemplate('events', EventsPreview);
+            CMS.registerPreviewTemplate('publications', NewsPreview); // Reuse news style
+            
+            console.log('Preview templates registered');
           } catch (err) {
             console.warn('Could not register preview template:', err);
           }
         }
         
-        // FINALLY: Initialize the CMS
+        // --- INITIALIZE CMS ---
         try {
           CMS.init();
           console.log('CMS initialized successfully');
+          
+          // Add a custom style for the preview pane to match your site
+          const style = document.createElement('style');
+          style.textContent = `
+            /* Make preview pane background match your site */
+            .nc-previewPane-frame {
+              background-color: #f8f9fa !important;
+              font-family: 'Roboto', sans-serif !important;
+            }
+            /* Your site's team grid spacing */
+            .nc-previewPane-frame .profile-card {
+              margin: 15px;
+            }
+            /* Match your site's typography */
+            .nc-previewPane-frame h1,
+            .nc-previewPane-frame h2,
+            .nc-previewPane-frame h3,
+            .nc-previewPane-frame h4 {
+              font-family: 'Oswald', sans-serif !important;
+            }
+            .nc-previewPane-frame .text-uh-red {
+              color: #C8102E !important;
+            }
+          `;
+          document.head.appendChild(style);
+          
         } catch (err) {
           console.error('CMS.init() failed:', err);
           mountPoint.innerHTML = 
             '<div style="color:red;padding:20px;border:2px solid red;">' +
             '<h3>CMS Initialization Error</h3>' +
             '<p>' + err.message + '</p>' +
-            '<p>Try refreshing the page or using a different browser.</p>' +
             '</div>';
         }
       }
       
-      // Small delay to ensure everything is settled
+      // Initialize with a small delay
       setTimeout(initializeCMS, 100);
     });
   </script>
