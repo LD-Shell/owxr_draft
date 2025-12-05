@@ -11,26 +11,33 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <script>
-    // Define the URL strictly
-    var netlifyUrl = "https://welchuhadmin.netlify.app/.netlify/identity";
-
-    // Function to force initialization
-    function forceInit() {
+    // Poll to check when the widget library has loaded
+    var patchInterval = setInterval(function() {
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.init({
-          APIUrl: netlifyUrl
-        });
-        console.log("✅ Custom Identity Init: Success -> " + netlifyUrl);
-      } else {
-        console.warn("⚠️ Identity widget not found yet.");
+        clearInterval(patchInterval);
+
+        console.log("🐵 Applying Netlify Identity Patch...");
+
+        // A. Save the original 'init' function
+        var originalInit = window.netlifyIdentity.init;
+
+        // B. Overwrite 'init' with our Proxy Function
+        window.netlifyIdentity.init = function(options) {
+          options = options || {};
+          
+          // FORCE the API URL every time 'init' is called
+          options.APIUrl = "https://welchuhadmin.netlify.app/.netlify/identity";
+          
+          console.log("🔒 Identity Init Intercepted! Forcing URL:", options.APIUrl);
+          
+          // C. Call the original function with our forced options
+          return originalInit.call(window.netlifyIdentity, options);
+        };
+
+        // D. Trigger it immediately once to set the baseline
+        window.netlifyIdentity.init({});
       }
-    }
-
-    // Try immediately
-    forceInit();
-
-    // Also try on window load (just in case)
-    window.addEventListener('load', forceInit);
+    }, 10);
   </script>
 </head>
 <body>
