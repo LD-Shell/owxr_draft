@@ -1,121 +1,142 @@
 {
   "members": [
     {
-      "id": "rimer",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Jeffrey Rimer",
+      "is_pi": true,
       "role": "Center Director & PI",
       "title_detail": "Abraham E. Dukler professor\nDepartment of Chemical and Biomolecular Engineering",
-      "is_pi": true,
+      "tags": [
+        "Zeolites",
+        "Biomineralization"
+      ],
+      "id": "rimer",
       "image": "public/images/rimer.jpg",
-      "bio": [],
-      "tags": ["Zeolites", "Biomineralization"],
-      "email": "jrimer@central.uh.edu",
-      "scholar": "#"
+      "email": "jrimer@central.uh.edu"
     },
     {
-      "id": "vekilov",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Peter Vekilov",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Frank Worley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "is_pi": true,
+      "tags": [
+        "Protein Physics",
+        "Nucleation"
+      ],
+      "id": "vekilov",
       "image": "public/images/vekilov.jpg",
-      "bio": [],
-      "tags": ["Protein Physics", "Nucleation"],
-      "email": "vekilov@uh.edu",
-      "scholar": "#"
+      "email": "vekilov@uh.edu"
     },
     {
-      "id": "karim",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Alamgir Karim",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Dow Chair and Welch Foundation Professor\nDirector, International Polymer & Soft Matter Center (IPSMC)\nDepartment of Chemical and Biomolecular Engineering",
-      "is_pi": true,
+      "tags": [
+        "Molecular Dynamics",
+        "AI/ML"
+      ],
+      "id": "karim",
       "image": "public/images/karim.jpg",
-      "bio": [],
-      "tags": ["Molecular Dynamics", "AI/ML"],
-      "email": "akarim3@central.uh.edu",
-      "scholar": "#"
+      "email": "akarim3@central.uh.edu"
     },
     {
-      "id": "lee",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. T. Randall Lee",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Cullen Distinguished Professor and Associate\nChair, Department of Chemistry",
-      "is_pi": true,
+      "tags": [
+        "Molecular Dynamics",
+        "AI/ML"
+      ],
+      "id": "lee",
       "image": "public/images/lee.jpg",
-      "bio": [],
-      "tags": ["Molecular Dynamics", "AI/ML"],
-      "email": "trlee@uh.edu",
-      "scholar": "#"
+      "email": "trlee@uh.edu"
     },
     {
-      "id": "palmer",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Jeremy Palmer",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Ernest J and Barbara M Henley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "is_pi": true,
+      "tags": [
+        "Molecular Dynamics",
+        "AI/ML"
+      ],
+      "id": "palmer",
       "image": "public/images/palmer.jpg",
-      "bio": [],
-      "tags": ["Molecular Dynamics", "AI/ML"],
-      "email": " jcpalmer@uh.edu",
-      "scholar": "#"
+      "email": " jcpalmer@uh.edu"
     },
     {
-      "id": "zerze",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Gul Zerze",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar\nDepartment of Chemical and Biomolecular Engineering",
-      "is_pi": true,
+      "tags": [
+        "Molecular Dynamics",
+        "AI/ML"
+      ],
+      "id": "zerze",
       "image": "public/images/zerze.jpg",
-      "bio": [],
-      "tags": ["Molecular Dynamics", "AI/ML"],
-      "email": "gzerze@central.uh.edu",
-      "scholar": "#"
+      "email": "gzerze@central.uh.edu"
     },
     {
-      "id": "robles",
+      "scholar": "#",
+      "bio": [],
       "name": "Dr. Francisco Robles",
+      "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Professor\nMechanical Engineering Technology",
-      "is_pi": true,
+      "tags": [
+        "Molecular Dynamics",
+        "AI/ML"
+      ],
+      "id": "robles",
       "image": "public/images/robles.jpg",
-      "bio": [],
-      "tags": ["Molecular Dynamics", "AI/ML"],
-      "email": "fcrobles@Central.UH.EDU",
-      "scholar": "#"
+      "email": "fcrobles@Central.UH.EDU"
     },
     {
-      "id": "jane-doe",
-      "name": "Jane Doe",
-      "role": "PhD Candidate",
-      "is_pi": false,
-      "department": "Chemical Engineering",
-      "university": [],
       "bio": "Studying calcium oxalate inhibition.",
-      "image": "",
-      "tags": []
-    },
-    {
-      "id": "john-smith",
-      "name": "John Smith",
-      "role": "Postdoctoral Fellow",
+      "name": "Jane Doe",
       "is_pi": false,
-      "department": "Chemistry",
       "university": [],
-      "bio": "Advanced AFM characterization.",
-      "image": "",
-      "tags": []
-    },
-    {
-      "id": "emily-chen",
-      "name": "Emily Chen",
+      "department": "Chemical Engineering",
       "role": "PhD Candidate",
+      "tags": [],
+      "id": "jane-doe",
+      "image": ""
+    },
+    {
+      "bio": "Advanced AFM characterization.",
+      "name": "John Smith",
       "is_pi": false,
-      "department": "Materials Science",
       "university": [],
+      "department": "Chemistry",
+      "role": "Postdoctoral Fellow",
+      "tags": [],
+      "id": "john-smith",
+      "image": ""
+    },
+    {
       "bio": "Zeolite synthesis optimization.",
-      "image": "",
-      "tags": []
+      "name": "Emily Chen.",
+      "is_pi": false,
+      "university": [],
+      "department": "Materials Science",
+      "role": "PhD Candidate",
+      "tags": [],
+      "id": "emily-chen",
+      "image": ""
     }
   ]
 }
