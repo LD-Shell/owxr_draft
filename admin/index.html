@@ -3,52 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welch Center Admin</title>
-  
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
-  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-  
-  <script src="https://unpkg.com/create-react-class/create-react-class.min.js"></script>
+  <title>Content Manager</title>
+  <!-- <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
 </head>
 <body>
-  <script>
-    // --- FIX: Define the 'h' helper function ---
-    var h = React.createElement;
-
-    // --- A. REGISTER STYLES ---
-    // This injects your actual website CSS into the CMS preview pane
-    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
-    CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
-    CMS.registerPreviewStyle("/src/css/main.css");
-
-    // --- B. CUSTOM PREVIEW COMPONENT ---
-    var TeamPreview = createReactClass({
-      render: function() {
-        var entry = this.props.entry;
-        var image = entry.getIn(['data', 'image']);
-        var bgImage = image ? this.props.getAsset(image) : "";
-
-        // Render the card using your CSS classes
-        return h('div', {className: 'profile-card', style: {maxWidth: '300px', margin: '20px auto'}},
-          image ? h('div', {className: 'profile-img-container'},
-            h('img', {src: bgImage.toString(), className: 'profile-img'})
-          ) : null,
-          h('div', {className: 'profile-info'},
-            h('h4', {className: 'profile-name'}, entry.getIn(['data', 'name'])),
-            h('div', {className: 'profile-role', style: {fontWeight: '700'}}, entry.getIn(['data', 'role'])),
-            h('p', {style: {fontSize: '0.9rem', marginTop: '10px'}}, entry.getIn(['data', 'title_detail'])),
-            h('p', {style: {fontSize: '0.85rem', marginTop: '15px'}}, entry.getIn(['data', 'bio']))
-          )
-        );
-      }
-    });
-
-    // --- C. REGISTER THE COMPONENT ---
-    // Apply this preview to the 'team' collection
-    CMS.registerPreviewTemplate("team", TeamPreview);
-
-  </script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
