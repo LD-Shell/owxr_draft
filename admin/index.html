@@ -11,6 +11,15 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <script>
+    // This forces the widget to look at your Netlify URL, not GitHub Pages
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.init({
+        APIUrl: "https://welchuhadmin.netlify.app/.netlify/identity"
+      });
+    }
+  </script>
+
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
