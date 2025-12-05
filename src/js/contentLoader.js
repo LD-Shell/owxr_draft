@@ -19,7 +19,10 @@ async function fetchData(fileName) {
 // RENDERER: EVENTS (With Interactive Calendar)
 // =======================================================
 async function loadEventsContent() {
-    const eventsData = await fetchData('events');
+    // UPDATED: Unwrap 'events_list'
+    const rawEvents = await fetchData('events');
+    const eventsData = rawEvents.events_list || [];
+    
     window.eventsStore = eventsData; // Cache for detail view
 
     // 1. Render Calendar Widget
@@ -79,12 +82,6 @@ function renderCalendar(events) {
 
     // Days 1 to 31
     for (let day = 1; day <= daysInMonth; day++) {
-        // Construct date string matching JSON (YYYY-MM-DD usually, or ISO)
-        // Note: Simple string matching is safest if formats vary, but let's assume standard Date parsing
-        const checkDate = new Date(currentYear, currentMonth, day);
-        
-        // Find events on this specific day
-        // We compare using local date strings to avoid timezone shifts hiding events
         const dayEvents = events.filter(e => {
             const eDate = new Date(e.date);
             return eDate.getDate() === day && 
@@ -96,8 +93,7 @@ function renderCalendar(events) {
         let tooltip = '';
 
         if (hasEvent) {
-            // Build Tooltip
-            const eventItem = dayEvents[0]; // Show first event if multiple
+            const eventItem = dayEvents[0]; 
             tooltip = `
                 <div class="event-tooltip">
                     <h5>${eventItem.title}</h5>
@@ -117,7 +113,7 @@ function renderCalendar(events) {
         `;
     }
 
-    html += `</div>`; // Close grid
+    html += `</div>`; 
     container.innerHTML = html;
 }
 
@@ -126,7 +122,10 @@ function renderCalendar(events) {
 // =======================================================
 
 async function loadNewsContent() {
-    const newsData = await fetchData('news');
+    // UPDATED: Unwrap 'articles'
+    const rawNews = await fetchData('news');
+    const newsData = rawNews.articles || [];
+    
     window.newsStore = newsData;
 
     const newsGrid = document.getElementById('news-grid');
@@ -139,7 +138,10 @@ async function loadNewsContent() {
 }
 
 async function loadOutreachContent() {
-    const outreachData = await fetchData('outreach');
+    // UPDATED: Unwrap 'programs'
+    const rawOutreach = await fetchData('outreach');
+    const outreachData = rawOutreach.programs || [];
+    
     window.outreachStore = outreachData;
 
     const outreachGrid = document.getElementById('outreach-grid');
@@ -153,7 +155,6 @@ async function loadOutreachContent() {
 
 /**
  * Unified Card HTML Generator
- * Handles conditional icons/meta based on type
  */
 function createCardHtml(item, type) {
     let metaIcon = 'calendar-alt';
@@ -163,15 +164,13 @@ function createCardHtml(item, type) {
     if (type === 'outreach') {
         metaIcon = 'heart';
         btnText = 'View Report';
-        if(item.tags && item.tags.length > 0) metaText = item.tags[0]; // Use tag instead of date for outreach if pref
+        if(item.tags && item.tags.length > 0) metaText = item.tags[0]; 
     } else if (type === 'events') {
         metaIcon = 'clock';
         btnText = 'Event Details';
-        // Add time to meta if available
         if (item.time) metaText += ` | ${item.time}`;
     }
 
-    // Determine Category Label
     let categoryLabel = item.category || 'Update';
     if (item.tags && item.tags.length > 0 && !item.category) categoryLabel = item.tags[0];
 
@@ -201,44 +200,36 @@ function createCardHtml(item, type) {
 function openDetailView(e, itemId, type) {
     if (e) e.preventDefault();
 
-    // 1. Select Store
     let dataStore;
     if (type === 'news') dataStore = window.newsStore;
     else if (type === 'outreach') dataStore = window.outreachStore;
     else if (type === 'events') dataStore = window.eventsStore;
 
-    // 2. Find Item
     const item = dataStore ? dataStore.find(n => n.id === itemId || n.id == itemId) : null;
     if (!item) {
         console.warn(`Item ${itemId} not found in ${type} store.`);
         return;
     }
 
-    // 3. Select Container
     const containerId = `${type}-detail-content`;
     const detailContainer = document.getElementById(containerId);
     if (!detailContainer) return;
 
-    // 4. Content Parsing
     let contentHtml = '';
     let heroImage = item.image;
     let fullTitle = item.title;
     
-    // Default fallback category
     let category = type.charAt(0).toUpperCase() + type.slice(1); 
     if (item.category) category = item.category;
 
-    // -- Handle Decap CMS Object Structure --
     if (typeof item.body === 'object' && item.body !== null) {
         const b = item.body;
         fullTitle = b.full_title || item.title;
         heroImage = b.main_image || item.image;
         if(b.category) category = b.category;
 
-        // Lead Text
         if (b.lead_text) contentHtml += `<p class="article-lead">${b.lead_text}</p>`;
 
-        // Content Blocks Loop
         if (b.content_blocks && Array.isArray(b.content_blocks)) {
             contentHtml += b.content_blocks.map(block => {
                 if (block.type === 'quote') {
@@ -262,11 +253,9 @@ function openDetailView(e, itemId, type) {
             }).join('');
         }
     } else {
-        // -- Handle Legacy/Raw Markdown --
         contentHtml = converter.makeHtml(item.body || '');
     }
 
-    // 5. Special Header for EVENTS (Time & Location)
     let extraMetaHtml = '';
     if (type === 'events') {
         extraMetaHtml = `
@@ -277,7 +266,6 @@ function openDetailView(e, itemId, type) {
         `;
     }
 
-    // 6. Inject HTML
     detailContainer.innerHTML = `
         <article class="article-container">
             <div class="article-hero">
@@ -303,7 +291,6 @@ function openDetailView(e, itemId, type) {
         </article>
     `;
 
-    // 7. Transition
     switchPage(type + '-detail');
     window.scrollTo(0,0);
 }
@@ -359,8 +346,10 @@ async function loadHomePageContent() {
     }
 
     // --- UPCOMING EVENTS ON HOME PAGE (UPDATED) ---
-    // Now pulls from EVENTS.json instead of news
-    const eventsData = await fetchData('events');
+    // UPDATED: Unwrap 'events_list' to populate home page preview
+    const rawEvents = await fetchData('events');
+    const eventsData = rawEvents.events_list || [];
+    
     const eventPreview = document.getElementById('event-preview-grid');
     
     if (eventPreview) {
@@ -408,7 +397,10 @@ async function loadImpactStats() {
 }
 
 async function loadTeamContent() {
-    const teamData = await fetchData('team');
+    // UPDATED: Unwrap 'members'
+    const rawTeam = await fetchData('team');
+    const teamData = rawTeam.members || [];
+
     const pis = teamData.filter(m => m.is_pi);
     const groupMembers = teamData.filter(m => !m.is_pi);
 
@@ -434,7 +426,10 @@ async function loadTeamContent() {
 }
 
 async function loadOutputsContent() {
-    const publications = await fetchData('publications');
+    // UPDATED: Unwrap 'papers'
+    const rawPubs = await fetchData('publications');
+    const publications = rawPubs.papers || [];
+    
     const globals = await fetchData('globals'); 
     
     // Publications
@@ -461,8 +456,10 @@ async function loadOutputsContent() {
          }).join('');
     }
 
-    // Presentations
-    const presentations = await fetchData('presentations'); 
+    // UPDATED: Unwrap 'talks'
+    const rawPres = await fetchData('presentations'); 
+    const presentations = rawPres.talks || [];
+
     const presList = document.getElementById('presentations-list');
     if (presList) {
         if (presentations.length > 0) {
@@ -553,6 +550,6 @@ function loadContent(pageId) {
     else if (pageId === 'advisory') loadAdvisoryContent();
     else if (pageId === 'news') loadNewsContent();
     else if (pageId === 'outreach') loadOutreachContent();
-    else if (pageId === 'events') loadEventsContent(); // Added Events
+    else if (pageId === 'events') loadEventsContent(); 
 }
 window.loadContent = loadContent;
