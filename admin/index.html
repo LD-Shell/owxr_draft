@@ -1,143 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welch Center Admin</title>
   
-  <script>
-    window.CMS_MANUAL_INIT = true;
-  </script>
-  
-  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/create-react-class/create-react-class.min.js"></script>
-  
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div id="nc-root"></div>
-  
-  <script>
-    window.addEventListener('load', function() {
-      console.log('DOM fully loaded, initializing CMS...');
-      
-      // --- DEFINE HELPERS ---
-      // This was missing! 'h' is just a shortcut for React.createElement
-      var h = React.createElement; 
-      var createClass = window.createReactClass;
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-      function initializeCMS() {
-        console.log('Initializing CMS...');
-        
-        if (typeof CMS === 'undefined') {
-          console.error('CMS not loaded');
-          return;
-        }
-        
-        // --- REGISTER PREVIEW STYLES ---
-        try {
-          CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
-          CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
-          // Path to your main CSS relative to /admin/index.html
-          CMS.registerPreviewStyle("../src/css/main.css");
-          console.log('Preview styles registered');
-        } catch (err) {
-          console.warn('Could not register preview styles:', err);
-        }
-        
-        // --- TEAM PREVIEW COMPONENT ---
-        if (typeof createClass !== 'undefined') {
-          try {
-            const TeamPreview = createClass({
-              render: function() {
-                const entry = this.props.entry;
-                const image = entry.getIn(['data', 'image']);
-                const bgImage = image ? this.props.getAsset(image) : null;
-                const name = entry.getIn(['data', 'name']) || '';
-                const role = entry.getIn(['data', 'role']) || '';
-                const title_detail = entry.getIn(['data', 'title_detail']) || '';
-                const bio = entry.getIn(['data', 'bio']) || '';
-                const email = entry.getIn(['data', 'email']) || '';
-                const scholar = entry.getIn(['data', 'scholar']) || '';
-                const tags = entry.getIn(['data', 'tags']) || [];
-                const is_pi = entry.getIn(['data', 'is_pi']) || false;
-                
-                // Renders the exact card HTML from your site
-                return h('div', {className: 'profile-card', style: {margin: '20px'}},
-                  image ? h('div', {className: 'profile-img-container'},
-                    h('img', {
-                      src: bgImage ? bgImage.toString() : '',
-                      className: 'profile-img',
-                      style: { width: '100%', height: '100%', objectFit: 'cover' }
-                    })
-                  ) : null,
-                  
-                  h('div', {className: 'profile-info'},
-                    h('h4', {className: 'profile-name'}, name),
-                    
-                    is_pi ? h('div', null,
-                      h('div', { className: 'profile-role', style: { fontWeight: '700' } }, role),
-                      title_detail ? h('p', {
-                        style: { fontSize: '0.9rem', color: 'var(--uh-slate)', marginTop: '5px', marginBottom: '10px', lineHeight: '1.3' }
-                      }, title_detail) : null
-                    ) : 
-                    h('div', null,
-                      h('div', { className: 'profile-role', style: { fontWeight: '700', marginBottom: '0' } }, role),
-                      h('p', {
-                        style: { fontSize: '0.8rem', color: 'var(--uh-slate)', marginTop: '5px', lineHeight: '1.3' }
-                      }, `${entry.getIn(['data', 'department']) || ''} ${entry.getIn(['data', 'university']) || ''}`)
-                    ),
-                    
-                    bio ? h('p', {
-                      style: { fontSize: is_pi ? '0.9rem' : '0.85rem', marginTop: is_pi ? '10px' : '15px' }
-                    }, bio) : null,
-                    
-                    tags && tags.size > 0 ? h('div', {className: 'profile-tags'},
-                      tags.map((tag, index) => h('span', {key: index, className: 'tag'}, tag))
-                    ) : null,
-                    
-                    (email || scholar) ? h('div', {style: {marginTop: '15px'}},
-                      email ? h('a', { href: `mailto:${email}`, style: {marginRight: '10px'} }, h('i', {className: 'fas fa-envelope text-uh-red'})) : null,
-                      scholar ? h('a', { href: scholar, target: '_blank', style: {marginLeft: '10px'} }, h('i', {className: 'fab fa-google-scholar text-uh-red'})) : null
-                    ) : null
-                  )
-                );
-              }
-            });
-            
-            // Register it!
-            CMS.registerPreviewTemplate('team', TeamPreview);
-            CMS.registerPreviewTemplate('members', TeamPreview);
-            console.log('Preview templates registered');
-            
-          } catch (err) {
-            console.warn('Error creating preview components:', err);
-          }
-        }
-        
-        // --- ADD PREVIEW-SPECIFIC CSS ---
-        // This ensures the preview pane background isn't plain white, making cards pop
-        const style = document.createElement('style');
-        style.textContent = `
-          .nc-previewPane-frame body {
-            background-color: #f4f4f4 !important;
-            padding: 20px !important;
-          }
-          .profile-card { background: white; }
-        `;
-        document.head.appendChild(style);
-        
-        // --- INITIALIZE ---
-        CMS.init();
-      }
-      
-      // Small delay to ensure all scripts parsed
-      setTimeout(initializeCMS, 100);
-    });
+  <script>
+    // This tells the CMS: "Use these stylesheets inside the preview pane"
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
+    CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+    
+    // Load your main site design
+    // Note: We use '..' to go up one level from 'admin/' to find 'src/'
+    CMS.registerPreviewStyle("../src/css/main.css");
   </script>
 </body>
 </html>
