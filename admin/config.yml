@@ -5,6 +5,8 @@ backend:
   gateway_url: "https://welchuhadmin.netlify.app/.netlify/git"
   site_url: https://ld-shell.github.io/owxr_draft/  
 
+logo_url: https://ld-shell.github.io/owxr_draft/public/images/logo-1.png
+
 media_folder: "public/images/"
 public_folder: "/public/images/"
 
