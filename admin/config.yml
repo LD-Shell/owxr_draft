@@ -3,7 +3,7 @@ backend:
   repo: LD-Shell/owxr_draft
   branch: main
   site_url: https://ld-shell.github.io/owxr_draft/  
-  base_url: https://welchuhadmin.netlify.app/
+  base_url: https://welchuhadmin.netlify.app
 
 media_folder: "public/images/"
 public_folder: "/public/images/"
