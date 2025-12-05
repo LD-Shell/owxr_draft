@@ -4,21 +4,73 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welch Center Admin</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
+  <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+  
+  <script src="https://unpkg.com/create-react-class/create-react-class.min.js"></script>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
   <script>
-    // This tells the CMS: "Use these stylesheets inside the preview pane"
+    // --- SETUP: Define React Helpers ---
+    const h = React.createElement;
+    const createClass = createReactClass;
+
+    // --- 1. REGISTER STYLES ---
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
     CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
-    
-    // Load your main site design
-    // Note: We use '..' to go up one level from 'admin/' to find 'src/'
     CMS.registerPreviewStyle("../src/css/main.css");
+
+    // --- 2. DEFINE CUSTOM PREVIEW COMPONENT ---
+    // This component rebuilds your "Profile Card" structure inside the CMS
+    const TeamPreview = createClass({
+      render: function() {
+        const entry = this.props.entry;
+        
+        // Grab data from the form
+        const image = entry.getIn(['data', 'image']);
+        const bgImage = this.props.getAsset(image); // Resolves the image path
+        const name = entry.getIn(['data', 'name']);
+        const role = entry.getIn(['data', 'role']);
+        const title_detail = entry.getIn(['data', 'title_detail']);
+        const bio = entry.getIn(['data', 'bio']);
+        const is_pi = entry.getIn(['data', 'is_pi']);
+
+        // --- RENDER HTML (Matches your site's structure exactly) ---
+        return h('div', { className: 'profile-card', style: { margin: '20px auto', maxWidth: '350px' } },
+          // Image Container
+          h('div', { className: 'profile-img-container' },
+            h('img', { 
+              src: bgImage ? bgImage.toString() : '', 
+              className: 'profile-img' 
+            })
+          ),
+          // Info Container
+          h('div', { className: 'profile-info' },
+            h('h4', { className: 'profile-name' }, name),
+            h('div', { className: 'profile-role', style: { fontWeight: '700' } }, role),
+            
+            // Conditional Rendering based on PI status
+            is_pi 
+              ? h('p', { style: { fontSize: '0.9rem', color: '#54585A', marginTop: '5px' } }, title_detail)
+              : null,
+            
+            h('p', { style: { fontSize: '0.9rem', marginTop: '15px' } }, bio)
+          )
+        );
+      }
+    });
+
+    // --- 3. REGISTER THE COMPONENT ---
+    // We register it for "team" (file name) and "members" (the list widget name)
+    CMS.registerPreviewTemplate("team", TeamPreview);
+    CMS.registerPreviewTemplate("members", TeamPreview);
+
   </script>
 </body>
 </html>
