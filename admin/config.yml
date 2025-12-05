@@ -1,6 +1,5 @@
 backend:
   name: git-gateway
-  repo: LD-Shell/owxr_draft
   branch: main
   identity_url: "https://welchuhadmin.netlify.app/.netlify/identity"
   gateway_url: "https://welchuhadmin.netlify.app/.netlify/git"
