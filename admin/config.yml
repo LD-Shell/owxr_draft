@@ -1,5 +1,5 @@
 backend:
-  name: github
+  name: git-gateway
   repo: LD-Shell/owxr_draft
   branch: main
   site_url: https://ld-shell.github.io/owxr_draft/  
