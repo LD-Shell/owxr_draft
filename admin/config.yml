@@ -1,232 +1,263 @@
 backend:
   name: github
-  repo: LD-Shell/owxr_draft
+  repo: LD-Shell/owxr_draft # Your repo
   branch: main
-  # Recommended for Netlify deployment
 
-# Media settings
-media_folder: "public/images/uploads"   # Where images will be saved in the repo
-public_folder: "/images/uploads"        # The public path for viewing images
+media_folder: "public/images/uploads"
+public_folder: "public/images/uploads"
 
 collections:
   # =========================================
-  # 1. SINGLETON PAGES (Home & Static Data)
+  # 1. GLOBAL SETTINGS (Footer, Contact, Stats)
   # =========================================
-  - name: "pages"
-    label: "Static Pages"
+  - name: "globals"
+    label: "Global Settings"
     files:
-      - name: "home"
-        label: "Home Page Content"
-        file: "content/pages/home.md"
+      - name: "site_data"
+        label: "Site Data"
+        file: "content/globals.json"
         fields:
-          - {label: "Hero Title", name: "hero_title", widget: "string", required: true}
-          - {label: "Hero Text", name: "hero_text", widget: "text", required: true}
-          - label: "Hero Slides"
-            name: "slides"
+          - label: "Impact Stats"
+            name: "impact_stats"
             widget: "list"
             fields:
-              - {label: "Image", name: "image", widget: "image", required: true}
-              - {label: "Alt Text", name: "alt", widget: "string"}
-          - {label: "Director's Photo", name: "director_photo", widget: "image"}
-          - {label: "Director's Signature", name: "director_signature", widget: "image"}
-          - {label: "Director's Message", name: "director_message", widget: "markdown"}
-          - {label: "Director's Name", name: "director_name", widget: "string"}
-          - {label: "Director's Role", name: "director_role", widget: "string"}
-      
-      - name: "research_aims"
-        label: "Research Aims"
-        file: "content/pages/research.json"
+              - {label: "Value", name: "value", widget: "string"}
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "Color", name: "color", widget: "string", default: "#F4D03F"}
+          
+          - label: "Contact Info"
+            name: "contact"
+            widget: "object"
+            fields:
+              - {label: "Email", name: "email", widget: "string"}
+              - {label: "Phone", name: "phone", widget: "string"}
+              - {label: "Address Line 1", name: "address_line1", widget: "string"}
+              - {label: "Address Line 2", name: "address_line2", widget: "string"}
+              - {label: "Address Line 3", name: "address_line3", widget: "string"}
+              - {label: "Address Line 4", name: "address_line4", widget: "string"}
+              - {label: "Map Embed URL", name: "map_embed_url", widget: "string"}
+
+          - label: "Patents"
+            name: "patents"
+            widget: "list" # Simple list of strings
+
+          - label: "Advisory Board"
+            name: "advisory_board"
+            widget: "list"
+            fields:
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Role", name: "role", widget: "string"}
+              - {label: "Image", name: "image", widget: "image"}
+
+  # =========================================
+  # 2. PAGE CONTENT (Home, Research)
+  # =========================================
+  - name: "pages"
+    label: "Page Content"
+    files:
+      - name: "page_data"
+        label: "Home & Research"
+        file: "content/pages.json"
         fields:
-          - label: "Aims List"
+          - label: "Home Page"
+            name: "home"
+            widget: "object"
+            fields:
+              - {label: "Hero Title", name: "hero_title", widget: "string"}
+              - {label: "Hero Text", name: "hero_text", widget: "text"}
+              - label: "Hero Slides"
+                name: "slides"
+                widget: "list"
+                fields:
+                  - {label: "Image", name: "image", widget: "image"}
+                  - {label: "Alt Text", name: "alt", widget: "string"}
+              - label: "Director Section"
+                name: "director"
+                widget: "object"
+                fields:
+                  - {label: "Photo", name: "photo", widget: "image"}
+                  - {label: "Signature", name: "signature", widget: "image", required: false}
+                  - {label: "Message", name: "message", widget: "text"}
+                  - {label: "Name", name: "name", widget: "string"}
+                  - {label: "Role", name: "role", widget: "string"}
+
+          - label: "Research Aims"
             name: "research_aims"
             widget: "list"
             fields:
-              - {label: "Number (e.g. 01)", name: "number", widget: "string"}
+              - {label: "Number", name: "number", widget: "string"}
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Description", name: "description", widget: "markdown"}
               - {label: "Tags", name: "tags", widget: "list"}
 
   # =========================================
-  # 2. TEAM MEMBERS
+  # 3. DYNAMIC CONTENT (Lists)
   # =========================================
-  - name: "team"
-    label: "Team Members"
-    folder: "content/team"
-    create: true
-    slug: "{{name | slug}}"
-    format: "json"
-    fields:
-      - {label: "Name", name: "name", widget: "string"}
-      - {label: "Is PI? (Leadership)", name: "is_pi", widget: "boolean", default: false}
-      - {label: "Role", name: "role", widget: "select", options: ["Center Director & PI", "Co-Principal Investigator", "Postdoctoral Fellow", "PhD Candidate", "Staff"], default: "PhD Candidate"}
-      - {label: "Detailed Title (For PIs)", name: "title_detail", widget: "text", required: false}
-      - {label: "Department", name: "department", widget: "string", required: false}
-      - {label: "University", name: "university", widget: "string", required: false}
-      - {label: "Bio/Focus", name: "bio", widget: "text"}
-      - {label: "Image", name: "image", widget: "image", required: false}
-      - {label: "Tags (Comma-separated)", name: "tags", widget: "list", required: false}
-      - {label: "Email", name: "email", widget: "string", required: false}
-      - {label: "Google Scholar URL", name: "scholar", widget: "string", required: false}
-
-  # =========================================
-  # 3. PUBLICATIONS
-  # =========================================
-  - name: "publications"
-    label: "Publications"
-    folder: "content/publications"
-    create: true
-    slug: "{{year}}-{{title | slug}}"
-    format: "json"
-    fields:
-      - {label: "Featured", name: "featured", widget: "boolean", default: false}
-      - {label: "Year", name: "year", widget: "number", value_type: "int"}
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Journal", name: "journal", widget: "string"}
-      - {label: "Authors (Full List)", name: "authors", widget: "text"}
-      - {label: "Link/DOI", name: "doi", widget: "string", required: false}
-      - {label: "PDF Upload (Optional)", name: "pdf_file", widget: "file", required: false}
-
-  # =========================================
-  # 4. NEWS & UPDATES (Articles)
-  # =========================================
-  - name: "news"
-    label: "News & Updates"
-    folder: "content/news"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{title | slug}}"
-    format: "json"
-    fields:
-      - {label: "ID", name: "id", widget: "string", hint: "Unique ID (e.g. nih-grant-2025)"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["Grants", "Awards", "Research", "Press"], default: "Research"}
-      - {label: "Preview Text (List View)", name: "preview", widget: "text"}
-      - {label: "Thumbnail Image", name: "image", widget: "image"}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      
-      # --- Block Builder Body ---
-      - label: "Article Body"
-        name: "body"
-        widget: "object"
+  - name: "dynamic_content"
+    label: "Content Lists"
+    files:
+      - name: "team"
+        label: "Team Members"
+        file: "content/team.json"
         fields:
-          - {label: "Full Headline (H1)", name: "full_title", widget: "string", required: false}
-          - {label: "Lead Text (Bold Intro)", name: "lead_text", widget: "text", required: false}
-          - {label: "Hero Image (Large)", name: "main_image", widget: "image", required: false}
-          
-          - label: "Content Blocks"
-            name: "content_blocks"
+          - label: "Members"
+            name: "members" # Matches the wrapper key you added
             widget: "list"
-            types:
-              - label: "Rich Text Paragraph"
-                name: "text"
-                widget: "object"
-                fields:
-                  - {label: "Content", name: "content", widget: "markdown"}
-              
-              - label: "Pull Quote"
-                name: "quote"
-                widget: "object"
-                fields:
-                  - {label: "Quote", name: "content", widget: "text"}
-                  - {label: "Author", name: "author", widget: "string"}
+            fields:
+              - {label: "ID", name: "id", widget: "string"}
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Is PI?", name: "is_pi", widget: "boolean", default: false}
+              - {label: "Role", name: "role", widget: "string"}
+              - {label: "Title Detail", name: "title_detail", widget: "text", required: false}
+              - {label: "Department", name: "department", widget: "string", required: false}
+              - {label: "University", name: "university", widget: "string", required: false}
+              - {label: "Bio", name: "bio", widget: "text", required: false}
+              - {label: "Image", name: "image", widget: "image", required: false}
+              - {label: "Tags", name: "tags", widget: "list", required: false}
+              - {label: "Email", name: "email", widget: "string", required: false}
+              - {label: "Scholar URL", name: "scholar", widget: "string", required: false}
 
-              - label: "Highlight Box"
-                name: "highlight_box"
-                widget: "object"
-                fields:
-                  - {label: "Box Title", name: "title", widget: "string", default: "Highlights"}
-                  - {label: "List Items", name: "items", widget: "list"}
-
-  # =========================================
-  # 5. EVENTS CALENDAR (New!)
-  # =========================================
-  - name: "events"
-    label: "Events Calendar"
-    folder: "content/events"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{title | slug}}"
-    format: "json"
-    fields:
-      - {label: "ID", name: "id", widget: "string"}
-      - {label: "Event Date", name: "date", widget: "datetime"}
-      - {label: "Time (e.g. 2:00 PM - 4:00 PM)", name: "time", widget: "string"}
-      - {label: "Location", name: "location", widget: "string"}
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["Seminar", "Workshop", "Conference", "Social", "Training"], default: "Seminar"}
-      - {label: "Preview Text", name: "preview", widget: "text"}
-      - {label: "Thumbnail Image", name: "image", widget: "image"}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      
-      # --- Block Builder Body ---
-      - label: "Event Details Body"
-        name: "body"
-        widget: "object"
+      - name: "news"
+        label: "News & Updates"
+        file: "content/news.json"
         fields:
-          - {label: "Full Headline", name: "full_title", widget: "string", required: false}
-          - {label: "Intro Text", name: "lead_text", widget: "text", required: false}
-          - {label: "Hero Image", name: "main_image", widget: "image", required: false}
-          
-          - label: "Content Blocks"
-            name: "content_blocks"
+          - label: "Articles"
+            name: "articles" # Wrapper key
             widget: "list"
-            types:
-              - label: "Rich Text"
-                name: "text"
+            fields:
+              - {label: "ID", name: "id", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Preview", name: "preview", widget: "text"}
+              - {label: "Thumbnail", name: "image", widget: "image"}
+              - label: "Article Body"
+                name: "body"
                 widget: "object"
                 fields:
-                  - {label: "Content", name: "content", widget: "markdown"}
-              - label: "Info/Schedule Box"
-                name: "highlight_box"
-                widget: "object"
-                fields:
-                  - {label: "Title", name: "title", widget: "string", default: "Event Details"}
-                  - {label: "Items", name: "items", widget: "list"}
+                  - {label: "Full Title", name: "full_title", widget: "string"}
+                  - {label: "Category", name: "category", widget: "string"}
+                  - {label: "Main Image", name: "main_image", widget: "image"}
+                  - {label: "Lead Text", name: "lead_text", widget: "text"}
+                  - label: "Content Blocks"
+                    name: "content_blocks"
+                    widget: "list"
+                    types:
+                      - label: "Paragraph"
+                        name: "text"
+                        widget: "object"
+                        fields: [{label: "Content", name: "content", widget: "markdown"}]
+                      - label: "Quote"
+                        name: "quote"
+                        widget: "object"
+                        fields: [{label: "Content", name: "content", widget: "text"}, {label: "Author", name: "author", widget: "string"}]
+                      - label: "Highlights"
+                        name: "highlight_box"
+                        widget: "object"
+                        fields: [{label: "Title", name: "title", widget: "string"}, {label: "Items", name: "items", widget: "list"}]
 
-  # =========================================
-  # 6. OUTREACH PROGRAMS
-  # =========================================
-  - name: "outreach"
-    label: "Outreach Programs"
-    folder: "content/outreach"
-    create: true
-    slug: "{{year}}-{{title | slug}}"
-    format: "json"
-    fields:
-      - {label: "ID", name: "id", widget: "string"}
-      - {label: "Date", name: "date", widget: "datetime"}
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["K-12 Education", "Community", "Workshops", "Recruitment"], default: "Community"}
-      - {label: "Preview Text", name: "preview", widget: "text"}
-      - {label: "Thumbnail Image", name: "image", widget: "image"}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      
-      # --- Block Builder Body ---
-      - label: "Article Body"
-        name: "body"
-        widget: "object"
+      - name: "events"
+        label: "Events Calendar"
+        file: "content/events.json"
         fields:
-          - {label: "Full Headline", name: "full_title", widget: "string", required: false}
-          - {label: "Lead Text", name: "lead_text", widget: "text", required: false}
-          - {label: "Hero Image", name: "main_image", widget: "image", required: false}
-          
-          - label: "Content Blocks"
-            name: "content_blocks"
+          - label: "Events List"
+            name: "events_list" # Wrapper key
             widget: "list"
-            types:
-              - label: "Rich Text"
-                name: "text"
+            fields:
+              - {label: "ID", name: "id", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+              - {label: "Time", name: "time", widget: "string"}
+              - {label: "Location", name: "location", widget: "string"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Preview", name: "preview", widget: "text"}
+              - {label: "Tags", name: "tags", widget: "list"}
+              # Re-using the same body structure as news for consistency
+              - label: "Event Details Body"
+                name: "body"
                 widget: "object"
                 fields:
-                  - {label: "Content", name: "content", widget: "markdown"}
-              - label: "Pull Quote"
-                name: "quote"
+                  - {label: "Full Title", name: "full_title", widget: "string"}
+                  - {label: "Category", name: "category", widget: "string"}
+                  - {label: "Main Image", name: "main_image", widget: "image"}
+                  - {label: "Lead Text", name: "lead_text", widget: "text"}
+                  - label: "Content Blocks"
+                    name: "content_blocks"
+                    widget: "list"
+                    types:
+                      - label: "Paragraph"
+                        name: "text"
+                        widget: "object"
+                        fields: [{label: "Content", name: "content", widget: "markdown"}]
+                      - label: "Details Box"
+                        name: "highlight_box"
+                        widget: "object"
+                        fields: [{label: "Title", name: "title", widget: "string"}, {label: "Items", name: "items", widget: "list"}]
+
+      - name: "outreach"
+        label: "Outreach"
+        file: "content/outreach.json"
+        fields:
+          - label: "Programs"
+            name: "programs" # Wrapper key
+            widget: "list"
+            fields:
+              - {label: "ID", name: "id", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Preview", name: "preview", widget: "text"}
+              - {label: "Thumbnail", name: "image", widget: "image"}
+              - {label: "Tags", name: "tags", widget: "list"}
+              - label: "Body"
+                name: "body"
                 widget: "object"
                 fields:
-                  - {label: "Quote", name: "content", widget: "text"}
-                  - {label: "Author", name: "author", widget: "string"}
-              - label: "Highlight Box"
-                name: "highlight_box"
-                widget: "object"
-                fields:
-                  - {label: "Box Title", name: "title", widget: "string", default: "Impact"}
-                  - {label: "List Items", name: "items", widget: "list"}
+                  - {label: "Full Title", name: "full_title", widget: "string"}
+                  - {label: "Category", name: "category", widget: "string"}
+                  - {label: "Main Image", name: "main_image", widget: "image"}
+                  - {label: "Lead Text", name: "lead_text", widget: "text"}
+                  - label: "Content Blocks"
+                    name: "content_blocks"
+                    widget: "list"
+                    types:
+                      - label: "Paragraph"
+                        name: "text"
+                        widget: "object"
+                        fields: [{label: "Content", name: "content", widget: "markdown"}]
+                      - label: "Quote"
+                        name: "quote"
+                        widget: "object"
+                        fields: [{label: "Content", name: "content", widget: "text"}, {label: "Author", name: "author", widget: "string"}]
+                      - label: "Highlights"
+                        name: "highlight_box"
+                        widget: "object"
+                        fields: [{label: "Title", name: "title", widget: "string"}, {label: "Items", name: "items", widget: "list"}]
+
+      - name: "publications"
+        label: "Publications"
+        file: "content/publications.json"
+        fields:
+          - label: "Papers"
+            name: "papers" # Wrapper key
+            widget: "list"
+            fields:
+              - {label: "ID", name: "id", widget: "string"}
+              - {label: "Year", name: "year", widget: "number", value_type: "int"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Journal", name: "journal", widget: "string"}
+              - {label: "Authors", name: "authors", widget: "string"}
+              - {label: "Link", name: "link", widget: "string"}
+              - {label: "Featured", name: "featured", widget: "boolean", default: false}
+
+      - name: "presentations"
+        label: "Presentations"
+        file: "content/presentations.json"
+        fields:
+          - label: "Talks"
+            name: "talks" # Wrapper key
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Conference", name: "conference", widget: "string"}
+              - {label: "Location", name: "location", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+              - {label: "Presenter", name: "presenter", widget: "string"}
