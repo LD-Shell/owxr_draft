@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welch Center Admin</title>
   
-  <!-- PREVENT CMS FROM AUTO-INITIALIZING -->
   <script>
     window.CMS_MANUAL_INIT = true;
   </script>
   
-  <!-- Load Decap CMS -->
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/create-react-class/create-react-class.min.js"></script>
+  
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
-  <!-- Preload fonts and icons like your main site -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -24,9 +25,11 @@
     window.addEventListener('load', function() {
       console.log('DOM fully loaded, initializing CMS...');
       
-      const mountPoint = document.getElementById('nc-root');
-      if (!mountPoint) return;
-      
+      // --- DEFINE HELPERS ---
+      // This was missing! 'h' is just a shortcut for React.createElement
+      var h = React.createElement; 
+      var createClass = window.createReactClass;
+
       function initializeCMS() {
         console.log('Initializing CMS...');
         
@@ -37,20 +40,16 @@
         
         // --- REGISTER PREVIEW STYLES ---
         try {
-          // Load fonts and icons
           CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
           CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
-          
-          // Load your main.css - IMPORTANT: Use correct path from admin folder
-          // Since admin/ is in root, and main.css is in src/css/, path is "../src/css/main.css"
+          // Path to your main CSS relative to /admin/index.html
           CMS.registerPreviewStyle("../src/css/main.css");
-          
           console.log('Preview styles registered');
         } catch (err) {
           console.warn('Could not register preview styles:', err);
         }
         
-        // --- TEAM PREVIEW COMPONENT (Exact match to your contentLoader.js) ---
+        // --- TEAM PREVIEW COMPONENT ---
         if (typeof createClass !== 'undefined') {
           try {
             const TeamPreview = createClass({
@@ -67,260 +66,52 @@
                 const tags = entry.getIn(['data', 'tags']) || [];
                 const is_pi = entry.getIn(['data', 'is_pi']) || false;
                 
-                // EXACT HTML from your contentLoader.js loadTeamContent()
-                return h('div', {className: 'profile-card'},
-                  // Image container - exactly matches your contentLoader.js
+                // Renders the exact card HTML from your site
+                return h('div', {className: 'profile-card', style: {margin: '20px'}},
                   image ? h('div', {className: 'profile-img-container'},
                     h('img', {
-                      src: bgImage.toString(),
-                      alt: name,
+                      src: bgImage ? bgImage.toString() : '',
                       className: 'profile-img',
                       style: { width: '100%', height: '100%', objectFit: 'cover' }
                     })
                   ) : null,
                   
-                  // Info container - matches your exact structure
                   h('div', {className: 'profile-info'},
-                    // Name
                     h('h4', {className: 'profile-name'}, name),
                     
-                    // For PIs: role + title_detail on separate lines
                     is_pi ? h('div', null,
-                      h('div', {
-                        className: 'profile-role',
-                        style: { fontWeight: '700' }
-                      }, role),
+                      h('div', { className: 'profile-role', style: { fontWeight: '700' } }, role),
                       title_detail ? h('p', {
-                        style: {
-                          fontSize: '0.9rem',
-                          color: 'var(--uh-slate)',
-                          marginTop: '5px',
-                          marginBottom: '10px',
-                          lineHeight: '1.3'
-                        }
-                      }, title_detail.replace(/\n/g, '')) : null
+                        style: { fontSize: '0.9rem', color: 'var(--uh-slate)', marginTop: '5px', marginBottom: '10px', lineHeight: '1.3' }
+                      }, title_detail) : null
                     ) : 
-                    // For non-PIs: role + department/university
                     h('div', null,
-                      h('div', {
-                        className: 'profile-role',
-                        style: { fontWeight: '700', marginBottom: '0' }
-                      }, role),
+                      h('div', { className: 'profile-role', style: { fontWeight: '700', marginBottom: '0' } }, role),
                       h('p', {
-                        style: {
-                          fontSize: '0.8rem',
-                          color: 'var(--uh-slate)',
-                          marginTop: '5px',
-                          lineHeight: '1.3'
-                        }
-                      }, `${entry.getIn(['data', 'department'] || '')}<br>${entry.getIn(['data', 'university'] || '')}`)
+                        style: { fontSize: '0.8rem', color: 'var(--uh-slate)', marginTop: '5px', lineHeight: '1.3' }
+                      }, `${entry.getIn(['data', 'department']) || ''} ${entry.getIn(['data', 'university']) || ''}`)
                     ),
                     
-                    // Bio
                     bio ? h('p', {
-                      style: {
-                        fontSize: is_pi ? '0.9rem' : '0.85rem',
-                        marginTop: is_pi ? '10px' : '15px'
-                      }
+                      style: { fontSize: is_pi ? '0.9rem' : '0.85rem', marginTop: is_pi ? '10px' : '15px' }
                     }, bio) : null,
                     
-                    // Tags
-                    tags && tags.length > 0 ? h('div', {className: 'profile-tags'},
-                      tags.map(tag => h('span', {className: 'tag'}, tag))
+                    tags && tags.size > 0 ? h('div', {className: 'profile-tags'},
+                      tags.map((tag, index) => h('span', {key: index, className: 'tag'}, tag))
                     ) : null,
                     
-                    // Email and scholar links
                     (email || scholar) ? h('div', {style: {marginTop: '15px'}},
-                      email ? h('a', {
-                        href: `mailto:${email}`,
-                        style: {marginRight: '10px'}
-                      }, h('i', {className: 'fas fa-envelope text-uh-red'})) : null,
-                      scholar ? h('a', {
-                        href: scholar,
-                        target: '_blank',
-                        style: {marginLeft: '10px'}
-                      }, h('i', {className: 'fab fa-google-scholar text-uh-red'})) : null
+                      email ? h('a', { href: `mailto:${email}`, style: {marginRight: '10px'} }, h('i', {className: 'fas fa-envelope text-uh-red'})) : null,
+                      scholar ? h('a', { href: scholar, target: '_blank', style: {marginLeft: '10px'} }, h('i', {className: 'fab fa-google-scholar text-uh-red'})) : null
                     ) : null
                   )
                 );
               }
             });
             
-            // --- NEWS PREVIEW COMPONENT (Exact match to createCardHtml) ---
-            const NewsPreview = createClass({
-              render: function() {
-                const entry = this.props.entry;
-                const title = entry.getIn(['data', 'title']) || '';
-                const date = entry.getIn(['data', 'date']);
-                const preview = entry.getIn(['data', 'preview']) || '';
-                const image = entry.getIn(['data', 'image']);
-                const bgImage = image ? this.props.getAsset(image) : null;
-                const category = entry.getIn(['data', 'category']) || 'Update';
-                const tags = entry.getIn(['data', 'tags']) || [];
-                
-                // EXACT HTML from your createCardHtml function
-                return h('div', {className: 'news-card'},
-                  // Image wrapper
-                  h('div', {className: 'news-img-wrapper'},
-                    h('img', {
-                      src: bgImage ? bgImage.toString() : 'public/images/default-placeholder.jpg',
-                      alt: title,
-                      style: { width: '100%', height: '100%', objectFit: 'cover' }
-                    })
-                  ),
-                  
-                  // Content
-                  h('div', {className: 'news-content'},
-                    // Meta row
-                    h('div', {className: 'news-meta'},
-                      h('i', {className: 'far fa-calendar-alt'}),
-                      date ? ` ${new Date(date).toLocaleDateString()}` : '',
-                      h('span', {style: {margin: '0 5px', opacity: '0.5'}}, '|'),
-                      category
-                    ),
-                    
-                    // Title
-                    h('h3', {className: 'news-title'}, title),
-                    
-                    // Excerpt
-                    h('p', {className: 'news-excerpt'}, preview),
-                    
-                    // Read more link
-                    h('a', {
-                      href: '#',
-                      className: 'news-link',
-                      onClick: (e) => {
-                        e.preventDefault();
-                        console.log('View news detail:', title);
-                      }
-                    },
-                      'Read Story ',
-                      h('i', {className: 'fas fa-arrow-right'})
-                    )
-                  )
-                );
-              }
-            });
-            
-            // --- EVENTS PREVIEW COMPONENT ---
-            const EventsPreview = createClass({
-              render: function() {
-                const entry = this.props.entry;
-                const title = entry.getIn(['data', 'title']) || '';
-                const date = entry.getIn(['data', 'date']);
-                const time = entry.getIn(['data', 'time']) || '';
-                const location = entry.getIn(['data', 'location']) || '';
-                const preview = entry.getIn(['data', 'preview']) || '';
-                
-                // Card layout for events (similar to news but different styling)
-                return h('div', {className: 'news-card'},
-                  // No image for events card in grid view (your site doesn't show images)
-                  h('div', {className: 'news-content'},
-                    // Meta row with clock icon for events
-                    h('div', {className: 'news-meta'},
-                      h('i', {className: 'far fa-clock'}),
-                      date ? ` ${new Date(date).toLocaleDateString()}${time ? ' | ' + time : ''}` : '',
-                      h('span', {style: {margin: '0 5px', opacity: '0.5'}}, '|'),
-                      'Event'
-                    ),
-                    
-                    // Title
-                    h('h3', {className: 'news-title'}, title),
-                    
-                    // Location
-                    location ? h('p', {
-                      style: {
-                        fontSize: '0.9rem',
-                        color: 'var(--uh-slate)',
-                        marginBottom: '10px'
-                      }
-                    },
-                      h('i', {className: 'fas fa-map-marker-alt', style: {marginRight: '5px'}}),
-                      location
-                    ) : null,
-                    
-                    // Preview/excerpt
-                    h('p', {className: 'news-excerpt'}, preview),
-                    
-                    // Event details link
-                    h('a', {
-                      href: '#',
-                      className: 'news-link',
-                      onClick: (e) => {
-                        e.preventDefault();
-                        console.log('View event detail:', title);
-                      }
-                    },
-                      'Event Details ',
-                      h('i', {className: 'fas fa-arrow-right'})
-                    )
-                  )
-                );
-              }
-            });
-            
-            // --- ARTICLES PREVIEW COMPONENT (for detailed view) ---
-            const ArticlePreview = createClass({
-              render: function() {
-                const entry = this.props.entry;
-                const title = entry.getIn(['data', 'title']) || '';
-                const date = entry.getIn(['data', 'date']);
-                const full_title = entry.getIn(['data', 'full_title']) || title;
-                const lead_text = entry.getIn(['data', 'lead_text']) || '';
-                const main_image = entry.getIn(['data', 'main_image']);
-                const bgImage = main_image ? this.props.getAsset(main_image) : null;
-                
-                return h('article', {className: 'article-container'},
-                  // Hero image
-                  bgImage ? h('div', {className: 'article-hero'},
-                    h('img', {
-                      src: bgImage.toString(),
-                      alt: full_title,
-                      style: { width: '100%', height: '100%', objectFit: 'cover' }
-                    }),
-                    h('span', {className: 'article-category-badge'}, 
-                      entry.getIn(['data', 'category']) || 'Article'
-                    )
-                  ) : null,
-                  
-                  // Header
-                  h('header', {className: 'article-header'},
-                    // Date
-                    date ? h('div', {className: 'article-meta-row'},
-                      h('span', null,
-                        h('i', {className: 'far fa-calendar-alt'}),
-                        ` ${new Date(date).toLocaleDateString('en-US', { 
-                          weekday: 'long', 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}`
-                      )
-                    ) : null,
-                    
-                    // Title
-                    h('h1', {className: 'article-title text-uh-red'}, full_title),
-                    
-                    // Lead text
-                    lead_text ? h('p', {className: 'article-lead'}, lead_text) : null
-                  ),
-                  
-                  // Body content
-                  h('div', {className: 'article-body'},
-                    this.props.widgetFor('body')
-                  )
-                );
-              }
-            });
-            
-            // --- REGISTER PREVIEW TEMPLATES ---
-            // Match collection names to your config.yml
+            // Register it!
             CMS.registerPreviewTemplate('team', TeamPreview);
             CMS.registerPreviewTemplate('members', TeamPreview);
-            CMS.registerPreviewTemplate('news', NewsPreview);
-            CMS.registerPreviewTemplate('events', EventsPreview);
-            CMS.registerPreviewTemplate('articles', ArticlePreview); // For detailed articles
-            
             console.log('Preview templates registered');
             
           } catch (err) {
@@ -328,169 +119,23 @@
           }
         }
         
-        // --- ADD PREVIEW-SPECIFIC STYLES ---
+        // --- ADD PREVIEW-SPECIFIC CSS ---
+        // This ensures the preview pane background isn't plain white, making cards pop
         const style = document.createElement('style');
         style.textContent = `
-          /* Ensure preview uses your site's exact styling */
           .nc-previewPane-frame body {
-            font-family: 'Roboto', sans-serif !important;
-            background-color: #f8f9fa !important;
-            margin: 0 !important;
+            background-color: #f4f4f4 !important;
             padding: 20px !important;
           }
-          
-          /* Make sure profile cards look exactly like your site */
-          .nc-previewPane-frame .profile-card {
-            background: white !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-            transition: all 0.3s ease !important;
-            overflow: hidden !important;
-            border-top: 2px solid transparent !important;
-            margin: 15px !important;
-          }
-          
-          .nc-previewPane-frame .profile-card:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
-            border-top-color: #C8102E !important;
-          }
-          
-          .nc-previewPane-frame .profile-img-container {
-            height: 250px !important;
-            overflow: hidden !important;
-            position: relative !important;
-          }
-          
-          .nc-previewPane-frame .profile-img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            transition: transform 0.3s ease !important;
-          }
-          
-          .nc-previewPane-frame .profile-card:hover .profile-img {
-            transform: scale(1.05) !important;
-          }
-          
-          .nc-previewPane-frame .profile-info {
-            padding: 20px !important;
-          }
-          
-          .nc-previewPane-frame .profile-name {
-            color: #C8102E !important;
-            font-family: 'Oswald', sans-serif !important;
-            font-size: 1.2rem !important;
-            margin-bottom: 5px !important;
-          }
-          
-          .nc-previewPane-frame .profile-role {
-            font-size: 0.9rem !important;
-            color: #54585A !important;
-            font-weight: 700 !important;
-            margin-bottom: 10px !important;
-            text-transform: uppercase !important;
-          }
-          
-          .nc-previewPane-frame .text-uh-red {
-            color: #C8102E !important;
-          }
-          
-          /* News card styling */
-          .nc-previewPane-frame .news-card {
-            background: white !important;
-            border-radius: 4px !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-            overflow: hidden !important;
-            transition: all 0.3s ease !important;
-            border: 1px solid rgba(0,0,0,0.05) !important;
-            margin: 15px !important;
-          }
-          
-          .nc-previewPane-frame .news-card:hover {
-            transform: translateY(-5px) !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
-            border-color: rgba(200, 16, 46, 0.2) !important;
-          }
-          
-          .nc-previewPane-frame .news-img-wrapper {
-            height: 224px !important;
-            overflow: hidden !important;
-            position: relative !important;
-            background: #54585A !important;
-          }
-          
-          .nc-previewPane-frame .news-img-wrapper img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            transition: transform 0.5s ease !important;
-          }
-          
-          .nc-previewPane-frame .news-card:hover .news-img-wrapper img {
-            transform: scale(1.05) !important;
-          }
-          
-          .nc-previewPane-frame .news-content {
-            padding: 24px !important;
-          }
-          
-          .nc-previewPane-frame .news-meta {
-            font-size: 0.75rem !important;
-            color: #C8102E !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.05rem !important;
-            margin-bottom: 8px !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
-          }
-          
-          .nc-previewPane-frame .news-title {
-            font-family: 'Oswald', sans-serif !important;
-            font-size: 1.2rem !important;
-            line-height: 1.3 !important;
-            margin-bottom: 16px !important;
-            color: #333 !important;
-            font-weight: 700 !important;
-          }
-          
-          .nc-previewPane-frame .news-excerpt {
-            font-size: 0.95rem !important;
-            color: #54585A !important;
-            line-height: 1.6 !important;
-            margin-bottom: 24px !important;
-          }
-          
-          .nc-previewPane-frame .news-link {
-            font-size: 0.9rem !important;
-            font-weight: 700 !important;
-            color: #C8102E !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.05rem !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
-          }
+          .profile-card { background: white; }
         `;
         document.head.appendChild(style);
         
-        // --- INITIALIZE CMS ---
-        try {
-          CMS.init();
-          console.log('CMS initialized successfully');
-          
-        } catch (err) {
-          console.error('CMS.init() failed:', err);
-          mountPoint.innerHTML = 
-            '<div style="color:red;padding:20px;border:2px solid red;">' +
-            '<h3>CMS Initialization Error</h3>' +
-            '<p>' + err.message + '</p>' +
-            '</div>';
-        }
+        // --- INITIALIZE ---
+        CMS.init();
       }
       
-      // Initialize with a small delay
+      // Small delay to ensure all scripts parsed
       setTimeout(initializeCMS, 100);
     });
   </script>
