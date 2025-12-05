@@ -126,17 +126,6 @@
       "tags": [],
       "id": "john-smith",
       "image": ""
-    },
-    {
-      "bio": "Zeolite synthesis optimization.",
-      "name": "Emily Chen.",
-      "is_pi": false,
-      "university": [],
-      "department": "Materials Science",
-      "role": "PhD Candidate",
-      "tags": [],
-      "id": "emily-chen",
-      "image": ""
     }
   ]
 }
