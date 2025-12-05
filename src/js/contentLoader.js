@@ -409,10 +409,19 @@ async function loadTeamContent() {
             ${member.image ? `<div class="profile-img-container"><img src="${member.image}" alt="${member.name}" class="profile-img" loading="lazy"></div>` : ''}
             <div class="profile-info">
                 <h4 class="profile-name">${member.name}</h4>
+                
                 ${isPI && member.title_detail ? `<div class="profile-role" style="font-weight: 700;">${member.role}</div><p style="font-size: 0.9rem; color: var(--uh-slate); margin-top: 5px; margin-bottom: 10px; line-height: 1.3;">${member.title_detail.replace(/\n/g, '<br>')}</p>` : ''}
-                ${!isPI ? `<div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div><p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">${member.department || ''}<br>${member.university || ''}</p>` : ''}
-                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '15px'};">${member.bio}</p>
+                
+                ${!isPI ? `
+                    <div class="profile-role" style="font-weight: 700; margin-bottom: 0;">${member.role}</div>
+                    ${member.advisor ? `<p style="font-size: 0.8rem; color: var(--uh-red); font-weight: 600; margin-bottom: 5px;">Advisor: ${member.advisor}</p>` : ''}
+                    <p style="font-size: 0.8rem; color: var(--uh-slate); margin-top: 5px; line-height: 1.3;">${member.department || ''}<br>${member.university || ''}</p>
+                ` : ''}
+                
+                <p style="font-size: ${isPI ? '0.9rem' : '0.85rem'}; margin-top: ${isPI ? '10px' : '10px'};">${member.bio || ''}</p>
+                
                 ${member.tags && member.tags.length > 0 ? `<div class="profile-tags">${member.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+                
                 ${member.email || member.scholar ? `<div style="margin-top: 15px;">${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''} ${member.scholar ? `<a href="${member.scholar}" target="_blank" style="margin-left: 10px;"><i class="fab fa-google-scholar text-uh-red"></i></a>` : ''}</div>` : ''}
             </div>
         </div>
