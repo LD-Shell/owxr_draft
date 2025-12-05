@@ -14,25 +14,24 @@
 </head>
 <body>
   <script>
+    // --- FIX: Define the 'h' helper function ---
+    var h = React.createElement;
+
     // --- A. REGISTER STYLES ---
-    // This makes the "Preview" pane load your actual website CSS.
-    // Now your headings will be Oswald, colors will be UH Red, etc.
+    // This injects your actual website CSS into the CMS preview pane
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
     CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
     CMS.registerPreviewStyle("/src/css/main.css");
 
-    // --- B. CUSTOM PREVIEW COMPONENTS (Optional but Pro) ---
-    // This tells the CMS: "When editing the 'Team' collection, don't just show text.
-    // Render the actual HTML card so I can see how it looks."
-
+    // --- B. CUSTOM PREVIEW COMPONENT ---
     var TeamPreview = createReactClass({
       render: function() {
         var entry = this.props.entry;
         var image = entry.getIn(['data', 'image']);
         var bgImage = image ? this.props.getAsset(image) : "";
 
-        // This matches the HTML structure in your contentLoader.js
-        return h('div', {className: 'profile-card', style: {maxWidth: '300px', margin: '20px'}},
+        // Render the card using your CSS classes
+        return h('div', {className: 'profile-card', style: {maxWidth: '300px', margin: '20px auto'}},
           image ? h('div', {className: 'profile-img-container'},
             h('img', {src: bgImage.toString(), className: 'profile-img'})
           ) : null,
@@ -46,11 +45,10 @@
       }
     });
 
-    // Register the component to the 'team' collection (wrapped in 'members')
-    // Note: Since we are using list widgets inside files, standard previews are tricky.
-    // But registering styles (Part A) is 90% of the battle.
-    
-    // For News articles (which have a body), styling is automatic via Part A.
+    // --- C. REGISTER THE COMPONENT ---
+    // Apply this preview to the 'team' collection
+    CMS.registerPreviewTemplate("team", TeamPreview);
+
   </script>
 </body>
 </html>
