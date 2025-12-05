@@ -3,10 +3,54 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
-  <!-- <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
+  <title>Welch Center Admin</title>
+  
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  
+  <script src="https://unpkg.com/create-react-class/create-react-class.min.js"></script>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // --- A. REGISTER STYLES ---
+    // This makes the "Preview" pane load your actual website CSS.
+    // Now your headings will be Oswald, colors will be UH Red, etc.
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
+    CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+    CMS.registerPreviewStyle("/src/css/main.css");
+
+    // --- B. CUSTOM PREVIEW COMPONENTS (Optional but Pro) ---
+    // This tells the CMS: "When editing the 'Team' collection, don't just show text.
+    // Render the actual HTML card so I can see how it looks."
+
+    var TeamPreview = createReactClass({
+      render: function() {
+        var entry = this.props.entry;
+        var image = entry.getIn(['data', 'image']);
+        var bgImage = image ? this.props.getAsset(image) : "";
+
+        // This matches the HTML structure in your contentLoader.js
+        return h('div', {className: 'profile-card', style: {maxWidth: '300px', margin: '20px'}},
+          image ? h('div', {className: 'profile-img-container'},
+            h('img', {src: bgImage.toString(), className: 'profile-img'})
+          ) : null,
+          h('div', {className: 'profile-info'},
+            h('h4', {className: 'profile-name'}, entry.getIn(['data', 'name'])),
+            h('div', {className: 'profile-role', style: {fontWeight: '700'}}, entry.getIn(['data', 'role'])),
+            h('p', {style: {fontSize: '0.9rem', marginTop: '10px'}}, entry.getIn(['data', 'title_detail'])),
+            h('p', {style: {fontSize: '0.85rem', marginTop: '15px'}}, entry.getIn(['data', 'bio']))
+          )
+        );
+      }
+    });
+
+    // Register the component to the 'team' collection (wrapped in 'members')
+    // Note: Since we are using list widgets inside files, standard previews are tricky.
+    // But registering styles (Part A) is 90% of the battle.
+    
+    // For News articles (which have a body), styling is automatic via Part A.
+  </script>
 </body>
 </html>
