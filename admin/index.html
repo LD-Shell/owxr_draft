@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,33 +11,26 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <script>
-    // Poll to check when the widget library has loaded
-    var patchInterval = setInterval(function() {
-      if (window.netlifyIdentity) {
-        clearInterval(patchInterval);
+    (function() {
+      var patchInterval = setInterval(function() {
+        if (window.netlifyIdentity) {
+          clearInterval(patchInterval);
 
-        console.log("🐵 Applying Netlify Identity Patch...");
+          // Capture the original init function
+          var originalInit = window.netlifyIdentity.init;
 
-        // A. Save the original 'init' function
-        var originalInit = window.netlifyIdentity.init;
+          // Override init to force the external API URL
+          window.netlifyIdentity.init = function(options) {
+            options = options || {};
+            options.APIUrl = "https://welchuhadmin.netlify.app/.netlify/identity";
+            return originalInit.call(window.netlifyIdentity, options);
+          };
 
-        // B. Overwrite 'init' with our Proxy Function
-        window.netlifyIdentity.init = function(options) {
-          options = options || {};
-          
-          // FORCE the API URL every time 'init' is called
-          options.APIUrl = "https://welchuhadmin.netlify.app/.netlify/identity";
-          
-          console.log("🔒 Identity Init Intercepted! Forcing URL:", options.APIUrl);
-          
-          // C. Call the original function with our forced options
-          return originalInit.call(window.netlifyIdentity, options);
-        };
-
-        // D. Trigger it immediately once to set the baseline
-        window.netlifyIdentity.init({});
-      }
-    }, 10);
+          // Initialize immediately to apply settings
+          window.netlifyIdentity.init({});
+        }
+      }, 10);
+    })();
   </script>
 </head>
 <body>
