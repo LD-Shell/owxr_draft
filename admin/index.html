@@ -5,39 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welch Center Admin</title>
   
-  <!-- Load Decap CMS with integrity check -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- PREVENT CMS FROM AUTO-INITIALIZING -->
+  <script>
+    // Prevent Decap CMS from auto-initializing
+    window.CMS_MANUAL_INIT = true;
+  </script>
   
-  <!-- Load styles that will be used in preview -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Load Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
-  <!-- CMS will mount here -->
+  <!-- The mount point MUST exist before CMS tries to use it -->
   <div id="nc-root"></div>
   
   <script>
-    // Wait for both DOM and CMS to be ready
-    document.addEventListener('DOMContentLoaded', function() {
-      // Function to check if CMS is fully loaded
-      function waitForCMS(callback) {
-        if (window.CMS && window.CMS.registerPreviewStyle && window.CMS.init) {
-          callback();
-        } else {
-          console.log('Waiting for CMS to fully load...');
-          setTimeout(function() {
-            waitForCMS(callback);
-          }, 100);
-        }
+    // Wait for everything to be completely ready
+    window.addEventListener('load', function() {
+      console.log('DOM fully loaded, initializing CMS...');
+      
+      // Double-check the mount point exists
+      const mountPoint = document.getElementById('nc-root');
+      if (!mountPoint) {
+        console.error('Mount point #nc-root not found!');
+        document.body.innerHTML = '<div style="color:red;padding:20px;">Error: CMS mount point missing</div>';
+        return;
       }
       
-      // Initialize when CMS is ready
-      waitForCMS(function() {
-        console.log('CMS fully loaded, version:', CMS.version);
+      // Function to safely initialize CMS
+      function initializeCMS() {
+        console.log('Initializing CMS...');
         
-        // Fix: Register styles FIRST before any other operations
+        // Check if CMS is available
+        if (typeof CMS === 'undefined') {
+          console.error('CMS not loaded');
+          return;
+        }
+        
+        // Register preview styles
         try {
-          // Register preview styles (this helps with the preview pane)
           CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Oswald:wght@400;500;700&display=swap");
           CMS.registerPreviewStyle("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
           CMS.registerPreviewStyle("/src/css/main.css");
@@ -46,111 +51,55 @@
           console.warn('Could not register preview styles:', err);
         }
         
-        // Create simple Team Preview component
-        // Use window.createClass if available (provided by Decap CMS)
-        if (window.createClass) {
+        // Create preview components if createClass is available
+        if (typeof createClass !== 'undefined') {
           try {
+            // Team preview component
             const TeamPreview = createClass({
               render: function() {
                 const entry = this.props.entry;
-                const image = entry.getIn(['data', 'image']);
-                const bgImage = image ? this.props.getAsset(image) : null;
+                const name = entry.getIn(['data', 'name']) || 'No name';
+                const role = entry.getIn(['data', 'role']) || 'No role';
                 
-                return h('div', { 
-                  className: 'profile-card',
-                  style: { 
-                    padding: '20px',
-                    margin: '10px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    backgroundColor: '#fff',
-                    maxWidth: '400px'
-                  }
-                },
-                  // Name
-                  h('h3', {
-                    style: { 
-                      margin: '0 0 10px 0',
-                      color: '#333',
-                      fontFamily: 'Oswald, sans-serif'
-                    }
-                  }, entry.getIn(['data', 'name']) || 'Team Member'),
-                  
-                  // Role with UH Red color
-                  h('p', {
-                    style: { 
-                      color: '#C8102E',  // UH Red
-                      fontWeight: 'bold',
-                      margin: '0 0 10px 0',
-                      fontSize: '0.95rem'
-                    }
-                  }, entry.getIn(['data', 'role']) || ''),
-                  
-                  // Image if available
-                  bgImage ? h('img', {
-                    src: bgImage.toString(),
-                    style: {
-                      width: '100%',
-                      height: 'auto',
-                      maxHeight: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px',
-                      margin: '10px 0'
-                    },
-                    alt: entry.getIn(['data', 'name']) || ''
-                  }) : null,
-                  
-                  // Title detail
-                  h('p', {
-                    style: {
-                      fontSize: '0.9rem',
-                      margin: '10px 0',
-                      color: '#555'
-                    }
-                  }, entry.getIn(['data', 'title_detail']) || ''),
-                  
-                  // Bio
-                  h('p', {
-                    style: {
-                      fontSize: '0.85rem',
-                      margin: '15px 0 0 0',
-                      color: '#666',
-                      lineHeight: '1.5'
-                    }
-                  }, entry.getIn(['data', 'bio']) || '')
+                return h('div', {style: {
+                  padding: '20px',
+                  margin: '10px',
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  backgroundColor: '#f9f9f9',
+                  maxWidth: '400px'
+                }},
+                  h('h3', {style: {margin: '0 0 10px 0', color: '#333'}}, name),
+                  h('p', {style: {margin: '0 0 10px 0', color: '#C8102E', fontWeight: 'bold'}}, role)
                 );
               }
             });
             
-            // Register the preview template
-            // Try different collection names if one doesn't work
+            // Register preview template
             CMS.registerPreviewTemplate('team', TeamPreview);
-            CMS.registerPreviewTemplate('members', TeamPreview);
-            console.log('Preview templates registered');
+            console.log('Preview template registered');
           } catch (err) {
-            console.error('Error creating preview component:', err);
+            console.warn('Could not register preview template:', err);
           }
         }
         
-        // Initialize CMS - THIS IS CRITICAL
+        // FINALLY: Initialize the CMS
         try {
           CMS.init();
           console.log('CMS initialized successfully');
         } catch (err) {
-          console.error('CMS.init() error:', err);
-          
-          // Try alternative initialization
-          if (CMS.registerPreviewStyle) {
-            console.log('CMS partially loaded, trying manual init...');
-            // Sometimes CMS auto-initializes, so we just need to wait
-          }
+          console.error('CMS.init() failed:', err);
+          mountPoint.innerHTML = 
+            '<div style="color:red;padding:20px;border:2px solid red;">' +
+            '<h3>CMS Initialization Error</h3>' +
+            '<p>' + err.message + '</p>' +
+            '<p>Try refreshing the page or using a different browser.</p>' +
+            '</div>';
         }
-      });
-    });
-    
-    // Also try on window load as backup
-    window.addEventListener('load', function() {
-      console.log('Window fully loaded');
+      }
+      
+      // Small delay to ensure everything is settled
+      setTimeout(initializeCMS, 100);
     });
   </script>
 </body>
