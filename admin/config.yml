@@ -105,13 +105,14 @@ collections:
         file: "content/team.json"
         fields:
           - label: "Members"
-            name: "members" # Matches the wrapper key you added
+            name: "members" 
             widget: "list"
             fields:
-              - {label: "ID", name: "id", widget: "string"}
+              - {label: "ID", name: "id", widget: "string", required: false}
               - {label: "Name", name: "name", widget: "string"}
               - {label: "Is PI?", name: "is_pi", widget: "boolean", default: false}
               - {label: "Role", name: "role", widget: "string"}
+              - {label: "Advisor", name: "advisor", widget: "string", required: false}
               - {label: "Title Detail", name: "title_detail", widget: "text", required: false}
               - {label: "Department", name: "department", widget: "string", required: false}
               - {label: "University", name: "university", widget: "string", required: false}
@@ -119,6 +120,7 @@ collections:
               - {label: "Image", name: "image", widget: "image", required: false}
               - {label: "Tags", name: "tags", widget: "list", required: false}
               - {label: "Email", name: "email", widget: "string", required: false}
+              - {label: "Lab Website", name: "website", widget: "string", required: false}
               - {label: "Scholar URL", name: "scholar", widget: "string", required: false}
 
       - name: "news"
@@ -174,7 +176,6 @@ collections:
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Preview", name: "preview", widget: "text"}
               - {label: "Tags", name: "tags", widget: "list"}
-              # Re-using the same body structure as news for consistency
               - label: "Event Details Body"
                 name: "body"
                 widget: "object"
@@ -251,6 +252,7 @@ collections:
               - {label: "Authors", name: "authors", widget: "string"}
               - {label: "Link", name: "link", widget: "string"}
               - {label: "Featured", name: "featured", widget: "boolean", default: false}
+              - {label: "PDF File", name: "pdf_file", widget: "file", required: false}
 
       - name: "presentations"
         label: "Presentations"
