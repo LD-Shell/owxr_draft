@@ -32,53 +32,6 @@
       }
     },
     {
-      "id": "workshop-md-sim",
-      "date": "2025-11-22",
-      "time": "9:00 AM - 5:00 PM",
-      "location": "Computational Lab (S204)",
-      "title": "Workshop: Intro to Molecular Dynamics",
-      "preview": "A full-day hands-on workshop covering the basics of GROMACS and LAMMPS for crystallization studies.",
-      "tags": ["Workshop", "Training"],
-      "body": {
-        "full_title": "Hands-on Workshop: Molecular Dynamics for Beginners",
-        "category": "Training",
-        "main_image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1200",
-        "lead_text": "Learn how to set up, run, and analyze MD simulations using the center's high-performance computing cluster.",
-        "content_blocks": [
-          {
-            "type": "text",
-            "content": "This workshop is mandatory for all new graduate students but open to undergraduates interested in computational chemistry."
-          }
-        ]
-      }
-    },
-    {
-      "id": "defense-sarah-jones",
-      "date": "2025-12-10",
-      "time": "10:00 AM - 12:00 PM",
-      "location": "Cullen Hall Auditorium",
-      "title": "PhD Defense: Sarah Jones",
-      "preview": "Sarah Jones will defend her dissertation titled 'Chiral Resolution of Amino Acids via Viedma Ripening'.",
-      "tags": ["Thesis Defense", "Academic"],
-      "body": {
-        "full_title": "PhD Dissertation Defense: Sarah Jones",
-        "category": "Academic",
-        "main_image": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200",
-        "lead_text": "The Faculty of the Welch Center invites you to the doctoral defense of Sarah Jones.",
-        "content_blocks": [
-          {
-            "type": "text",
-            "content": "Sarah's research focuses on the mechanics of attrition-enhanced deracemization. She has successfully demonstrated the rapid conversion of racemic glycine mixtures into single enantiomers using glass beads."
-          },
-          {
-            "type": "quote",
-            "content": "Sarah's work provides a scalable pathway for producing pure chiral pharmaceuticals.",
-            "author": "Dr. Peter Rimer, Advisor"
-          }
-        ]
-      }
-    },
-    {
       "id": "holiday-mixer-2025",
       "date": "2025-12-18",
       "time": "5:00 PM - 8:00 PM",
