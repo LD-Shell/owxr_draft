@@ -1,88 +1,88 @@
 {
   "members": [
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Jeffrey Rimer",
       "is_pi": true,
       "role": "Center Director & PI",
       "title_detail": "Abraham E. Dukler Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": ["Zeolites", "Biomineralization"],
+      "tags": ["Crystal Engineering", "Catalysis", "Biomaterials"],
       "id": "rimer",
       "image": "public/images/rimer.jpg",
-      "email": "jrimer@central.uh.edu"
+      "email": "jrimer@central.uh.edu",
+      "website": "http://rimergroup.com/",
+      "scholar": "https://scholar.google.com/citations?user=cgsdR7cAAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Peter Vekilov",
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Frank Worley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": ["Protein Physics", "Nucleation"],
+      "tags": ["Physiological and Technological Crystallization", "Protein Aggregation"],
       "id": "vekilov",
       "image": "public/images/vekilov.jpg",
-      "email": "vekilov@uh.edu"
+      "email": "vekilov@uh.edu",
+      "website": "http://vekilovgroup.chee.uh.edu",
+      "scholar": "https://scholar.google.com/citations?user=g2dzQr0AAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Alamgir Karim",
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Dow Chair and Welch Foundation Professor\nDirector, International Polymer & Soft Matter Center (IPSMC)",
-      "tags": ["Molecular Dynamics", "AI/ML"],
+      "tags": ["Molecular Dynamics", "Polymers", "2D Materials", "Energy Storage", "Sustainability", "Membranes"],
       "id": "karim",
       "image": "public/images/karim.jpg",
-      "email": "akarim3@central.uh.edu"
+      "email": "akarim3@central.uh.edu",
+      "website": "https://karimlab.chee.uh.edu/",
+      "scholar": "https://scholar.google.com/citations?user=UHQARgwAAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. T. Randall Lee",
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Cullen Distinguished Professor and Associate\nChair, Department of Chemistry",
-      "tags": ["Nanoparticles", "Surface Science"],
+      "tags": ["Applied Nanomaterials"],
       "id": "lee",
       "image": "public/images/lee.jpg",
-      "email": "trlee@uh.edu"
+      "email": "trlee@uh.edu",
+      "website": "http://lee.chem.uh.edu/",
+      "scholar": "https://scholar.google.com/citations?user=wtJ5no0AAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Jeremy Palmer",
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Ernest J and Barbara M Henley Professor\nDepartment of Chemical and Biomolecular Engineering",
-      "tags": ["Molecular Dynamics", "AI/ML"],
+      "tags": ["Computational Molecular Science", "Statistical Mechanics", "Transport Phenomena", "Complex Phase Behavior"],
       "id": "palmer",
       "image": "public/images/palmer.jpg",
-      "email": "jcpalmer@uh.edu"
+      "email": "jcpalmer@uh.edu",
+      "website": "http://palmer.chee.uh.edu/",
+      "scholar": "https://scholar.google.com/citations?user=zOW6kSsAAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Gul Zerze",
       "is_pi": true,
       "role": "Co-Principal Investigator",
-      "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar",
-      "tags": ["Biomolecular Simulation"],
+      "title_detail": "Assistant Professor\nCancer Prevention and Research Institute of Texas Scholar\nDepartment of Chemical and Biomolecular Engineering",
+      "tags": ["Biomolecular Assembly", "Molecular Simulations", "Computational Modeling", "Interfacial Phenomena"],
       "id": "zerze",
       "image": "public/images/zerze.jpg",
-      "email": "gzerze@central.uh.edu"
+      "email": "gzerze@central.uh.edu",
+      "website": "https://ghzlab.chee.uh.edu/",
+      "scholar": "https://scholar.google.com/citations?user=-yjAGasAAAAJ&hl=en"
     },
     {
-      "scholar": "#",
-      "bio": [],
       "name": "Dr. Francisco Robles",
       "is_pi": true,
       "role": "Co-Principal Investigator",
       "title_detail": "Professor\nMechanical Engineering Technology",
-      "tags": ["Electron Microscopy"],
+      "tags": ["Materials Science and Engineering"],
       "id": "robles",
       "image": "public/images/robles.jpg",
-      "email": "fcrobles@Central.UH.EDU"
+      "email": "fcrobles@Central.UH.EDU",
+      "website": "https://mt-group.egr.uh.edu/",
+      "scholar": "https://scholar.google.com/citations?user=j26yO8sAAAAJ&hl=en"
     },
     
     { "name": "Vraj Chauhan", "is_pi": false, "role": "Graduate Student", "advisor": "Dr. Jeffrey Rimer", "bio": "Research: Calcium oxalate (kidney stone). Collaborator: Dr. Peter Vekilov." },
