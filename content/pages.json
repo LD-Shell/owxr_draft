@@ -27,21 +27,36 @@
   "research_aims": [
     {
       "number": "01",
-      "title": "Aim 1: Nucleation Mechanisms (The Birth of a Crystal)",
-      "description": "We investigate the non-classical pathways of nucleation, using advanced techniques like liquid-cell TEM and time-resolved spectroscopy to observe how molecules aggregate before a stable crystal lattice forms. Understanding this initial moment is crucial for controlling crystal size and purity.",
-      "tags": ["Liquid-Phase TEM", "Molecular Dynamics", "Non-Classical Theory"]
+      "title": "Specific Aim 1 (SA-1): Elucidate the mechanisms governing nonclassical crystallization",
+      "description": "* Focus on organic (pharmaceuticals) and inorganic (minerals, metals, metal oxides) compounds where control of their structure and crystal habit are compromised by the lack of fundamental insight into crystal nucleation and growth pathways.\n* Combined experiments and modeling will advance knowledge of:\n  * Pre-nucleation clusters\n  * Nature of complex growth units\n  * Conditions for materials properties to be predictively controlled\n* We will leverage the PIs' expertise with state-of-the-art instrumentation in the newly established Electron Microscopy Core Facility at the University of Houston (UH).",
+      "tags": [
+        "Organic/Inorganic",
+        "Electron Microscopy",
+        "Nucleation Pathways",
+        "Growth Mechanisms"
+      ]
     },
     {
       "number": "02",
-      "title": "Aim 2: Crystal Growth Modifiers (Controlling the Shape)",
-      "description": "This aim focuses on how impurities, proteins, and tailor-made additives bind to specific crystal faces to inhibit or promote growth. This has direct application in pharmaceutical anti-solvation and controlling pathological crystallization like kidney stones and gallstones.",
-      "tags": ["AFM", "Peptide Design", "Microfluidics", "In-Situ Microscopy"]
+      "title": "Specific Aim 2 (SA-2): Establish novel methods to tailor nucleation pathways",
+      "description": "* We will synthesize metal(oxide) nanoparticles with structured and functionalized interfaces as templates to guide the formation and properties of pre-nucleation clusters.\n* We will design stable, multiple condensed-phase coacervates wherein the structure and chemistry, combined with solution properties and mixing schemes, of polyelectrolytes will be used to uniquely control crystal nucleation and growth.\n* These systems present crystallization environments that are vastly different from those used in conventional syntheses, thus offering the capability to achieve crystal structures inaccessible through current processes.",
+      "tags": [
+        "Nanoparticles",
+        "Coacervates",
+        "Polyelectrolytes",
+        "Template-Directed"
+      ]
     },
     {
       "number": "03",
-      "title": "Aim 3: Polymorphism & Stability (The Right Structure)",
-      "description": "Many compounds can crystallize into different lattice structures (polymorphs). We study the thermodynamics and kinetics that determine which polymorph appears, which is essential for pharmaceutical efficacy (where the wrong polymorph can render a drug useless or even dangerous).",
-      "tags": ["Raman Spectroscopy", "High-Throughput Screening", "Solid-State NMR", "Thermodynamic Modeling"]
+      "title": "Specific Aim 3 (SA-3): Develop predictive models of polymorphic crystal structure",
+      "description": "* Current models do not account for nonclassical pathways and have led to poor predictions of crystal structures and failures to control polymorph transformations that severely impact the design and manufacture of advanced crystalline materials.\n* We propose an innovative methodology to predict crystal structures (polymorphs and solvates) *a priori* and to control intercrystalline transformations.\n* Fundamental insights established in this Center will solve the two principal problems of crystal polymorphism: structure multiplicity and crystal form dynamics.",
+      "tags": [
+        "Predictive Modeling",
+        "Polymorphism",
+        "Structure Prediction",
+        "Crystal Dynamics"
+      ]
     }
   ]
 }
