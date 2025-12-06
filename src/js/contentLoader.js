@@ -397,7 +397,6 @@ async function loadImpactStats() {
 }
 
 async function loadTeamContent() {
-    // UPDATED: Unwrap 'members'
     const rawTeam = await fetchData('team');
     const teamData = rawTeam.members || [];
 
@@ -422,7 +421,13 @@ async function loadTeamContent() {
                 
                 ${member.tags && member.tags.length > 0 ? `<div class="profile-tags">${member.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
                 
-                ${member.email || member.scholar ? `<div style="margin-top: 15px;">${member.email ? `<a href="mailto:${member.email}"><i class="fas fa-envelope text-uh-red"></i></a>` : ''} ${member.scholar ? `<a href="${member.scholar}" target="_blank" style="margin-left: 10px;"><i class="fab fa-google-scholar text-uh-red"></i></a>` : ''}</div>` : ''}
+                <div style="margin-top: 15px; display: flex; gap: 15px; align-items: center;">
+                    ${member.email ? `<a href="mailto:${member.email}" title="Email"><i class="fas fa-envelope text-uh-red fa-lg"></i></a>` : ''}
+                    
+                    ${member.website ? `<a href="${member.website}" target="_blank" title="Lab Website"><i class="fas fa-globe text-uh-red fa-lg"></i></a>` : ''}
+                    
+                    ${member.scholar ? `<a href="${member.scholar}" target="_blank" title="Google Scholar"><i class="fas fa-graduation-cap text-uh-red fa-lg"></i></a>` : ''}
+                </div>
             </div>
         </div>
     `).join('');
