@@ -492,13 +492,20 @@ async function loadResearchContent() {
     const pageData = await fetchData('pages');
     const aims = pageData.research_aims || [];
     const container = document.getElementById('research-aims-container');
+    
     if (container) {
         container.innerHTML = aims.map(aim => `
             <div class="aim-card">
                 <span class="aim-number">${aim.number}</span>
                 <h3>${aim.title}</h3>
-                <p>${converter.makeHtml(aim.description)}</p>
-                <div style="margin-top: 15px;">${aim.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</div>
+                
+                <div class="aim-description">
+                    ${converter.makeHtml(aim.description)}
+                </div>
+
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                    ${aim.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                </div>
             </div>
         `).join('');
     }
